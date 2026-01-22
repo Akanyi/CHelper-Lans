@@ -48,7 +48,7 @@ execute as @a at @s positioned ~ ~-1 ~ if block ~ ~-1 ~ stone["stone_type"="gran
 
 > Note: This app is mainly aimed at Chinese users, so the language is Chinese. You can help me support more languages.
 
-CHelper-Web: <https://yancey2023.github.io/chelper>
+CHelper-Web: <https://yancey2023.github.io/CHelper/>
 
 CHelper-Web lacks some function. To experience more complete functions, please use [CHelper-Android](./CHelper-Android).
 
