@@ -49,21 +49,21 @@ jobs:
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -S ${{ github.workspace }}
+          -S ${{ github.workspace }}/CHelper-Core
 
       - name: Build Test
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target CHelperTest
 
       - name: Run Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
-        run: .\CHelper-Test\${{ matrix.build_type }}\CHelperTest.exe
+        run: .\${{ matrix.build_type }}\CHelperTest.exe
 
-      - name: Build CHelperCmd
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target CHelperCmd
+      - name: Build Resource Generator
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target CHelperResourceGenerator
 
-      - name: Run CHelperCmd
+      - name: Run Resource Generator
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
-        run: .\CHelper-Cmd\${{ matrix.build_type }}\CHelperCmd.exe
+        run: .\${{ matrix.build_type }}\CHelperResourceGenerator.exe
 
       - name: Build CHelperQt
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target CHelperQt

@@ -34,9 +34,11 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
+        working-directory: ${{ github.workspace }}/CHelper-Web
         run: pnpm install
  
       - name: Build
+        working-directory: ${{ github.workspace }}/CHelper-Web
         run: npx vite build --base=/${{ github.event.repository.name }}/ --mode production
 
       - name: Setup Pages
@@ -45,7 +47,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: './dist'
+          path: './CHelper-Web/dist'
 
       - name: Deploy to GitHub Pages
         id: deployment

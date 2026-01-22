@@ -21,9 +21,11 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
+        working-directory: ${{ github.workspace }}/CHelper-Web
         run: pnpm install
 
       - name: Build
+        working-directory: ${{ github.workspace }}/CHelper-Web
         run: npx vite build --base=/chelper/ --mode my_server
   
       - name: Deploy
@@ -31,7 +33,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
           ARGS: "-avz --delete"
-          SOURCE: "dist/"
+          SOURCE: "CHelper-Web/dist/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}
