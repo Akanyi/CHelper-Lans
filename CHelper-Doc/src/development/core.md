@@ -54,34 +54,28 @@ cmake --build ./build ---target CHelperCmd
 
 关于 Android 的支持，请下载官方的 NDK，用它的工具链编译 CHelper。以下是我使用的编译命令，仅作参考：
 
-```ps1
-# 以下为ps1文件语法，运行于Windows平台，如果你用的是其它系统，这些命令仍然具有参考意义
-
-D:\AS\sdk\cmake\3.22.1\bin\cmake.exe `
--D CMAKE_BUILD_TYPE=Release `
--D CMAKE_TOOLCHAIN_FILE=D:\\AS\\sdk\ndk\\28.2.13676358\\build\\cmake\\android.toolchain.cmake `
--D ANDROID_ABI=arm64-v8a `
--D ANDROID_NDK=D:\\AS\sdk\\ndk\\28.2.13676358 `
--D ANDROID_PLATFORM=android-24 `
--D CMAKE_ANDROID_ARCH_ABI=arm64-v8a `
--D CMAKE_ANDROID_NDK=D:\\AS\\sdk\\ndk\\28.2.13676358 `
--D CMAKE_EXPORT_COMPILE_COMMANDS=ON `
--D CMAKE_MAKE_PROGRAM=D:\\AS\\sdk\\cmake\\3.22.1\\bin\\ninja.exe `
--D CMAKE_SYSTEM_NAME=Android `
--D CMAKE_SYSTEM_VERSION=24 `
--B .\\build `
+```sh
+cmake
+-D CMAKE_BUILD_TYPE=Release
+-D CMAKE_TOOLCHAIN_FILE=D:\\AS\\sdk\ndk\\29.0.14206865\\build\\cmake\\android.toolchain.cmake
+-D ANDROID_ABI=arm64-v8a
+-D ANDROID_NDK=D:\\AS\sdk\\ndk\\29.0.14206865
+-D ANDROID_PLATFORM=android-24
+-D CMAKE_ANDROID_ARCH_ABI=arm64-v8a
+-D CMAKE_ANDROID_NDK=D:\\AS\\sdk\\ndk\\29.0.14206865
+-D CMAKE_EXPORT_COMPILE_COMMANDS=ON
+-D CMAKE_MAKE_PROGRAM=D:\\AS\\sdk\\cmake\\3.22.1\\bin\\ninja.exe
+-D CMAKE_SYSTEM_NAME=Android
+-D CMAKE_SYSTEM_VERSION=24
+-B .\\build
 -G Ninja
 
-D:\AS\sdk\cmake\3.22.1\bin\cmake.exe `
---build .\\build `
---target CHelperAndroid
+cmake --build .\\build --target CHelperAndroid
 ```
 
-关于 WebAsembly 的编译，请通过[emsdk](https://github.com/emscripten-core/emsdk)配置好环境，然后执行编译命令。以下命令仅作参考：
+关于 WebAsembly 的编译，请通过[emsdk](https://github.com/emscripten-core/emsdk)配置好环境，然后执行编译命令。以下是我使用的编译命令，仅作参考：
 
-```bash
-# 以下命令运行于Ubuntu系统，如果你用的是Windows系统，这些命令仍然具有参考意义
-
+```sh
 git clone https://github.com/emscripten-core/emsdk.git
 cd ./emsdk
 git pull
@@ -97,10 +91,10 @@ cd ./CHelper-Core/CHelper-Web
 cmake -B build -D CMAKE_BUILD_TYPE=MinSizeRel -D CMAKE_TOOLCHAIN_FILE="./emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake" -G "Ninja"
 cd build
 cmake --build . --target CHelperWeb --parallel
-emcc libCHelperWeb.a include/CHelper-Core/libCHelperNoFilesystemCore.a include/CHelper-Core/include/fmt/libfmt.a include/CHelper-Core/include/spdlog/libspdlog.a include/CHelper-Core/include/xxHash/cmake_unofficial/libxxhash.a -Os -o libCHelperWeb.js -s FILESYSTEM=0 -s DISABLE_EXCEPTION_CATCHING=1 -s ALLOW_MEMORY_GROWTH -s ENVIRONMENT="web" -s EXPORTED_FUNCTIONS="['_init','_release','_onTextChanged','_onSelectionChanged','_getDescription','_getErrorReasons','_getSuggestionSize','_getSuggestion','_getAllSuggestions','_onSuggestionClick','_getSyntaxTokens','_malloc','_free']" -s WASM=1 -s "EXPORTED_RUNTIME_METHODS=[]"
+emcc libCHelperWeb.a libCHelperNoFilesystemCore.a 3rdparty/fmt/libfmt.a 3rdparty/spdlog/libspdlog.a 3rdparty/xxHash/cmake_unofficial/libxxhash.a -Os -o libCHelperWeb.js -s FILESYSTEM=0 -s DISABLE_EXCEPTION_CATCHING=1 -s ALLOW_MEMORY_GROWTH -s ENVIRONMENT="web" -s EXPORTED_FUNCTIONS="['_init','_release','_onTextChanged','_onSelectionChanged','_getParamHint','_getErrorReasons','_getSuggestionSize','_getSuggestion','_getAllSuggestions','_onSuggestionClick','_getSyntaxTokens','_malloc','_free']" -s WASM=1 -s "EXPORTED_RUNTIME_METHODS=[]"
 cd ..
 
-python3 ./script/patch-wasm.py
+python ./script/patch-wasm.py
 ```
 
 ## 加入我们

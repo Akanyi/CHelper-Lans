@@ -6,6 +6,8 @@ CHelper 是一个开源的我的世界基岩版命令助手，致力于为我的
 
 安卓版（功能更全）：<https://www.yanceymc.cn/api/chelper/CHelper-latest.apk>
 
+代码仓库：<https://github.com/Yancey2023/CHelper>
+
 ## 我们的功能
 
 1. <b>命令补全：</b>提供最强大的命令补全提示，实时显示语法结构、参数解释、命令错误。
@@ -27,18 +29,6 @@ CHelper 是一个开源的我的世界基岩版命令助手，致力于为我的
 也许是受到开源精神的影响吧，我决定把整个项目开源，以此来吸引更多加入开发！！！
 
 说到底，这个项目最开始只是出于我的兴趣，也从来没有想到过能坚持这么久。一路走来，感谢有你！！！
-
-## 代码仓库
-
-- 序列化框架：<https://github.com/Yancey2023/serialization>
-
-- 内核：<https://github.com/Yancey2023/CHelper-Core>
-
-- 安卓版：<https://github.com/Yancey2023/CHelper-Android>
-
-- 网页版：<https://github.com/Yancey2023/chelper_web>
-
-- 文档：<https://github.com/Yancey2023/CHelper-Doc>
 
 ## 加入我们
 

@@ -2,4 +2,9 @@
 .DS_STORE
 
 # others
+/build/
 /plan/
+
+# toolchain
+/android-ndk-*.zip
+/android-ndk-*/

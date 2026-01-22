@@ -18,17 +18,10 @@
 #else
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_INFO
 #endif
-#if defined(CHelperAndroid) || defined(CHELPER_NO_FILESYSTEM)
+#if defined(__ANDROID__) || defined(CHELPER_NO_FILESYSTEM)
 #define FORMAT_ARG(arg) arg
 #else
 #define FORMAT_ARG(arg) fmt::styled(arg, fg(fmt::color::medium_purple))
-#endif
-
-#ifdef CHelperAndroid
-#include <android/asset_manager.h>
-#include <android/asset_manager_jni.h>
-#include <android/log.h>
-#include <jni.h>
 #endif
 
 // 数据结构

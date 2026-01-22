@@ -4,6 +4,10 @@
 
 #include <chelper/CHelperCore.h>
 #include <pch.h>
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
+#include <android/log.h>
+#include <jni.h>
 #include <spdlog/sinks/android_sink.h>
 
 std::u16string jstring2u16string(JNIEnv *env, jstring jString) {
@@ -38,7 +42,9 @@ jstring string2jstring(JNIEnv *env, const std::string &string) {
 }
 
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+#ifdef __ANDROID__
     spdlog::set_default_logger(spdlog::android_logger_mt("android", "CHelperNative"));
+#endif
     return JNI_VERSION_1_6;
 }
 
