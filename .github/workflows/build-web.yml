@@ -2,7 +2,15 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['master']
+    branches: [ "master", "dev" ]
+    paths:
+      - '.github/workflows/build-web.yml'
+      - 'CHelper-Web/**'
+  pull_request:
+    branches: [ "master", "dev" ]
+    paths:
+      - '.github/workflows/build-web.yml'
+      - 'CHelper-Web/**'
 
 permissions:
   contents: read
@@ -32,9 +40,10 @@ jobs:
           cache: true
 
       - name: Set up Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           cache: 'pnpm'
+          cache-dependency-path: 'CHelper-Web/pnpm-lock.yaml'
 
       - name: Install dependencies
         working-directory: ${{ github.workspace }}/CHelper-Web
