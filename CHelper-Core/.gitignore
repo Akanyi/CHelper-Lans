@@ -1,0 +1,10 @@
+# clion
+.idea
+cmake-build-*
+
+# vscode
+.cache
+build
+
+# MacOS
+.DS_STORE
