@@ -1,11 +1,9 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
     id("com.android.application")
-    kotlin("android")
     kotlin("plugin.compose")
     kotlin("plugin.serialization")
 }
@@ -48,7 +46,7 @@ android {
     }
 
     sourceSets.all {
-        jniLibs.srcDirs("libs")
+        jniLibs.directories.add("libs")
     }
 
     compileOptions {
@@ -63,10 +61,6 @@ android {
 
     ndkVersion = "28.2.13676358"
 
-    kotlin {
-        compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
-    }
-
     gradle.projectsEvaluated {
         tasks.withType<JavaCompile> {
             options.compilerArgs.add("-Xlint:unchecked")
@@ -74,34 +68,32 @@ android {
         }
     }
 
-}
+    val keystorePropertiesFile: File = rootProject.file("keystore.properties")
+    if (keystorePropertiesFile.exists()) {
+        val keystoreProperties = Properties()
+        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+        signingConfigs {
+            create("sign") {
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
 
-val keystorePropertiesFile: File = rootProject.file("keystore.properties")
-if (keystorePropertiesFile.exists()) {
-    val keystoreProperties = Properties()
-    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-    android.signingConfigs {
-        create("sign") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
-
-            enableV1Signing = true
-            enableV2Signing = true
-            enableV3Signing = true
-            enableV4Signing = true
-        }
-    }
-    android.buildTypes.all {
-        signingConfig = android.signingConfigs["sign"]
-    }
-    android.applicationVariants.all {
-        outputs.all {
-            if (this is ApkVariantOutputImpl) {
-                outputFileName = "CHelper-${android.defaultConfig.versionName}.apk"
+                enableV1Signing = true
+                enableV2Signing = true
+                enableV3Signing = true
+                enableV4Signing = true
             }
         }
+        buildTypes.all {
+            signingConfig = signingConfigs["sign"]
+        }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
@@ -121,10 +113,10 @@ dependencies {
 //    implementation("androidx.datastore:datastore-preferences:1.1.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
-    implementation("androidx.compose.ui:ui:1.10.0")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.10.0")
-    implementation("androidx.compose.foundation:foundation:1.10.0")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.10.0")
+    implementation("androidx.compose.ui:ui:1.10.1")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.10.1")
+    implementation("androidx.compose.foundation:foundation:1.10.1")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.10.1")
     // https://github.com/ReactiveX/RxJava
     implementation("io.reactivex.rxjava3:rxjava:3.1.12")
     // https://github.com/ReactiveX/RxAndroid
@@ -148,7 +140,7 @@ dependencies {
     // https://github.com/getActivity/EasyWindow
     implementation("com.github.getActivity:EasyWindow:13.2")
     // https://www.umeng.com
-    implementation("com.umeng.umsdk:common:9.8.8")
+    implementation("com.umeng.umsdk:common:9.8.9")
     implementation("com.umeng.umsdk:asms:1.8.7.2")
     // noinspection Aligned16KB
     implementation("com.umeng.umsdk:apm:2.0.6")
