@@ -47,8 +47,7 @@
     <string name="layout_about_qq_personal">QQ号</string>
     <string name="layout_about_qq_group">QQ群号</string>
     <string name="layout_about_bilibili">bilibili</string>
-    <string name="layout_about_core_source">内核源码</string>
-    <string name="layout_about_app_source">软件源码</string>
+    <string name="layout_about_source_code">源码</string>
     <string name="layout_about_release_note">更新日志</string>
     <string name="layout_about_latest_release_note">最新版更新日志</string>
     <string name="layout_about_issue">问题反馈</string>

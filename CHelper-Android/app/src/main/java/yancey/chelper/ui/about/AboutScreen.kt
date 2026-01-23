@@ -69,13 +69,8 @@ fun AboutScreen(navController: NavHostController) {
                 )
                 Divider()
                 NameAndLink(
-                    stringResource(R.string.layout_about_core_source),
-                    "https://github.com/Yancey2023/CHelper-Core".toUri()
-                )
-                Divider()
-                NameAndLink(
-                    stringResource(R.string.layout_about_app_source),
-                    "https://github.com/Yancey2023/CHelper-Android".toUri()
+                    stringResource(R.string.layout_about_source_code),
+                    "https://github.com/Yancey2023/CHelper".toUri()
                 )
             }
             Spacer(Modifier.height(15.dp))
