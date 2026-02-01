@@ -29,6 +29,7 @@ import yancey.chelper.BuildConfig
 import yancey.chelper.android.common.util.MonitorUtil
 import yancey.chelper.network.chelper.service.CHelperService
 import yancey.chelper.network.library.interceptor.AuthInterceptor
+import yancey.chelper.network.library.service.CaptchaService
 import yancey.chelper.network.library.service.CommandLabPublicService
 import yancey.chelper.network.library.service.CommandLabUserService
 
@@ -43,6 +44,12 @@ object ServiceManager {
     @JvmField
     var COMMAND_LAB_PUBLIC_SERVICE: CommandLabPublicService? = null
     var COMMAND_LAB_USER_SERVICE: CommandLabUserService? = null
+    
+    @JvmField
+    var CAPTCHA_SERVICE: CaptchaService? = null
+
+    @JvmField
+    var LAB_BASE_URL = "https://abyssous.site/"
 
     @JvmStatic
     fun init() {
@@ -62,7 +69,7 @@ object ServiceManager {
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
         COMMAND_LAB_RETROFIT = Retrofit.Builder()
-            .baseUrl("https://abyssous.site/")
+            .baseUrl(LAB_BASE_URL)
             .client(CLIENT!!)
             .addConverterFactory(GsonConverterFactory.create(GSON!!))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
@@ -71,5 +78,6 @@ object ServiceManager {
         COMMAND_LAB_PUBLIC_SERVICE =
             COMMAND_LAB_RETROFIT!!.create(CommandLabPublicService::class.java)
         COMMAND_LAB_USER_SERVICE = COMMAND_LAB_RETROFIT!!.create(CommandLabUserService::class.java)
+        CAPTCHA_SERVICE = COMMAND_LAB_RETROFIT!!.create(CaptchaService::class.java)
     }
 }

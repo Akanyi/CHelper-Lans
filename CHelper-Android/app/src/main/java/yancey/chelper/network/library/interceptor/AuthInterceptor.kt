@@ -20,24 +20,58 @@ package yancey.chelper.network.library.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import yancey.chelper.network.library.util.GuestAuthUtil
 import yancey.chelper.network.library.util.LoginUtil
 import java.io.IOException
 
+/**
+ * 认证拦截器
+ * 
+ * 自动为发往 abyssous.site 的请求添加 Authorization header
+ * 优先使用正式用户 token，否则使用访客 token
+ */
 class AuthInterceptor private constructor() : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (chain.request().url.host == "abyssous.site") {
-            val token = LoginUtil.token
-            if (token != null && !token.isEmpty()) {
+        val request = chain.request()
+        
+        if (request.url.host == "abyssous.site") {
+            // 获取 token（正式用户优先，否则访客）
+            val token = getToken()
+            
+            if (!token.isNullOrEmpty()) {
                 return chain.proceed(
-                    chain.request().newBuilder()
+                    request.newBuilder()
                         .addHeader("Authorization", "Bearer $token")
                         .build()
                 )
             }
         }
-        return chain.proceed(chain.request())
+        
+        return chain.proceed(request)
+    }
+    
+    /**
+     * 获取当前有效的 token
+     * 
+     * 优先级：正式用户 > 访客
+     */
+    private fun getToken(): String? {
+        // 尝试正式用户 token
+        try {
+            LoginUtil.token?.let { return it }
+        } catch (_: Exception) {}
+        
+        // 尝试访客 token（需要先初始化 GuestAuthUtil）
+        GuestAuthUtil.guestToken?.let { return it }
+        
+        // 尝试自动访客登录/注册
+        if (GuestAuthUtil.ensureLoggedIn()) {
+            return GuestAuthUtil.guestToken
+        }
+        
+        return null
     }
 
     companion object {

@@ -36,6 +36,7 @@ import yancey.chelper.android.common.util.Settings;
 import yancey.chelper.android.completion.util.CompletionWindowManager;
 import yancey.chelper.android.library.util.LocalLibraryManager;
 import yancey.chelper.network.ServiceManager;
+import yancey.chelper.network.library.util.GuestAuthUtil;
 import yancey.chelper.network.library.util.LoginUtil;
 
 public class CHelperApplication extends Application {
@@ -46,19 +47,33 @@ public class CHelperApplication extends Application {
         // 隐私政策管理初始化
         PolicyGrantManager.init(
                 AssetsUtil.readStringFromAssets(this, "about/privacy_policy.txt"),
-                new File(getDataDir(), "lastReadContent.txt")
-        );
+                new File(getDataDir(), "lastReadContent.txt"));
         // 用于数据分析和性能监控的第三方库初始化
         MonitorUtil.init(this);
         // Toast初始化
         Toaster.init(this);
-        Toaster.setGravity(Gravity.BOTTOM, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()));
+        Toaster.setGravity(Gravity.BOTTOM, 0,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()));
         // 网络服务初始化
+        try {
+            File customUrlFile = new File(getDataDir(), "custom_lab_url.txt");
+            if (customUrlFile.exists()) {
+                String customUrl = FileUtil.readString(customUrlFile).trim();
+                if (!customUrl.isEmpty()) {
+                    ServiceManager.LAB_BASE_URL = customUrl;
+                    Log.i("ServiceManager", "Using custom lab url: " + customUrl);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ServiceManager.init();
         LoginUtil.INSTANCE.init(FileUtil.getFile(getDataDir(), "library", "user.json"), throwable -> {
             Log.e("LoginUtil", "fail to read user from json", throwable);
             MonitorUtil.generateCustomLog(throwable, "ReadUserException");
         });
+        // 访客认证初始化（用于自动访客登录）
+        GuestAuthUtil.INSTANCE.init(this);
         // 设置初始化
         Settings.init(this, FileUtil.getFile(getDataDir(), "settings", "settings.json"), throwable -> {
             Log.e("Settings", "fail to read settings from json", throwable);
