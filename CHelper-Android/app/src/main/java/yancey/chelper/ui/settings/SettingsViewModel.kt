@@ -48,7 +48,7 @@ class SettingsViewModel : ViewModel() {
     var isShowChooseThemeDialog by mutableStateOf(false)
     var isShowInputFloatingWindowAlphaDialog by mutableStateOf(false)
     var isShowInputFloatingWindowSizeDialog by mutableStateOf(false)
-    var isShowInputFloatingWindowSizeDialog by mutableStateOf(false)
+
     var isShowChooseCpackBranchDialog by mutableStateOf(false)
     var isShowInputCustomApiUrlDialog by mutableStateOf(false)
 

@@ -26,6 +26,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import yancey.chelper.BuildConfig
+import yancey.chelper.android.common.util.Settings
 import yancey.chelper.android.common.util.MonitorUtil
 import yancey.chelper.network.chelper.service.CHelperService
 import yancey.chelper.network.library.interceptor.AuthInterceptor
