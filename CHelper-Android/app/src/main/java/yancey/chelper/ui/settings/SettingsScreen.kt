@@ -175,6 +175,16 @@ fun SettingsScreen(
                     viewModel.isShowInputCustomApiUrlDialog = true
                 }
             }
+            // 实验性功能
+            CollectionName("实验性功能")
+            Collection {
+                SettingsItem(
+                    name = "显示公有命令库入口",
+                    description = "在主页显示公有命令库入口（仍在开发中）",
+                    checked = viewModel.isShowPublicLibrary,
+                    onCheckedChange = { viewModel.isShowPublicLibrary = it }
+                )
+            }
         }
     }
     if (viewModel.isShowInputCustomApiUrlDialog) {

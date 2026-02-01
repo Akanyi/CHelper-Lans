@@ -110,7 +110,13 @@ public class Settings {
     /**
      * 自定义命令库地址（测试用）
      */
+
     public String apiUrl;
+
+    /**
+     * 是否显示公有命令库入口
+     */
+    public Boolean isShowPublicLibrary;
 
     public void setCpackBranch(String cpackBranch) {
         this.cpackPath = cpackBranch;
@@ -158,6 +164,10 @@ public class Settings {
         boolean isDirty = false;
         if (INSTANCE == null) {
             INSTANCE = new Settings();
+            isDirty = true;
+        }
+        if (INSTANCE.isShowPublicLibrary == null) {
+            INSTANCE.isShowPublicLibrary = false;
             isDirty = true;
         }
         if (INSTANCE.isEnableUpdateNotifications == null) {

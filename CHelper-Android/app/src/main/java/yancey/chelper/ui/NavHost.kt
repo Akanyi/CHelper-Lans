@@ -42,6 +42,9 @@ import yancey.chelper.ui.library.LocalLibraryEditScreen
 import yancey.chelper.ui.library.LocalLibraryListScreen
 import yancey.chelper.ui.library.LocalLibraryShowScreen
 import yancey.chelper.ui.library.LocalLibraryShowViewModel
+import yancey.chelper.ui.library.PublicLibraryListScreen
+import yancey.chelper.ui.library.PublicLibraryShowScreen
+import yancey.chelper.ui.library.PublicLibraryShowViewModel
 import yancey.chelper.ui.old2new.Old2NewIMEGuideScreen
 import yancey.chelper.ui.old2new.Old2NewScreen
 import yancey.chelper.ui.rawtext.RawtextScreen
@@ -87,6 +90,14 @@ object RawtextScreenKey
 
 @Serializable
 object AboutScreenKey
+
+@Serializable
+object PublicLibraryListScreenKey
+
+@Serializable
+data class PublicLibraryShowScreenKey(
+    val id: Int
+)
 
 @Serializable
 data class ShowTextScreenKey(
@@ -174,6 +185,14 @@ fun NavHost(
                 title = showText.title,
                 content = showText.content
             )
+        }
+        composable<PublicLibraryListScreenKey> {
+            PublicLibraryListScreen(navController = navController)
+        }
+        composable<PublicLibraryShowScreenKey> { navBackStackEntry ->
+            val publicLibraryShow: PublicLibraryShowScreenKey = navBackStackEntry.toRoute()
+            val viewModel: PublicLibraryShowViewModel = viewModel()
+            PublicLibraryShowScreen(id = publicLibraryShow.id, viewModel = viewModel)
         }
     }
 }
