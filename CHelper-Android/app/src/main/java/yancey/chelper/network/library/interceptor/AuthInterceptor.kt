@@ -36,7 +36,8 @@ class AuthInterceptor private constructor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         
-        if (request.url.host == "abyssous.site") {
+        // 检查是否需要添加认证 header
+        if (request.url.host == "abyssous.site" && !isAuthEndpoint(request.url.encodedPath)) {
             // 获取 token（正式用户优先，否则访客）
             val token = getToken()
             
@@ -50,6 +51,21 @@ class AuthInterceptor private constructor() : Interceptor {
         }
         
         return chain.proceed(request)
+    }
+    
+    /**
+     * 判断是否是认证相关的 endpoint（登录/注册/验证码等）
+     * 这些 endpoint 不需要添加 Authorization header，避免循环调用
+     */
+    private fun isAuthEndpoint(path: String): Boolean {
+        val authPaths = listOf(
+            "/guest/login",
+            "/guest/register",
+            "/login",
+            "/register",
+            "/captcha"
+        )
+        return authPaths.any { path.contains(it, ignoreCase = true) }
     }
     
     /**
