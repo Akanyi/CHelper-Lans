@@ -38,6 +38,7 @@ class SettingsViewModel : ViewModel() {
     var isCrowed by mutableStateOf(false)
     var isShowErrorReason by mutableStateOf(false)
     var isSyntaxHighlight by mutableStateOf(false)
+    var customApiUrl by mutableStateOf("")
     var cpackBranch by mutableStateOf("")
     private var _themeId = mutableStateOf("")
 //    val themeId = _themeId.value
@@ -47,7 +48,9 @@ class SettingsViewModel : ViewModel() {
     var isShowChooseThemeDialog by mutableStateOf(false)
     var isShowInputFloatingWindowAlphaDialog by mutableStateOf(false)
     var isShowInputFloatingWindowSizeDialog by mutableStateOf(false)
+    var isShowInputFloatingWindowSizeDialog by mutableStateOf(false)
     var isShowChooseCpackBranchDialog by mutableStateOf(false)
+    var isShowInputCustomApiUrlDialog by mutableStateOf(false)
 
     val cpackBranches =
         arrayOf(
@@ -78,6 +81,7 @@ class SettingsViewModel : ViewModel() {
             this.isShowErrorReason = Settings.INSTANCE.isShowErrorReason
             this.isSyntaxHighlight = Settings.INSTANCE.isSyntaxHighlight
             this.cpackBranch = Settings.INSTANCE.cpackBranch
+            this.customApiUrl = Settings.INSTANCE.apiUrl ?: ""
             this._themeId.value = Settings.INSTANCE.themeId
         } catch (_: Exception) {
 
@@ -108,6 +112,7 @@ class SettingsViewModel : ViewModel() {
         Settings.INSTANCE.isShowErrorReason = isShowErrorReason
         Settings.INSTANCE.isSyntaxHighlight = isSyntaxHighlight
         Settings.INSTANCE.cpackBranch = cpackBranch
+        Settings.INSTANCE.apiUrl = customApiUrl
         Settings.INSTANCE.save()
     }
 }

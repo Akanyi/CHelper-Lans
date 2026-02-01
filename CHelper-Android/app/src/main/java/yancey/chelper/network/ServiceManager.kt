@@ -69,7 +69,7 @@ object ServiceManager {
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
         COMMAND_LAB_RETROFIT = Retrofit.Builder()
-            .baseUrl(LAB_BASE_URL)
+            .baseUrl(Settings.INSTANCE.apiUrl?.takeIf { it.isNotEmpty() } ?: LAB_BASE_URL)
             .client(CLIENT!!)
             .addConverterFactory(GsonConverterFactory.create(GSON!!))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

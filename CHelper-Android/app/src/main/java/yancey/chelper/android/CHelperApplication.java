@@ -54,19 +54,14 @@ public class CHelperApplication extends Application {
         Toaster.init(this);
         Toaster.setGravity(Gravity.BOTTOM, 0,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()));
+
+        // 设置初始化
+        Settings.init(this, FileUtil.getFile(getDataDir(), "settings", "settings.json"), throwable -> {
+            Log.e("Settings", "fail to read settings from json", throwable);
+            MonitorUtil.generateCustomLog(throwable, "ReadSettingException");
+        });
+
         // 网络服务初始化
-        try {
-            File customUrlFile = new File(getDataDir(), "custom_lab_url.txt");
-            if (customUrlFile.exists()) {
-                String customUrl = FileUtil.readString(customUrlFile).trim();
-                if (!customUrl.isEmpty()) {
-                    ServiceManager.LAB_BASE_URL = customUrl;
-                    Log.i("ServiceManager", "Using custom lab url: " + customUrl);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         ServiceManager.init();
         LoginUtil.INSTANCE.init(FileUtil.getFile(getDataDir(), "library", "user.json"), throwable -> {
             Log.e("LoginUtil", "fail to read user from json", throwable);
@@ -74,11 +69,6 @@ public class CHelperApplication extends Application {
         });
         // 访客认证初始化（用于自动访客登录）
         GuestAuthUtil.INSTANCE.init(this);
-        // 设置初始化
-        Settings.init(this, FileUtil.getFile(getDataDir(), "settings", "settings.json"), throwable -> {
-            Log.e("Settings", "fail to read settings from json", throwable);
-            MonitorUtil.generateCustomLog(throwable, "ReadSettingException");
-        });
         // 悬浮窗管理初始化
         CompletionWindowManager.init(this, FileUtil.getFile(getDataDir(), "xiaomi_clipboard_permission_no_tips.txt"));
         // 自定义主题初始化
