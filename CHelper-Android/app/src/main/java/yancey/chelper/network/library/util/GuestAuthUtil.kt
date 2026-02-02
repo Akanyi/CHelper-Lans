@@ -141,6 +141,7 @@ object GuestAuthUtil {
      * 
      * @return 是否成功登录
      */
+    @Synchronized
     fun ensureLoggedIn(): Boolean {
         // 已经登录了
         if (isLoggedIn()) return true

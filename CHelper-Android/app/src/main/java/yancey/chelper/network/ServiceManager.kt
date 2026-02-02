@@ -18,7 +18,9 @@
 
 package yancey.chelper.network
 
+import android.content.Context
 import com.google.gson.Gson
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.brotli.BrotliInterceptor
 import okhttp3.logging.HttpLoggingInterceptor
@@ -33,6 +35,8 @@ import yancey.chelper.network.library.interceptor.AuthInterceptor
 import yancey.chelper.network.library.service.CaptchaService
 import yancey.chelper.network.library.service.CommandLabPublicService
 import yancey.chelper.network.library.service.CommandLabUserService
+import java.io.File
+import java.util.concurrent.TimeUnit
 
 object ServiceManager {
     @JvmField
@@ -53,9 +57,13 @@ object ServiceManager {
     var LAB_BASE_URL = "https://abyssous.site/"
 
     @JvmStatic
-    fun init() {
+    fun init(context: Context) {
         GSON = Gson()
         val builder = OkHttpClient.Builder()
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .cache(Cache(File(context.cacheDir, "http_cache"), 10 * 1024 * 1024))
             .addInterceptor(BrotliInterceptor)
             .addInterceptor(AuthInterceptor.INSTANCE)
         if (BuildConfig.DEBUG) {

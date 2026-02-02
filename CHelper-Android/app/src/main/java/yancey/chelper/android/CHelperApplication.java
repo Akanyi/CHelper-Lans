@@ -62,7 +62,7 @@ public class CHelperApplication extends Application {
         });
 
         // 网络服务初始化
-        ServiceManager.init();
+        ServiceManager.init(this);
         LoginUtil.INSTANCE.init(FileUtil.getFile(getDataDir(), "library", "user.json"), throwable -> {
             Log.e("LoginUtil", "fail to read user from json", throwable);
             MonitorUtil.generateCustomLog(throwable, "ReadUserException");
