@@ -51,10 +51,16 @@
             "name": "minecraft:crimson_feature"
         },
         {
+            "name": "minecraft:crimson_fungus_warped_feature"
+        },
+        {
             "name": "minecraft:crimson_roots_feature"
         },
         {
             "name": "minecraft:crimson_roots_soul_sand_valley_feature"
+        },
+        {
+            "name": "minecraft:crimson_roots_warped_feature"
         },
         {
             "name": "minecraft:deep_cold_ocean_after_surface_seagrass_feature_rules"

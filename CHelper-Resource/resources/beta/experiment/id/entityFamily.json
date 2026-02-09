@@ -43,8 +43,26 @@
             "description": "美西螈"
         },
         {
+            "name": "baby_husk"
+        },
+        {
+            "name": "baby_piglin"
+        },
+        {
             "name": "baby_turtle",
             "description": "幼年海龟"
+        },
+        {
+            "name": "baby_undead"
+        },
+        {
+            "name": "baby_undead "
+        },
+        {
+            "name": "baby_zombie"
+        },
+        {
+            "name": "baby_zombie_pigman"
         },
         {
             "name": "bat",
@@ -81,6 +99,10 @@
         {
             "name": "camel",
             "description": "骆驼"
+        },
+        {
+            "name": "camel_husk",
+            "description": "骆驼尸壳"
         },
         {
             "name": "cartographer",
@@ -219,6 +241,9 @@
             "description": "尸壳"
         },
         {
+            "name": "husk_rider"
+        },
+        {
             "name": "illager",
             "description": "灾厄村民"
         },
@@ -279,6 +304,10 @@
             "description": "哞菇"
         },
         {
+            "name": "nautilus",
+            "description": "鹦鹉螺"
+        },
+        {
             "name": "nitwit",
             "description": "傻子村民"
         },
@@ -301,6 +330,10 @@
         {
             "name": "panda_aggressive",
             "description": "好斗的熊猫"
+        },
+        {
+            "name": "parched",
+            "description": "焦骸"
         },
         {
             "name": "parrot_tame",
@@ -531,8 +564,15 @@
             "description": "僵尸"
         },
         {
+            "name": "zombie_nautilus",
+            "description": "僵尸鹦鹉螺"
+        },
+        {
             "name": "zombie_pigman",
             "description": "僵尸猪灵"
+        },
+        {
+            "name": "zombie_rider"
         },
         {
             "name": "zombie_villager",

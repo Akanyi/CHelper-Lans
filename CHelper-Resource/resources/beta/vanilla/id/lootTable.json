@@ -257,11 +257,11 @@
         },
         {
             "name": "\"entities/armor_set_gold\"",
-            "description": "金质盔甲装备"
+            "description": "金盔甲装备"
         },
         {
             "name": "\"entities/armor_set_iron\"",
-            "description": "铁质盔甲装备"
+            "description": "铁盔甲装备"
         },
         {
             "name": "\"entities/armor_set_leather\"",
@@ -295,6 +295,9 @@
         {
             "name": "\"entities/brown_mooshroom_shear\"",
             "description": "棕色哞菇剪除蘑菇的掉落物"
+        },
+        {
+            "name": "\"entities/camel_husk\""
         },
         {
             "name": "\"entities/cat\"",
@@ -356,6 +359,9 @@
             "description": "远程攻击的溺尸的装备"
         },
         {
+            "name": "\"entities/drowned_rider_equipment\""
+        },
+        {
             "name": "\"entities/elder_guardian\"",
             "description": "远古守卫者的掉落物"
         },
@@ -414,6 +420,9 @@
             "description": "马的掉落物"
         },
         {
+            "name": "\"entities/husk_rider\""
+        },
+        {
             "name": "\"entities/iron_golem\"",
             "description": "铁傀儡的掉落物"
         },
@@ -434,6 +443,9 @@
             "description": "哞菇剪除蘑菇的掉落物"
         },
         {
+            "name": "\"entities/nautilus\""
+        },
+        {
             "name": "\"entities/ocelot\"",
             "description": "豹猫的掉落物"
         },
@@ -444,6 +456,9 @@
         {
             "name": "\"entities/panda_sneeze\"",
             "description": "熊猫的喷嚏"
+        },
+        {
+            "name": "\"entities/parched\""
         },
         {
             "name": "\"entities/parrot\"",
@@ -669,12 +684,21 @@
             "description": "僵尸马的掉落物"
         },
         {
+            "name": "\"entities/zombie_nautilus\""
+        },
+        {
             "name": "\"entities/zombie_pigman\"",
             "description": "僵尸猪灵的掉落物"
         },
         {
             "name": "\"entities/zombie_pigman_gear\"",
             "description": "僵尸猪灵的装备"
+        },
+        {
+            "name": "\"entities/zombie_rider\""
+        },
+        {
+            "name": "\"entities/zombie_rider_equipment\""
         },
         {
             "name": "\"entities/zombified_piglin_rider_gear\"",

@@ -31,8 +31,7 @@ def download_android_ndk():
     try:
         def progress_callback(count, block_size, total_size):
             percent = int(count * block_size * 100 / total_size)
-            sys.stdout.write(f"\rDownloading... {percent}%")
-            sys.stdout.flush()
+            print(f"\rDownloading... {percent}%")
         urlretrieve(ndk_url, archive_path, progress_callback)
         print("\nDownload completed!")
         print("Extracting NDK...")

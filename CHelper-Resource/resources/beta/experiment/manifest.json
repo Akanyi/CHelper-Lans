@@ -1,12 +1,12 @@
 {
     "name": "[内置] 测试版实验性玩法",
     "description": "CHelper内置资源包",
-    "version": "1.21.120.20",
+    "version": "1.26.0.27",
     "versionType": "beta",
     "branch": "experiment",
     "author": "Yancey",
-    "updateDate": "2025-09-14",
-    "packId": "BasicPack-1.21.120.20-experiment",
+    "updateDate": "2026-01-24",
+    "packId": "BasicPack-1.26.0.27-experiment",
     "versionCode": 1,
     "isBasicPack": true,
     "isDefault": true

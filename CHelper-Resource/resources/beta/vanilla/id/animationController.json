@@ -231,6 +231,9 @@
             "name": "controller.animation.humanoid.look_at_target"
         },
         {
+            "name": "controller.animation.humanoid.melee_spear"
+        },
+        {
             "name": "controller.animation.humanoid.move"
         },
         {
@@ -271,6 +274,12 @@
         },
         {
             "name": "controller.animation.mooshroom.setup"
+        },
+        {
+            "name": "controller.animation.nautilus.general"
+        },
+        {
+            "name": "controller.animation.nautilus.sound"
         },
         {
             "name": "controller.animation.ocelot.baby"
@@ -342,7 +351,13 @@
             "name": "controller.animation.player.first_person_map"
         },
         {
+            "name": "controller.animation.player.first_person_melee_spear"
+        },
+        {
             "name": "controller.animation.player.hudplayer"
+        },
+        {
+            "name": "controller.animation.player.melee_spear"
         },
         {
             "name": "controller.animation.player.root"
@@ -415,6 +430,12 @@
         },
         {
             "name": "controller.animation.snowgolem.move.v1.8"
+        },
+        {
+            "name": "controller.animation.spear.held"
+        },
+        {
+            "name": "controller.animation.spear.hit"
         },
         {
             "name": "controller.animation.spider.move"

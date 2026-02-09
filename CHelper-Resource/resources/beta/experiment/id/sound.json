@@ -59,12 +59,18 @@
             "description": "灵魂沙峡谷：怪异的噪声"
         },
         {
+            "name": "ambient.underwater.additions"
+        },
+        {
             "name": "ambient.underwater.enter",
             "description": "玩家：进入水中"
         },
         {
             "name": "ambient.underwater.exit",
             "description": "玩家：离开水中"
+        },
+        {
+            "name": "ambient.underwater.loop"
         },
         {
             "name": "ambient.warped_forest.additions",
@@ -1770,6 +1776,10 @@
             "description": "烟花：闪烁"
         },
         {
+            "name": "game.player.attack.critical",
+            "description": "暴击"
+        },
+        {
             "name": "game.player.attack.nodamage",
             "description": "玩家：轻击"
         },
@@ -2082,6 +2092,10 @@
             "description": "氧气值：减少"
         },
         {
+            "name": "imitate.fuse",
+            "description": "鹦鹉：嘶~"
+        },
+        {
             "name": "insert.chiseled_bookshelf",
             "description": "书：被放入"
         },
@@ -2102,8 +2116,33 @@
             "description": "书：放置"
         },
         {
+            "name": "item.enchant.lunge1"
+        },
+        {
+            "name": "item.enchant.lunge2"
+        },
+        {
+            "name": "item.enchant.lunge3"
+        },
+        {
             "name": "item.shield.block",
             "description": "盾牌：格挡"
+        },
+        {
+            "name": "item.spear.attack_hit",
+            "description": "矛：戳刺"
+        },
+        {
+            "name": "item.spear.attack_miss",
+            "description": "矛：戳刺"
+        },
+        {
+            "name": "item.spear.hit",
+            "description": "矛：击中"
+        },
+        {
+            "name": "item.spear.use",
+            "description": "持矛冲锋"
         },
         {
             "name": "item.spyglass.stop_using",
@@ -2144,6 +2183,18 @@
         {
             "name": "item.trident.thunder",
             "description": "三叉戟：电闪雷鸣"
+        },
+        {
+            "name": "item.wooden_spear.attack_hit"
+        },
+        {
+            "name": "item.wooden_spear.attack_miss"
+        },
+        {
+            "name": "item.wooden_spear.hit"
+        },
+        {
+            "name": "item.wooden_spear.use"
         },
         {
             "name": "jump.ancient_debris",
@@ -2634,6 +2685,102 @@
             "description": "美西螈：游泳"
         },
         {
+            "name": "mob.baby_cat.ambient",
+            "description": "猫：喵~"
+        },
+        {
+            "name": "mob.baby_cat.death",
+            "description": "猫：死亡"
+        },
+        {
+            "name": "mob.baby_cat.eat",
+            "description": "幼年猫：进食"
+        },
+        {
+            "name": "mob.baby_cat.hurt",
+            "description": "幼年猫：受伤"
+        },
+        {
+            "name": "mob.baby_nautilus.ambient",
+            "description": "幼年鹦鹉螺：啾啾"
+        },
+        {
+            "name": "mob.baby_nautilus.ambient.in.water",
+            "description": "幼年鹦鹉螺：啾啾"
+        },
+        {
+            "name": "mob.baby_nautilus.death",
+            "description": "幼年鹦鹉螺：死亡"
+        },
+        {
+            "name": "mob.baby_nautilus.death.in.water",
+            "description": "幼年鹦鹉螺：死亡"
+        },
+        {
+            "name": "mob.baby_nautilus.eat",
+            "description": "幼年鹦鹉螺：进食"
+        },
+        {
+            "name": "mob.baby_nautilus.hurt",
+            "description": "幼年鹦鹉螺：受伤"
+        },
+        {
+            "name": "mob.baby_nautilus.hurt.in.water",
+            "description": "幼年鹦鹉螺：受伤"
+        },
+        {
+            "name": "mob.baby_nautilus.swim",
+            "description": "幼年鹦鹉螺：游泳"
+        },
+        {
+            "name": "mob.baby_pig.ambient",
+            "description": "猪：哼叫"
+        },
+        {
+            "name": "mob.baby_pig.death",
+            "description": "猪：死亡"
+        },
+        {
+            "name": "mob.baby_pig.hurt",
+            "description": "幼年猪：受伤"
+        },
+        {
+            "name": "mob.baby_pig.step",
+            "description": "幼年猪：哼叫"
+        },
+        {
+            "name": "mob.baby_wolf.bark",
+            "description": "狼：吠叫"
+        },
+        {
+            "name": "mob.baby_wolf.death",
+            "description": "狼：死亡"
+        },
+        {
+            "name": "mob.baby_wolf.growl",
+            "description": "狼：嚎叫"
+        },
+        {
+            "name": "mob.baby_wolf.hurt",
+            "description": "狼：受伤"
+        },
+        {
+            "name": "mob.baby_wolf.panting",
+            "description": "幼年狼：喘息"
+        },
+        {
+            "name": "mob.baby_wolf.shake",
+            "description": "狼：摇动"
+        },
+        {
+            "name": "mob.baby_wolf.step",
+            "description": "幼年狼：嗷~"
+        },
+        {
+            "name": "mob.baby_wolf.whine",
+            "description": "狼：呜咽"
+        },
+        {
             "name": "mob.bat.death",
             "description": "蝙蝠：死亡"
         },
@@ -2792,6 +2939,44 @@
         {
             "name": "mob.camel.step_sand",
             "description": "骆驼：踏沙"
+        },
+        {
+            "name": "mob.camel_husk.ambient",
+            "description": "骆驼尸壳：咕哝"
+        },
+        {
+            "name": "mob.camel_husk.dash",
+            "description": "骆驼尸壳：冲刺"
+        },
+        {
+            "name": "mob.camel_husk.dash_ready",
+            "description": "骆驼尸壳：恢复体力"
+        },
+        {
+            "name": "mob.camel_husk.death",
+            "description": "骆驼尸壳：死亡"
+        },
+        {
+            "name": "mob.camel_husk.eat",
+            "description": "骆驼尸壳：进食"
+        },
+        {
+            "name": "mob.camel_husk.hurt",
+            "description": "骆驼尸壳：受伤"
+        },
+        {
+            "name": "mob.camel_husk.sit",
+            "description": "骆驼尸壳：坐下"
+        },
+        {
+            "name": "mob.camel_husk.stand",
+            "description": "骆驼尸壳：站起"
+        },
+        {
+            "name": "mob.camel_husk.step"
+        },
+        {
+            "name": "mob.camel_husk.step_sand"
         },
         {
             "name": "mob.cat.beg",
@@ -3537,6 +3722,9 @@
             "description": "马：践踏木制方块"
         },
         {
+            "name": "mob.horse.zombie.angry"
+        },
+        {
             "name": "mob.horse.zombie.death",
             "description": "僵尸马：死亡"
         },
@@ -3567,6 +3755,153 @@
         {
             "name": "mob.husk.step",
             "description": "尸壳：行走"
+        },
+        {
+            "name": "mob.imitate.blaze",
+            "description": "鹦鹉：呼吸"
+        },
+        {
+            "name": "mob.imitate.bogged",
+            "description": "鹦鹉：咯咯声"
+        },
+        {
+            "name": "mob.imitate.breeze",
+            "description": "鹦鹉：呼啸"
+        },
+        {
+            "name": "mob.imitate.camel_husk",
+            "description": "鹦鹉：咕哝"
+        },
+        {
+            "name": "mob.imitate.creaking",
+            "description": "鹦鹉：嘎吱作响"
+        },
+        {
+            "name": "mob.imitate.drowned",
+            "description": "鹦鹉：呻吟"
+        },
+        {
+            "name": "mob.imitate.elder_guardian",
+            "description": "鹦鹉：低鸣"
+        },
+        {
+            "name": "mob.imitate.enderdragon",
+            "description": "鹦鹉：咆哮"
+        },
+        {
+            "name": "mob.imitate.endermen"
+        },
+        {
+            "name": "mob.imitate.endermite",
+            "description": "鹦鹉：窜动"
+        },
+        {
+            "name": "mob.imitate.evocation_illager",
+            "description": "鹦鹉：咕哝"
+        },
+        {
+            "name": "mob.imitate.ghast",
+            "description": "鹦鹉：哭泣"
+        },
+        {
+            "name": "mob.imitate.guardian",
+            "description": "鹦鹉：低鸣"
+        },
+        {
+            "name": "mob.imitate.happy_ghast"
+        },
+        {
+            "name": "mob.imitate.husk",
+            "description": "鹦鹉：低吼"
+        },
+        {
+            "name": "mob.imitate.magmacube",
+            "description": "鹦鹉：挤压"
+        },
+        {
+            "name": "mob.imitate.parched",
+            "description": "鹦鹉：咯咯声"
+        },
+        {
+            "name": "mob.imitate.phantom",
+            "description": "鹦鹉：尖声叫"
+        },
+        {
+            "name": "mob.imitate.pillager",
+            "description": "鹦鹉：咕哝"
+        },
+        {
+            "name": "mob.imitate.polarbear"
+        },
+        {
+            "name": "mob.imitate.ravager",
+            "description": "鹦鹉：呼噜"
+        },
+        {
+            "name": "mob.imitate.shulker",
+            "description": "鹦鹉：窥视"
+        },
+        {
+            "name": "mob.imitate.silverfish",
+            "description": "鹦鹉：嘶嘶"
+        },
+        {
+            "name": "mob.imitate.skeleton",
+            "description": "鹦鹉：咯咯声"
+        },
+        {
+            "name": "mob.imitate.slime",
+            "description": "鹦鹉：挤压"
+        },
+        {
+            "name": "mob.imitate.spider",
+            "description": "鹦鹉：嘶嘶"
+        },
+        {
+            "name": "mob.imitate.stray",
+            "description": "鹦鹉：咯咯声"
+        },
+        {
+            "name": "mob.imitate.vex",
+            "description": "鹦鹉：恼人"
+        },
+        {
+            "name": "mob.imitate.vindicator",
+            "description": "鹦鹉：低语"
+        },
+        {
+            "name": "mob.imitate.warden",
+            "description": "鹦鹉：呻吟"
+        },
+        {
+            "name": "mob.imitate.witch",
+            "description": "鹦鹉：暗笑"
+        },
+        {
+            "name": "mob.imitate.wither",
+            "description": "鹦鹉：愤怒"
+        },
+        {
+            "name": "mob.imitate.wither_skeleton",
+            "description": "鹦鹉：咯咯声"
+        },
+        {
+            "name": "mob.imitate.wolf"
+        },
+        {
+            "name": "mob.imitate.zoglin",
+            "description": "鹦鹉：咆哮"
+        },
+        {
+            "name": "mob.imitate.zombie",
+            "description": "鹦鹉：低吼"
+        },
+        {
+            "name": "mob.imitate.zombie_villager",
+            "description": "鹦鹉：低吼"
+        },
+        {
+            "name": "mob.imitate.zombiepig"
         },
         {
             "name": "mob.irongolem.crack",
@@ -3652,6 +3987,65 @@
             "description": "哞菇：被挤出谜之炖菜"
         },
         {
+            "name": "mob.nautilus.ambient",
+            "description": "鹦鹉螺：咔哒"
+        },
+        {
+            "name": "mob.nautilus.ambient.in.water",
+            "description": "鹦鹉螺：咔哒"
+        },
+        {
+            "name": "mob.nautilus.armor_unequip"
+        },
+        {
+            "name": "mob.nautilus.dash",
+            "description": "鹦鹉螺：喷进"
+        },
+        {
+            "name": "mob.nautilus.dash_ready",
+            "description": "鹦鹉螺：恢复体力"
+        },
+        {
+            "name": "mob.nautilus.death",
+            "description": "鹦鹉螺：死亡"
+        },
+        {
+            "name": "mob.nautilus.death.in.water",
+            "description": "鹦鹉螺：死亡"
+        },
+        {
+            "name": "mob.nautilus.eat",
+            "description": "鹦鹉螺：进食"
+        },
+        {
+            "name": "mob.nautilus.hurt",
+            "description": "鹦鹉螺：受伤"
+        },
+        {
+            "name": "mob.nautilus.hurt.in.water",
+            "description": "鹦鹉螺：受伤"
+        },
+        {
+            "name": "mob.nautilus.nautilus_saddle",
+            "description": "鞍：装备"
+        },
+        {
+            "name": "mob.nautilus.ride",
+            "description": "鹦鹉螺：游泳"
+        },
+        {
+            "name": "mob.nautilus.saddle",
+            "description": "鹦鹉螺：游泳"
+        },
+        {
+            "name": "mob.nautilus.saddle_underwater",
+            "description": "鞍：装备"
+        },
+        {
+            "name": "mob.nautilus.swim",
+            "description": "鹦鹉螺：游泳"
+        },
+        {
             "name": "mob.ocelot.death",
             "description": "豹猫：死亡"
         },
@@ -3706,6 +4100,21 @@
         {
             "name": "mob.panda_baby.idle",
             "description": "熊猫：喘息（幼年）"
+        },
+        {
+            "name": "mob.parched.ambient",
+            "description": "焦骸：咯咯声"
+        },
+        {
+            "name": "mob.parched.death",
+            "description": "焦骸：死亡"
+        },
+        {
+            "name": "mob.parched.hurt",
+            "description": "焦骸：受伤"
+        },
+        {
+            "name": "mob.parched.step"
         },
         {
             "name": "mob.parrot.death",
@@ -4661,6 +5070,46 @@
         {
             "name": "mob.zombie.woodbreak",
             "description": "门：毁坏"
+        },
+        {
+            "name": "mob.zombie_nautilus.ambient",
+            "description": "僵尸鹦鹉螺：嗡嗡作响"
+        },
+        {
+            "name": "mob.zombie_nautilus.ambient.in.water",
+            "description": "僵尸鹦鹉螺：嗡嗡作响"
+        },
+        {
+            "name": "mob.zombie_nautilus.dash",
+            "description": "僵尸鹦鹉螺：喷进"
+        },
+        {
+            "name": "mob.zombie_nautilus.dash_ready",
+            "description": "僵尸鹦鹉螺：恢复体力"
+        },
+        {
+            "name": "mob.zombie_nautilus.death",
+            "description": "僵尸鹦鹉螺：死亡"
+        },
+        {
+            "name": "mob.zombie_nautilus.death.in.water",
+            "description": "僵尸鹦鹉螺：死亡"
+        },
+        {
+            "name": "mob.zombie_nautilus.eat",
+            "description": "僵尸鹦鹉螺：进食"
+        },
+        {
+            "name": "mob.zombie_nautilus.hurt",
+            "description": "僵尸鹦鹉螺：受伤"
+        },
+        {
+            "name": "mob.zombie_nautilus.hurt.in.water",
+            "description": "僵尸鹦鹉螺：受伤"
+        },
+        {
+            "name": "mob.zombie_nautilus.swim",
+            "description": "僵尸鹦鹉螺：游泳"
         },
         {
             "name": "mob.zombie_villager.death",

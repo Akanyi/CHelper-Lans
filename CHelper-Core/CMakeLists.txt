@@ -89,7 +89,7 @@ endif ()
 add_library(CHelper::NoFilesystemCore ALIAS CHelperNoFilesystemCore)
 
 # CHelper Android
-if (NOT MSVC)
+if (NOT MSVC AND NOT EMSCRIPTEN)
     add_library(CHelperAndroid SHARED src/apps/CHelperAndroid.cpp)
     target_compile_definitions(CHelperAndroid PUBLIC CHelperAndroid)
     if (ANDROID)
@@ -101,43 +101,51 @@ if (NOT MSVC)
 endif ()
 
 # CHelper Resource Generator
-add_executable(CHelperResourceGenerator src/apps/CHelperResourceGenerator.cpp)
-target_link_libraries(CHelperResourceGenerator PRIVATE CHelper::Core)
-if (MSVC)
-    set_property(TARGET CHelperResourceGenerator PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+if (NOT ANDROID AND NOT EMSCRIPTEN)
+    add_executable(CHelperResourceGenerator src/apps/CHelperResourceGenerator.cpp)
+    target_link_libraries(CHelperResourceGenerator PRIVATE CHelper::Core)
+    if (MSVC)
+        set_property(TARGET CHelperResourceGenerator PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    endif ()
 endif ()
 
 # CHelper Test
-file(GLOB_RECURSE TEST_FILE tests/*.cpp)
-add_executable(CHelperTest ${TEST_FILE})
-target_link_libraries(CHelperTest PRIVATE CHelper::Core GTest::gtest_main)
-if (MSVC)
-    set_property(TARGET CHelperTest PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+if (NOT ANDROID AND NOT EMSCRIPTEN)
+    file(GLOB_RECURSE TEST_FILE tests/*.cpp)
+    add_executable(CHelperTest ${TEST_FILE})
+    target_link_libraries(CHelperTest PRIVATE CHelper::Core GTest::gtest_main)
+    if (MSVC)
+        set_property(TARGET CHelperTest PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    endif ()
 endif ()
 
 # Web Application
-add_library(CHelperWeb src/apps/CHelperWeb.cpp)
-if (NOT EMSCRIPTEN)
-    target_include_directories(CHelperWeb PRIVATE 3rdparty/emscripten/system/include)
+if (NOT ANDROID)
+    add_library(CHelperWeb src/apps/CHelperWeb.cpp)
+    if (NOT EMSCRIPTEN)
+        target_include_directories(CHelperWeb PRIVATE 3rdparty/emscripten/system/include)
+    endif ()
+    target_link_libraries(CHelperWeb PRIVATE CHelper::NoFilesystemCore)
 endif ()
-target_link_libraries(CHelperWeb PRIVATE CHelper::NoFilesystemCore)
 
 # ThirdParty: Qt6
-find_package(Qt6 QUIET COMPONENTS Core Gui Widgets)
-if (Qt6_FOUND)
-    set(CMAKE_AUTOMOC ON)
-    set(CMAKE_AUTORCC ON)
-    set(CMAKE_AUTOUIC ON)
+if (NOT ANDROID AND NOT EMSCRIPTEN)
+    find_package(Qt6 QUIET COMPONENTS Core Gui Widgets)
+    if (Qt6_FOUND)
+        set(CMAKE_AUTOMOC ON)
+        set(CMAKE_AUTORCC ON)
+        set(CMAKE_AUTOUIC ON)
 
-    # Qt Application
-    add_executable(CHelperQt WIN32
-            src/apps/qt/CHelperQt.h
-            src/apps/qt/CHelperQt.cpp
-            src/apps/qt/chelper.qrc
-            src/apps/qt/chelper.ui
-    )
-    target_link_libraries(CHelperQt PRIVATE CHelper::Core Qt6::Core Qt6::Gui Qt6::Widgets)
-    if (MSVC)
-        set_property(TARGET CHelperQt PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+        # Qt Application
+        add_executable(CHelperQt WIN32
+                src/apps/qt/CHelperQt.h
+                src/apps/qt/CHelperQt.cpp
+                src/apps/qt/chelper.qrc
+                src/apps/qt/chelper.ui
+        )
+        target_link_libraries(CHelperQt PRIVATE CHelper::Core Qt6::Core Qt6::Gui Qt6::Widgets)
+        if (MSVC)
+            set_property(TARGET CHelperQt PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+        endif ()
     endif ()
 endif ()

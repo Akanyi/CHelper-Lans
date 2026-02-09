@@ -23,6 +23,10 @@
             "description": "仙人掌或甜浆果丛"
         },
         {
+            "name": "dehydration",
+            "description": "脱水"
+        },
+        {
             "name": "drowning",
             "description": "溺水或淋雨"
         },

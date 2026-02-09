@@ -211,40 +211,22 @@ namespace CHelper::Node {
     }
 
     void TargetSelectorData::init(const CPack &cpack) {
-        if (cpack.manifest.versionType == u"beta") {
-            nodeTargetSelectorVariable = NodeNormalId(
-                    "TARGET_SELECTOR_VARIABLE", u"目标选择器变量",
-                    std::make_shared<std::vector<std::shared_ptr<NormalId>>>(std::vector<std::shared_ptr<NormalId>>{
-                            NormalId::make(u"@e", u"选择所有实体(只选择活着的实体)"),
-                            NormalId::make(u"@a", u"选择所有玩家(无论死活)"),
-                            NormalId::make(u"@r", u"选择一名随机玩家(可通过type选择非玩家实体)(只选择活着的实体)"),
-                            NormalId::make(u"@p", u"选择最近的玩家(只选择活着的玩家)"),
-                            NormalId::make(u"@s", u"命令的执行者(只选择1个实体)(无论是否濒死)"),
-                            NormalId::make(u"@n", u"选择最近的一个实体(只选择活着的实体)"),
-                            NormalId::make(u"@initiator", u"当前与该NPC进行交互的玩家(在NPC内置的命令界面中使用)")}),
-                    true, false,
-                    [](const NodeWithType &node, TokenReader &tokenReader) -> ASTNode {
-                        tokenReader.push();
-                        auto childNodes = {tokenReader.readSymbolASTNode(node), tokenReader.readStringASTNode(node)};
-                        return ASTNode::andNode(node, childNodes, tokenReader.collect());
-                    });
-        } else {
-            nodeTargetSelectorVariable = NodeNormalId(
-                    "TARGET_SELECTOR_VARIABLE", u"目标选择器变量",
-                    std::make_shared<std::vector<std::shared_ptr<NormalId>>>(std::vector<std::shared_ptr<NormalId>>{
-                            NormalId::make(u"@e", u"选择所有实体(只选择活着的实体)"),
-                            NormalId::make(u"@a", u"选择所有玩家(无论死活)"),
-                            NormalId::make(u"@r", u"选择一名随机玩家(可通过type选择非玩家实体)(只选择活着的实体)"),
-                            NormalId::make(u"@p", u"选择最近的玩家(只选择活着的玩家)"),
-                            NormalId::make(u"@s", u"命令的执行者(只选择1个实体)(无论是否濒死)"),
-                            NormalId::make(u"@initiator", u"当前与该NPC进行交互的玩家(在NPC内置的命令界面中使用)")}),
-                    true, false,
-                    [](const NodeWithType &node, TokenReader &tokenReader) -> ASTNode {
-                        tokenReader.push();
-                        auto childNodes = {tokenReader.readSymbolASTNode(node), tokenReader.readStringASTNode(node)};
-                        return ASTNode::andNode(node, childNodes, tokenReader.collect());
-                    });
-        }
+        nodeTargetSelectorVariable = NodeNormalId(
+                "TARGET_SELECTOR_VARIABLE", u"目标选择器变量",
+                std::make_shared<std::vector<std::shared_ptr<NormalId>>>(std::vector<std::shared_ptr<NormalId>>{
+                        NormalId::make(u"@e", u"选择所有实体(只选择活着的实体)"),
+                        NormalId::make(u"@a", u"选择所有玩家(无论死活)"),
+                        NormalId::make(u"@r", u"选择一名随机玩家(可通过type选择非玩家实体)(只选择活着的实体)"),
+                        NormalId::make(u"@p", u"选择最近的玩家(只选择活着的玩家)"),
+                        NormalId::make(u"@s", u"命令的执行者(只选择1个实体)(无论是否濒死)"),
+                        NormalId::make(u"@n", u"选择最近的一个实体(只选择活着的实体)"),
+                        NormalId::make(u"@initiator", u"当前与该NPC进行交互的玩家(在NPC内置的命令界面中使用)")}),
+                true, false,
+                [](const NodeWithType &node, TokenReader &tokenReader) -> ASTNode {
+                    tokenReader.push();
+                    auto childNodes = {tokenReader.readSymbolASTNode(node), tokenReader.readStringASTNode(node)};
+                    return ASTNode::andNode(node, childNodes, tokenReader.collect());
+                });
         nodeTargetSelectorVariableWithArgument = NodeAnd({nodeTargetSelectorVariable, nodeOptionalArguments});
         initNode(nodeItem, cpack);
         initNode(nodeFamily, cpack);

@@ -282,7 +282,7 @@ namespace CHelper::Test {
             }
             end = std::chrono::high_resolution_clock::now();
             SPDLOG_INFO("{} commands", FORMAT_ARG(commands.size()));
-            SPDLOG_INFO("run successfully({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
+            SPDLOG_INFO("run successfully ({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
         } catch (const std::exception &e) {
             Profile::printAndClear(e);
             exit(-1);
@@ -311,7 +311,7 @@ namespace CHelper::Test {
             start = std::chrono::high_resolution_clock::now();
             core->getCPack().writeJsonToDirectory(realOutput);
             end = std::chrono::high_resolution_clock::now();
-            SPDLOG_INFO("CPack write successfully({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
+            SPDLOG_INFO("CPack write successfully ({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
             core2 = CHelperCore::createByDirectory(realOutput);
         } catch (const std::exception &e) {
             Profile::printAndClear(e);
@@ -343,7 +343,7 @@ namespace CHelper::Test {
             start = std::chrono::high_resolution_clock::now();
             core->getCPack().writeJsonToFile(realOutput);
             end = std::chrono::high_resolution_clock::now();
-            SPDLOG_INFO("CPack write successfully({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
+            SPDLOG_INFO("CPack write successfully ({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
             core2 = CHelperCore::createByJson(realOutput);
         } catch (const std::exception &e) {
             Profile::printAndClear(e);
@@ -375,7 +375,7 @@ namespace CHelper::Test {
             start = std::chrono::high_resolution_clock::now();
             core->getCPack().writeBinToFile(realOutput);
             end = std::chrono::high_resolution_clock::now();
-            SPDLOG_INFO("run successfully({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
+            SPDLOG_INFO("run successfully ({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
             core2 = CHelperCore::createByBinary(realOutput);
         } catch (const std::exception &e) {
             Profile::printAndClear(e);

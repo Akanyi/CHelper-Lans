@@ -775,6 +775,10 @@
             "description": "校频幽匿感测体"
         },
         {
+            "name": "camel_husk_spawn_egg",
+            "description": "骆驼尸壳刷怪蛋"
+        },
+        {
             "name": "camel_spawn_egg",
             "description": "骆驼刷怪蛋"
         },
@@ -1199,6 +1203,10 @@
             "description": "铜护腿"
         },
         {
+            "name": "copper_nautilus_armor",
+            "description": "铜鹦鹉螺铠"
+        },
+        {
             "name": "copper_nugget",
             "description": "铜粒"
         },
@@ -1213,6 +1221,10 @@
         {
             "name": "copper_shovel",
             "description": "铜锹"
+        },
+        {
+            "name": "copper_spear",
+            "description": "铜矛"
         },
         {
             "name": "copper_sword",
@@ -1719,6 +1731,10 @@
             "description": "钻石护腿"
         },
         {
+            "name": "diamond_nautilus_armor",
+            "description": "钻石鹦鹉螺铠"
+        },
+        {
             "name": "diamond_ore",
             "description": "钻石矿石"
         },
@@ -1729,6 +1745,10 @@
         {
             "name": "diamond_shovel",
             "description": "钻石锹"
+        },
+        {
+            "name": "diamond_spear",
+            "description": "钻石矛"
         },
         {
             "name": "diamond_sword",
@@ -2235,6 +2255,10 @@
             "description": "金护腿"
         },
         {
+            "name": "golden_nautilus_armor",
+            "description": "金鹦鹉螺铠"
+        },
+        {
             "name": "golden_pickaxe",
             "description": "金镐"
         },
@@ -2245,6 +2269,10 @@
         {
             "name": "golden_shovel",
             "description": "金锹"
+        },
+        {
+            "name": "golden_spear",
+            "description": "金矛"
         },
         {
             "name": "golden_sword",
@@ -2583,6 +2611,10 @@
             "description": "铁护腿"
         },
         {
+            "name": "iron_nautilus_armor",
+            "description": "铁鹦鹉螺铠"
+        },
+        {
             "name": "iron_nugget",
             "description": "铁粒"
         },
@@ -2597,6 +2629,10 @@
         {
             "name": "iron_shovel",
             "description": "铁锹"
+        },
+        {
+            "name": "iron_spear",
+            "description": "铁矛"
         },
         {
             "name": "iron_sword",
@@ -2728,7 +2764,7 @@
         },
         {
             "name": "leaf_litter",
-            "description": "枯叶"
+            "description": "枯叶堆"
         },
         {
             "name": "leather",
@@ -3432,6 +3468,10 @@
             "description": "鹦鹉螺壳"
         },
         {
+            "name": "nautilus_spawn_egg",
+            "description": "鹦鹉螺刷怪蛋"
+        },
+        {
             "name": "nether_brick",
             "description": "下界砖块"
         },
@@ -3500,12 +3540,20 @@
             "description": "下界合金锄"
         },
         {
+            "name": "netherite_horse_armor",
+            "description": "下界合金马铠"
+        },
+        {
             "name": "netherite_ingot",
             "description": "下界合金锭"
         },
         {
             "name": "netherite_leggings",
             "description": "下界合金护腿"
+        },
+        {
+            "name": "netherite_nautilus_armor",
+            "description": "下界合金鹦鹉螺铠"
         },
         {
             "name": "netherite_pickaxe",
@@ -3518,6 +3566,10 @@
         {
             "name": "netherite_shovel",
             "description": "下界合金锹"
+        },
+        {
+            "name": "netherite_spear",
+            "description": "下界合金矛"
         },
         {
             "name": "netherite_sword",
@@ -3846,6 +3898,10 @@
         {
             "name": "paper",
             "description": "纸"
+        },
+        {
+            "name": "parched_spawn_egg",
+            "description": "焦骸刷怪蛋"
         },
         {
             "name": "parrot_spawn_egg",
@@ -5062,6 +5118,10 @@
             "description": "石锹"
         },
         {
+            "name": "stone_spear",
+            "description": "石矛"
+        },
+        {
             "name": "stone_stairs",
             "description": "圆石楼梯"
         },
@@ -5946,6 +6006,10 @@
             "description": "木锹"
         },
         {
+            "name": "wooden_spear",
+            "description": "木矛"
+        },
+        {
             "name": "wooden_sword",
             "description": "木剑"
         },
@@ -6016,6 +6080,10 @@
         {
             "name": "zombie_horse_spawn_egg",
             "description": "僵尸马刷怪蛋"
+        },
+        {
+            "name": "zombie_nautilus_spawn_egg",
+            "description": "僵尸鹦鹉螺刷怪蛋"
         },
         {
             "name": "zombie_pigman_spawn_egg",

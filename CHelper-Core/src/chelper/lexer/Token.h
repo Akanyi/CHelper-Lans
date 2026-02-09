@@ -25,7 +25,6 @@ namespace CHelper {
 
     }// namespace TokenType
 
-
     class Token {
     public:
         const TokenType::TokenType type;
@@ -40,12 +39,6 @@ namespace CHelper {
     };
 
 }// namespace CHelper
-
-#ifdef CHelperTest
-std::ostream &operator<<(std::ostream &os, const CHelper::TokenType::TokenType &tokenType);
-
-std::ostream &operator<<(std::ostream &os, const CHelper::Token &token);
-#endif
 
 CODEC_ENUM(CHelper::TokenType::TokenType, uint8_t)
 
