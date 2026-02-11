@@ -2686,11 +2686,11 @@
         },
         {
             "name": "mob.baby_cat.ambient",
-            "description": "猫：喵~"
+            "description": "幼年猫：喵~"
         },
         {
             "name": "mob.baby_cat.death",
-            "description": "猫：死亡"
+            "description": "幼年猫：死亡"
         },
         {
             "name": "mob.baby_cat.eat",
@@ -2734,51 +2734,48 @@
         },
         {
             "name": "mob.baby_pig.ambient",
-            "description": "猪：哼叫"
+            "description": "幼年猪：哼叫"
         },
         {
             "name": "mob.baby_pig.death",
-            "description": "猪：死亡"
+            "description": "幼年猪：死亡"
         },
         {
             "name": "mob.baby_pig.hurt",
             "description": "幼年猪：受伤"
         },
         {
-            "name": "mob.baby_pig.step",
-            "description": "幼年猪：哼叫"
+            "name": "mob.baby_pig.step"
         },
         {
             "name": "mob.baby_wolf.bark",
-            "description": "狼：吠叫"
+            "description": "幼年狼：嗷~"
         },
         {
             "name": "mob.baby_wolf.death",
-            "description": "狼：死亡"
+            "description": "幼年狼：死亡"
         },
         {
             "name": "mob.baby_wolf.growl",
-            "description": "狼：嚎叫"
+            "description": "幼年狼：嚎叫"
         },
         {
             "name": "mob.baby_wolf.hurt",
-            "description": "狼：受伤"
+            "description": "幼年狼：受伤"
         },
         {
             "name": "mob.baby_wolf.panting",
             "description": "幼年狼：喘息"
         },
         {
-            "name": "mob.baby_wolf.shake",
-            "description": "狼：摇动"
+            "name": "mob.baby_wolf.shake"
         },
         {
-            "name": "mob.baby_wolf.step",
-            "description": "幼年狼：嗷~"
+            "name": "mob.baby_wolf.step"
         },
         {
             "name": "mob.baby_wolf.whine",
-            "description": "狼：呜咽"
+            "description": "幼年狼：呜咽"
         },
         {
             "name": "mob.bat.death",

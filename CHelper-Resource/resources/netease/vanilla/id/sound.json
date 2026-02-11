@@ -282,6 +282,38 @@
             "description": "铜灯：亮起"
         },
         {
+            "name": "block.creaking_heart.ambient",
+            "description": "怪异的噪声"
+        },
+        {
+            "name": "block.creaking_heart.break",
+            "description": "嘎枝之心：被破坏"
+        },
+        {
+            "name": "block.creaking_heart.fall",
+            "description": "嘎枝之心：某物摔落"
+        },
+        {
+            "name": "block.creaking_heart.hit",
+            "description": "嘎枝之心：损坏中"
+        },
+        {
+            "name": "block.creaking_heart.place",
+            "description": "嘎枝之心：被放置"
+        },
+        {
+            "name": "block.creaking_heart.spawn_mob",
+            "description": "嘎枝之心：苏醒"
+        },
+        {
+            "name": "block.creaking_heart.step",
+            "description": "嘎枝之心：被踩上"
+        },
+        {
+            "name": "block.creaking_heart.trail",
+            "description": "嘎枝之心：咕哝"
+        },
+        {
             "name": "block.decorated_pot.insert",
             "description": "饰纹陶罐：装入"
         },
@@ -300,6 +332,26 @@
         {
             "name": "block.end_portal_frame.fill",
             "description": "末影之眼：嵌入"
+        },
+        {
+            "name": "block.eyeblossom.ambient",
+            "description": "眼眸花：沙沙作响"
+        },
+        {
+            "name": "block.eyeblossom.close",
+            "description": "眼眸花：闭合"
+        },
+        {
+            "name": "block.eyeblossom.close_long",
+            "description": "眼眸花：闭合"
+        },
+        {
+            "name": "block.eyeblossom.open",
+            "description": "眼眸花：张开"
+        },
+        {
+            "name": "block.eyeblossom.open_long",
+            "description": "眼眸花：张开"
         },
         {
             "name": "block.false_permissions",
@@ -376,6 +428,14 @@
         {
             "name": "block.mangrove_roots.step",
             "description": "红树根：被踩上"
+        },
+        {
+            "name": "block.mob_spawner.break",
+            "description": "刷怪笼：被破坏"
+        },
+        {
+            "name": "block.mob_spawner.step",
+            "description": "刷怪笼：被踩上"
         },
         {
             "name": "block.mud.break",
@@ -456,6 +516,50 @@
         {
             "name": "block.packed_mud.step",
             "description": "泥坯：被踩上"
+        },
+        {
+            "name": "block.pale_hanging_moss.ambient",
+            "description": "怪异的噪声"
+        },
+        {
+            "name": "block.resin.break",
+            "description": "树脂块：被破坏"
+        },
+        {
+            "name": "block.resin.fall",
+            "description": "树脂块：某物摔落"
+        },
+        {
+            "name": "block.resin.hit",
+            "description": "树脂块：损坏中"
+        },
+        {
+            "name": "block.resin.place",
+            "description": "树脂块：被放置"
+        },
+        {
+            "name": "block.resin.step",
+            "description": "树脂块：被踩上"
+        },
+        {
+            "name": "block.resin_brick.break",
+            "description": "树脂砖：被破坏"
+        },
+        {
+            "name": "block.resin_brick.fall",
+            "description": "树脂砖：某物摔落"
+        },
+        {
+            "name": "block.resin_brick.hit",
+            "description": "树脂砖：损坏中"
+        },
+        {
+            "name": "block.resin_brick.place",
+            "description": "树脂砖：被放置"
+        },
+        {
+            "name": "block.resin_brick.step",
+            "description": "树脂砖：被踩上"
         },
         {
             "name": "block.scaffolding.break",
@@ -678,6 +782,10 @@
             "description": "小型紫晶芽：被破坏"
         },
         {
+            "name": "break.sponge",
+            "description": "海绵：被破坏"
+        },
+        {
             "name": "break.spore_blossom",
             "description": "孢子花：被破坏"
         },
@@ -696,6 +804,10 @@
         {
             "name": "break.web",
             "description": "蜘蛛网：被破坏"
+        },
+        {
+            "name": "break.wet_sponge",
+            "description": "湿海绵：被破坏"
         },
         {
             "name": "breeze_wind_charge.burst",
@@ -772,6 +884,22 @@
         {
             "name": "bucket.fill_water",
             "description": "铁桶：装满水"
+        },
+        {
+            "name": "bundle.drop_contents",
+            "description": "收纳袋：倒空"
+        },
+        {
+            "name": "bundle.insert",
+            "description": "物品：装入袋中"
+        },
+        {
+            "name": "bundle.insert_fail",
+            "description": "收纳袋：已满"
+        },
+        {
+            "name": "bundle.remove_one",
+            "description": "物品：从袋中取出"
         },
         {
             "name": "cake.add_candle",
@@ -1099,7 +1227,7 @@
         },
         {
             "name": "dig.fungus",
-            "description": "下界菌：被破坏"
+            "description": "菌类：被破坏"
         },
         {
             "name": "dig.grass",
@@ -1714,6 +1842,10 @@
             "description": "灵魂土：损坏中"
         },
         {
+            "name": "hit.sponge",
+            "description": "海绵：损坏中"
+        },
+        {
             "name": "hit.spore_blossom",
             "description": "孢子花：损坏中"
         },
@@ -1740,6 +1872,10 @@
         {
             "name": "hit.vines",
             "description": "藤蔓：损坏中"
+        },
+        {
+            "name": "hit.wet_sponge",
+            "description": "湿海绵：损坏中"
         },
         {
             "name": "hit.wood",
@@ -2558,6 +2694,50 @@
             "description": "牛：行走"
         },
         {
+            "name": "mob.creaking.activate",
+            "description": "嘎枝：注视"
+        },
+        {
+            "name": "mob.creaking.ambient",
+            "description": "嘎枝：嘎吱作响"
+        },
+        {
+            "name": "mob.creaking.attack",
+            "description": "嘎枝：攻击"
+        },
+        {
+            "name": "mob.creaking.deactivate",
+            "description": "嘎枝：静息"
+        },
+        {
+            "name": "mob.creaking.death",
+            "description": "嘎枝：碎裂"
+        },
+        {
+            "name": "mob.creaking.freeze",
+            "description": "嘎枝：驻足"
+        },
+        {
+            "name": "mob.creaking.spawn",
+            "description": "嘎枝：显现"
+        },
+        {
+            "name": "mob.creaking.step",
+            "description": "嘎枝：行走"
+        },
+        {
+            "name": "mob.creaking.sway",
+            "description": "嘎枝：被击打"
+        },
+        {
+            "name": "mob.creaking.twitch",
+            "description": "嘎枝：抽搐"
+        },
+        {
+            "name": "mob.creaking.unfreeze",
+            "description": "嘎枝：移动"
+        },
+        {
             "name": "mob.creeper.death",
             "description": "苦力怕：死亡"
         },
@@ -3268,6 +3448,10 @@
         {
             "name": "mob.parrot.idle",
             "description": "鹦鹉：说话"
+        },
+        {
+            "name": "mob.parrot.imitate_creaking",
+            "description": "鹦鹉：嘎吱作响"
         },
         {
             "name": "mob.parrot.step",
@@ -4582,6 +4766,10 @@
             "description": "小型紫晶芽：被放置"
         },
         {
+            "name": "place.sponge",
+            "description": "海绵：被放置"
+        },
+        {
             "name": "place.spore_blossom",
             "description": "孢子花：被放置"
         },
@@ -4600,6 +4788,10 @@
         {
             "name": "place.tuff_bricks",
             "description": "凝灰岩砖：被放置"
+        },
+        {
+            "name": "place.wet_sponge",
+            "description": "湿海绵：被放置"
         },
         {
             "name": "portal.portal",
@@ -4906,6 +5098,10 @@
             "description": "锻造台：使用"
         },
         {
+            "name": "sponge.absorb",
+            "description": "海绵：吸水"
+        },
+        {
             "name": "spread.sculk",
             "description": "幽匿块：蔓延"
         },
@@ -5158,6 +5354,10 @@
             "description": "灵魂土：被踩上"
         },
         {
+            "name": "step.sponge",
+            "description": "海绵：被踩上"
+        },
+        {
             "name": "step.spore_blossom",
             "description": "孢子花：被踩上"
         },
@@ -5192,6 +5392,10 @@
         {
             "name": "step.web",
             "description": "蜘蛛网：被踩上"
+        },
+        {
+            "name": "step.wet_sponge",
+            "description": "湿海绵：被踩上"
         },
         {
             "name": "step.wood",
@@ -5270,6 +5474,18 @@
         },
         {
             "name": "ui.drawer_open"
+        },
+        {
+            "name": "ui.hardcore_disable",
+            "description": "UI：禁用极限模式"
+        },
+        {
+            "name": "ui.hardcore_enable",
+            "description": "UI：启用极限模式"
+        },
+        {
+            "name": "ui.hardcore_toggle_press",
+            "description": "UI：按下切换极限模式按钮"
         },
         {
             "name": "ui.loom.select_pattern",
@@ -5486,6 +5702,10 @@
         {
             "name": "vault.place",
             "description": "宝库：被放置"
+        },
+        {
+            "name": "vault.reject_rewarded_player",
+            "description": "宝库：拒绝已奖励玩家"
         },
         {
             "name": "vault.step",
