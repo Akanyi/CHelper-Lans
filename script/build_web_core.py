@@ -16,6 +16,7 @@ def ensure_download_emsdk(toolchain_dir: str):
         os.chdir("./emsdk")
         subprocess.run(["git", "pull"], check=True)
     subprocess.run(["python", "./emsdk.py", "install", "latest"], check=True)
+    subprocess.run(["python", "./emsdk.py", "activate", "latest"], check=True)
     os.chdir(current_dir)
 
 
