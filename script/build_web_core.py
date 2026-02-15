@@ -1,23 +1,69 @@
-from os import path
-
-buildDirs = ['cmake-build-emscripten-release', 'cmake-build-emscripten-minsizerel']
-
-
-def insert(content: str, before: str, end: str, string: str) -> str:
-    return content.replace(before + end, before + string + end)
+import os
+import shutil
+import subprocess
 
 
-for buildDir in buildDirs:
-    with open(path.join(buildDir, 'libCHelperWeb.js'), 'r') as fp:
-        content = fp.read()
-    content = 'import wasmUrl from \'@/assets/libCHelperWeb.wasm?url\'\n\n' + content.replace('locateFile("libCHelperWeb.wasm")', 'wasmUrl;')
-    content = insert(
-        content,
-        'var wasmExports;',
-        'createWasm();',
-        'export var createWasmFuture = '
+def ensure_download_emsdk(toolchain_dir: str):
+    ndk_path = os.path.join(toolchain_dir, "emsdk")
+    current_dir = os.getcwd()
+    os.chdir(toolchain_dir)
+    if not os.path.exists(ndk_path):
+        subprocess.run(
+            ["git", "clone", "https://github.com/emscripten-core/emsdk"], check=True
+        )
+        os.chdir("./emsdk")
+    else:
+        os.chdir("./emsdk")
+        subprocess.run(["git", "pull"], check=True)
+    subprocess.run(["python", "./emsdk.py", "install", "latest"], check=True)
+    os.chdir(current_dir)
+
+
+def build_web_core(toolchain_dir: str):
+    emsdk_path = os.path.join(toolchain_dir, "emsdk")
+    build_directory = "./build/web_core"
+    configure_cmd = f"""cmake \
+        -S ./CHelper-Core \
+        -D CMAKE_BUILD_TYPE=MinSizeRel \
+        -D CMAKE_TOOLCHAIN_FILE="{emsdk_path}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake" \
+        -B {build_directory} \
+        -G Ninja"""
+    subprocess.run(configure_cmd, check=True)
+    subprocess.run(f"cmake --build {build_directory} --target CHelperWeb", check=True)
+    link_cmd = f"""python \
+        {os.path.join(emsdk_path, "upstream", "emscripten", "emcc.py")} \
+        {build_directory}/libCHelperWeb.a \
+        {build_directory}/libCHelperNoFilesystemCore.a \
+        {build_directory}/3rdparty/fmt/libfmt.a \
+        {build_directory}/3rdparty/spdlog/libspdlog.a \
+        {build_directory}/3rdparty/xxHash/cmake_unofficial/libxxhash.a \
+        -Os \
+        -o {build_directory}/libCHelperWeb.js \
+        -s FILESYSTEM=0 \
+        -s DISABLE_EXCEPTION_CATCHING=1 \
+        -s ALLOW_MEMORY_GROWTH \
+        -s ENVIRONMENT="web" \
+        -s EXPORTED_FUNCTIONS="['_init','_release','_onTextChanged','_onSelectionChanged','_getParamHint','_getErrorReasons','_getSuggestionSize','_getSuggestion','_getAllSuggestions','_onSuggestionClick','_getSyntaxTokens','_malloc','_free']" \
+        -s WASM=1 \
+        -s "EXPORTED_RUNTIME_METHODS=[]\""""
+    subprocess.run(link_cmd)
+    shutil.copyfile(
+        os.path.join(build_directory, "libCHelperWeb.wasm"),
+        os.path.join(".", "CHelper-Web", "src", "assets", "libCHelperWeb.wasm"),
     )
-    content += ('''
+    shutil.copyfile(
+        os.path.join(build_directory, "libCHelperWeb.js"),
+        os.path.join(".", "CHelper-Web", "src", "core", "libCHelperWeb.js"),
+    )
+    with open(os.path.join(build_directory, "libCHelperWeb.js"), "r") as fp:
+        content = fp.read()
+        content = "import wasmUrl from '@/assets/libCHelperWeb.wasm?url'\n\n" + content
+        content = content.replace('locateFile("libCHelperWeb.wasm")', "wasmUrl;")
+        content = content.replace(
+            "var wasmExports;createWasm();",
+            "var wasmExports;export var createWasmFuture = createWasm();",
+        )
+        content += """
 export class CHelperCore {
   constructor(cpack) {
     const cpackPtr = _malloc(cpack.byteLength)
@@ -217,6 +263,28 @@ export class CHelperCore {
     return syntaxTokens
   }
 }
-''')
-    with open(path.join(buildDir, 'libCHelperWeb.js'), 'w') as fp:
+"""
+    with open(
+        os.path.join(".", "CHelper-Web", "src", "core", "libCHelperWeb.js"), "w"
+    ) as fp:
         fp.write(content)
+
+
+if __name__ == "__main__":
+    # check toolchain
+    if subprocess.run(["node", "-v"], capture_output=True).returncode != 0:
+        print("please download nodejs")
+        exit(-1)
+    if subprocess.run(["cmake", "--version"], capture_output=True).returncode != 0:
+        print("please download cmake")
+        exit(-1)
+    if subprocess.run(["ninja", "--version"], capture_output=True).returncode != 0:
+        print("please download ninja")
+        exit(-1)
+    toolchain_dir = os.path.join(os.getcwd(), "toolchain")
+    os.makedirs(toolchain_dir, exist_ok=True)
+    ensure_download_emsdk(toolchain_dir)
+
+    # build web core
+    print("building web core...")
+    build_web_core(toolchain_dir)
