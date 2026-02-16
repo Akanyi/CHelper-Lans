@@ -83,14 +83,8 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     LaunchedEffect(viewModel) {
-<<<<<<< HEAD
         viewModel.refreshSettings()
-        if (viewModel.policyGrantState == PolicyGrantManager.State.AGREE) {
-            viewModel.showAnnouncementDialog(context)
-        }
-=======
         viewModel.init(context, floatingWindowManager)
->>>>>>> upstream/master
     }
     RootView {
         Column(modifier = Modifier.fillMaxSize()) {
