@@ -72,12 +72,8 @@ interface CommandLabUserService {
         var mail: String? = null
         var nickname: String? = null
         var password: String? = null
-<<<<<<< HEAD
-=======
-
         @Suppress("PropertyName")
         var android_id: String? = null
->>>>>>> upstream/master
     }
     
     /**
@@ -93,12 +89,9 @@ interface CommandLabUserService {
      */
     class LoginRequest {
         @JvmField
-<<<<<<< HEAD
         var mail: String? = null
-=======
-        var account: String? = null
-
->>>>>>> upstream/master
+        @JvmField
+        var account: String? = null // From upstream
         @JvmField
         var password: String? = null
     }
@@ -125,6 +118,8 @@ interface CommandLabUserService {
      * 登录响应
      */
     class LoginResponse {
+        @Suppress("PropertyName")
+        var user_id: Int? = null // Added from upstream
         var token: String? = null
         var user: User? = null
     }
@@ -288,27 +283,38 @@ interface CommandLabUserService {
      * 重置密码请求体
      */
     class ResetPasswordRequest {
-<<<<<<< HEAD
-=======
         var email: String? = null
         var code: String? = null
-
->>>>>>> upstream/master
         @Suppress("PropertyName")
         var new_password: String? = null
     }
-    
+
     /**
      * 重置用户密码（管理员）
      */
     @PUT("users/{user_id}/reset-password")
     fun resetPassword(
-<<<<<<< HEAD
         @Path("user_id") userId: Int,
         @Body request: ResetPasswordRequest
     ): Call<BaseResult<Void?>>
-=======
-        @Body request: ResetPasswordRequest?
+
+    class UserResetPasswordRequest {
+        var email: String? = null
+        var code: String? = null
+        @Suppress("PropertyName")
+        var new_password: String? = null
+    }
+
+    class ResetPasswordResponse {
+        var message: String? = null
+    }
+
+    /**
+     * 重置用户密码（用户自服务）
+     */
+    @POST("user/reset_password")
+    fun userResetPassword(
+        @Body request: UserResetPasswordRequest?
     ): Call<BaseResult<ResetPasswordResponse?>?>?
 
     class UpdateSettingRequest {
@@ -350,5 +356,78 @@ interface CommandLabUserService {
     fun verifySensitive(
         @Body request: VerifySensitiveRequest?
     ): Call<BaseResult<VerifySensitiveResponse?>?>?
->>>>>>> upstream/master
+
+    // Upstream Compatibility Layer (Renamed where necessary)
+
+    class SendVerifyCodeRequest {
+        @Suppress("PropertyName")
+        var special_code: String? = null
+        var type: Int? = null
+        var email: String? = null
+        var phone: String? = null
+        var lang: String? = null
+    }
+
+    @POST("register/sendCode")
+    fun sendVerifyCode(
+        @Body request: SendVerifyCodeRequest?
+    ): Call<BaseResult<Void?>?>?
+
+    class WebRegisterRequest {
+        var email: String? = null
+    }
+
+    class WebRegisterResponse {
+        var message: String? = null
+    }
+
+    @POST("user/register")
+    fun webRegister(
+        @Body request: WebRegisterRequest?
+    ): Call<BaseResult<WebRegisterResponse?>?>?
+
+    class VerifyRegistrationRequest {
+        var email: String? = null
+        var code: String? = null
+        var password: String? = null
+
+        @Suppress("PropertyName")
+        var android_id: String? = null
+    }
+
+    class VerifyRegistrationResponse {
+        @Suppress("PropertyName")
+        var user_id: Int? = null
+        var token: String? = null
+    }
+
+    @POST("user/verify")
+    fun verifyRegistration(
+        @Body request: VerifyRegistrationRequest?
+    ): Call<BaseResult<VerifyRegistrationResponse?>?>?
+
+    @get:GET("web/user_info")
+    val userInfo: Call<BaseResult<User?>?>?
+
+    class CheckLoginResponse {
+        @Suppress("PropertyName")
+        var logged_in: Boolean? = null
+        var user: User? = null
+    }
+
+    @GET("web/check_login")
+    fun checkLogin(): Call<BaseResult<CheckLoginResponse?>?>?
+
+    class SendResetCodeRequest {
+        var email: String? = null
+    }
+
+    class SendResetCodeResponse {
+        var message: String? = null
+    }
+
+    @POST("user/send_reset_code")
+    fun sendResetCode(
+        @Body request: SendResetCodeRequest?
+    ): Call<BaseResult<SendResetCodeResponse?>?>?
 }
