@@ -34,29 +34,18 @@ class AuthInterceptor private constructor() : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-<<<<<<< HEAD
         val request = chain.request()
         
-        // 检查是否需要添加认证 header
         if (request.url.host == "abyssous.site") {
             val builder = request.newBuilder()
-            
-            // 添加 WAF Cookie
+
+            // 添加 WAF Cookie (From HEAD)
             val wafCookie = yancey.chelper.network.library.util.WafHelper.getCookie()
             if (!wafCookie.isNullOrEmpty()) {
                 builder.addHeader("Cookie", wafCookie)
-=======
-        if (chain.request().url.host == "abyssous.site") {
-            val token = LoginUtil.token
-            if (!token.isNullOrEmpty()) {
-                return chain.proceed(
-                    chain.request().newBuilder()
-                        .addHeader("Authorization", "Bearer $token")
-                        .build()
-                )
->>>>>>> upstream/master
             }
-            
+
+            // 添加 Authorization Header (From upstream)
             if (!isAuthEndpoint(request.url.encodedPath)) {
                 // 获取 token（正式用户优先，否则访客）
                 val token = getToken()
