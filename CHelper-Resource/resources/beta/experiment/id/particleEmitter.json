@@ -413,6 +413,10 @@
             "description": "菌丝体的孢子粒子"
         },
         {
+            "name": "minecraft:nautilus_bubbles_particle",
+            "description": "鹦鹉螺的气泡粒子"
+        },
+        {
             "name": "minecraft:nectar_drip_particle",
             "description": "沾有花粉的蜜蜂掉落的花粉粒子"
         },

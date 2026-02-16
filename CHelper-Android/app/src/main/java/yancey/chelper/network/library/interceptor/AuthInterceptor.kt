@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ class AuthInterceptor private constructor() : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
+<<<<<<< HEAD
         val request = chain.request()
         
         // 检查是否需要添加认证 header
@@ -44,6 +45,16 @@ class AuthInterceptor private constructor() : Interceptor {
             val wafCookie = yancey.chelper.network.library.util.WafHelper.getCookie()
             if (!wafCookie.isNullOrEmpty()) {
                 builder.addHeader("Cookie", wafCookie)
+=======
+        if (chain.request().url.host == "abyssous.site") {
+            val token = LoginUtil.token
+            if (!token.isNullOrEmpty()) {
+                return chain.proceed(
+                    chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $token")
+                        .build()
+                )
+>>>>>>> upstream/master
             }
             
             if (!isAuthEndpoint(request.url.encodedPath)) {

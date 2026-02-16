@@ -15,6 +15,10 @@
             "description": "失明"
         },
         {
+            "name": "breath_of_the_nautilus",
+            "description": "鹦鹉螺之息"
+        },
+        {
             "name": "conduit_power",
             "description": "潮涌能量"
         },

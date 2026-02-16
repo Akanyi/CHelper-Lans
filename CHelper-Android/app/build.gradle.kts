@@ -104,23 +104,19 @@ dependencies {
     implementation("com.github.Redempt:Crunch:2.0.3")
     // https://github.com/androidx/androidx
     implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.activity:activity:1.12.2")
-    implementation("androidx.activity:activity-ktx:1.12.2")
-    implementation("androidx.activity:activity-compose:1.12.2")
+    implementation("androidx.activity:activity:1.12.4")
+    implementation("androidx.activity:activity-ktx:1.12.4")
+    implementation("androidx.activity:activity-compose:1.12.4")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
-    implementation("androidx.navigation:navigation-compose:2.9.6")
+    implementation("androidx.navigation:navigation-compose:2.9.7")
 //    implementation("androidx.datastore:datastore:1.1.7")
 //    implementation("androidx.datastore:datastore-preferences:1.1.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
-    implementation("androidx.compose.ui:ui:1.10.1")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.10.1")
-    implementation("androidx.compose.foundation:foundation:1.10.1")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.10.1")
-    // https://github.com/ReactiveX/RxJava
-    implementation("io.reactivex.rxjava3:rxjava:3.1.12")
-    // https://github.com/ReactiveX/RxAndroid
-    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
+    implementation("androidx.compose.ui:ui:1.10.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.10.3")
+    implementation("androidx.compose.foundation:foundation:1.10.3")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.10.3")
     // https://github.com/square/okhttp
     implementation(platform("com.squareup.okhttp3:okhttp-bom:5.3.2"))
     implementation("com.squareup.okhttp3:okhttp")
@@ -130,9 +126,8 @@ dependencies {
     implementation(platform("com.squareup.retrofit2:retrofit-bom:3.0.0"))
     implementation("com.squareup.retrofit2:retrofit")
     implementation("com.squareup.retrofit2:converter-gson")
-    implementation("com.squareup.retrofit2:adapter-rxjava3")
     // https://github.com/getActivity/DeviceCompat
-    implementation("com.github.getActivity:DeviceCompat:2.5")
+    implementation("com.github.getActivity:DeviceCompat:2.6")
     // https://github.com/getActivity/XXPermissions
     implementation("com.github.getActivity:XXPermissions:28.0")
     // https://github.com/getActivity/Toaster

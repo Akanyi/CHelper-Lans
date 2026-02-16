@@ -6711,7 +6711,7 @@
             },
             {
                 "name": "leaf_litter",
-                "description": "枯叶",
+                "description": "枯叶堆",
                 "properties": [
                     {
                         "name": "growth",
@@ -17151,6 +17151,18 @@
                     ]
                 },
                 {
+                    "propertyName": "no_drop_bit",
+                    "description": "技术性，标记该头颅正在由创造模式玩家破坏，从而避免掉落",
+                    "values": [
+                        {
+                            "valueName": false
+                        },
+                        {
+                            "valueName": true
+                        }
+                    ]
+                },
+                {
                     "propertyName": "occupied_bit",
                     "values": [
                         {
@@ -17437,19 +17449,19 @@
                     "values": [
                         {
                             "valueName": 0,
-                            "description": "未被充能，不与其他连接"
+                            "description": "展示架未被充能，不与其他展示架连接"
                         },
                         {
                             "valueName": 1,
-                            "description": "该被充能，与其他连接，且处于连接的最左侧"
+                            "description": "该展示架被充能，与其他展示架连接，且处于连接的最左侧"
                         },
                         {
                             "valueName": 2,
-                            "description": "该被充能，与其他连接，且处于连接的中间"
+                            "description": "该展示架被充能，与其他展示架连接，且处于连接的中间"
                         },
                         {
                             "valueName": 3,
-                            "description": "该被充能，与其他连接，且处于连接的最右侧"
+                            "description": "该展示架被充能，与其他展示架连接，且处于连接的最右侧"
                         }
                     ]
                 },

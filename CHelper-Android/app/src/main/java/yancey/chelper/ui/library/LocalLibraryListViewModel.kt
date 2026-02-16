@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import yancey.chelper.android.library.util.LocalLibraryManager
+import yancey.chelper.android.common.util.LocalLibraryManager
 import yancey.chelper.network.library.data.LibraryFunction
 
 class LocalLibraryListViewModel : ViewModel() {

@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,6 +72,12 @@ interface CommandLabUserService {
         var mail: String? = null
         var nickname: String? = null
         var password: String? = null
+<<<<<<< HEAD
+=======
+
+        @Suppress("PropertyName")
+        var android_id: String? = null
+>>>>>>> upstream/master
     }
     
     /**
@@ -87,7 +93,12 @@ interface CommandLabUserService {
      */
     class LoginRequest {
         @JvmField
+<<<<<<< HEAD
         var mail: String? = null
+=======
+        var account: String? = null
+
+>>>>>>> upstream/master
         @JvmField
         var password: String? = null
     }
@@ -99,6 +110,7 @@ interface CommandLabUserService {
         var id: Int? = null
         var email: String? = null
         var nickname: String? = null
+
         @Suppress("PropertyName")
         var is_guest: Boolean? = null
         @Suppress("PropertyName")
@@ -258,6 +270,7 @@ interface CommandLabUserService {
     class UpdateRolesRequest {
         @Suppress("PropertyName")
         var is_admin: Boolean? = null
+
         @Suppress("PropertyName")
         var is_moderator: Boolean? = null
     }
@@ -275,6 +288,12 @@ interface CommandLabUserService {
      * 重置密码请求体
      */
     class ResetPasswordRequest {
+<<<<<<< HEAD
+=======
+        var email: String? = null
+        var code: String? = null
+
+>>>>>>> upstream/master
         @Suppress("PropertyName")
         var new_password: String? = null
     }
@@ -284,7 +303,52 @@ interface CommandLabUserService {
      */
     @PUT("users/{user_id}/reset-password")
     fun resetPassword(
+<<<<<<< HEAD
         @Path("user_id") userId: Int,
         @Body request: ResetPasswordRequest
     ): Call<BaseResult<Void?>>
+=======
+        @Body request: ResetPasswordRequest?
+    ): Call<BaseResult<ResetPasswordResponse?>?>?
+
+    class UpdateSettingRequest {
+        var nickname: String? = null
+
+        @Suppress("PropertyName")
+        var old_password: String? = null
+
+        @Suppress("PropertyName")
+        var new_password: String? = null
+    }
+
+    class UpdateSettingResponse {
+        var message: String? = null
+    }
+
+    @POST("web/update_settings")
+    fun updateSetting(
+        @Body request: UpdateSettingRequest?
+    ): Call<BaseResult<UpdateSettingResponse?>?>?
+
+    class LogoutResponse {
+        var message: String? = null
+    }
+
+    @POST("user/logout")
+    fun logout(): Call<BaseResult<LogoutResponse?>?>?
+
+    class VerifySensitiveRequest {
+        var operation: String? = null
+        var code: String? = null
+    }
+
+    class VerifySensitiveResponse {
+        var verified: Boolean? = null
+    }
+
+    @POST("user/verify_sensitive")
+    fun verifySensitive(
+        @Body request: VerifySensitiveRequest?
+    ): Call<BaseResult<VerifySensitiveResponse?>?>?
+>>>>>>> upstream/master
 }

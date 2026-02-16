@@ -131,6 +131,18 @@
             "description": "潮涌核心产生的粒子（该粒子未被使用）"
         },
         {
+            "name": "minecraft:creaking_crumble_body",
+            "description": "嘎枝之心被破坏时嘎枝的身体发出的粒子"
+        },
+        {
+            "name": "minecraft:creaking_crumble_head",
+            "description": "嘎枝之心被破坏时嘎枝的头部发出的粒子"
+        },
+        {
+            "name": "minecraft:creaking_heart_trail",
+            "description": "嘎枝被攻击时嘎枝和嘎枝之心发出的粒子"
+        },
+        {
             "name": "minecraft:critical_hit_emitter",
             "description": "玩家造成暴击时的暴击粒子"
         },
@@ -221,6 +233,12 @@
         {
             "name": "minecraft:eye_of_ender_bubble_particle",
             "description": "末影之眼在水下运动时的气泡粒子（该粒子只能在水中生成和存在）"
+        },
+        {
+            "name": "minecraft:eyeblossom_close"
+        },
+        {
+            "name": "minecraft:eyeblossom_open"
         },
         {
             "name": "minecraft:eyeofender_death_explode_particle",
@@ -375,6 +393,9 @@
             "description": "带有状态效果的生物、区域效果云产生的粒子"
         },
         {
+            "name": "minecraft:mobspell_lingering"
+        },
+        {
             "name": "minecraft:mycelium_dust_particle",
             "description": "菌丝体的孢子粒子"
         },
@@ -405,6 +426,9 @@
         {
             "name": "minecraft:oozing_emitter",
             "description": "带有渗浆效果的生物死亡时的粒子"
+        },
+        {
+            "name": "minecraft:pale_oak_leaves_particle"
         },
         {
             "name": "minecraft:phantom_trail_particle",
@@ -501,6 +525,10 @@
         {
             "name": "minecraft:smash_ground_particle_center",
             "description": "重锤猛击击中处在地面的生物时在生物上方产生的粒子"
+        },
+        {
+            "name": "minecraft:sneeze",
+            "description": "幼年熊猫打喷嚏时产生的粒子"
         },
         {
             "name": "minecraft:snowflake_particle",
@@ -665,6 +693,10 @@
         {
             "name": "minecraft:wind_explosion_emitter",
             "description": "风弹实体爆炸时的一阵狂风粒子"
+        },
+        {
+            "name": "minecraft:witchspell_emitter",
+            "description": "女巫产生的粒子"
         },
         {
             "name": "minecraft:wither_boss_invulnerable",

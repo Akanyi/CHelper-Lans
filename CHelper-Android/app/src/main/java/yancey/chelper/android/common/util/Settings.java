@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import yancey.chelper.android.common.style.CustomTheme;
 
 /**
  * 软件设置

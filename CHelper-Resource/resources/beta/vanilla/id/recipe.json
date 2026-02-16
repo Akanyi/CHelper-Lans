@@ -3446,6 +3446,10 @@
             "description": "<工作台>木棍*2+铜锭->铜锹"
         },
         {
+            "name": "minecraft:copper_spear",
+            "description": "<工作台>木棍*2+铜锭->铜矛"
+        },
+        {
             "name": "minecraft:copper_sword",
             "description": "<工作台>木棍+铜锭*2->铜剑"
         },
@@ -3455,7 +3459,7 @@
         },
         {
             "name": "minecraft:copper_trapdoor",
-            "description": "<工作台>铜锭*4->铜活板门*2"
+            "description": "<工作台>铜锭*4->铜活板门"
         },
         {
             "name": "minecraft:crafter",
@@ -3934,6 +3938,10 @@
             "description": "<工作台>木棍*2+钻石->钻石锹"
         },
         {
+            "name": "minecraft:diamond_spear",
+            "description": "<工作台>木棍*2+钻石->钻石矛"
+        },
+        {
             "name": "minecraft:diamond_sword",
             "description": "<工作台>木棍+钻石*2->钻石剑"
         },
@@ -4158,6 +4166,10 @@
             "description": "<工作台>木棍*2+金锭->金锹"
         },
         {
+            "name": "minecraft:golden_spear",
+            "description": "<工作台>木棍*2+金锭->金矛"
+        },
+        {
             "name": "minecraft:golden_sword",
             "description": "<工作台>木棍+金锭*2->金剑"
         },
@@ -4368,6 +4380,10 @@
         {
             "name": "minecraft:iron_shovel",
             "description": "<工作台>木棍*2+铁锭->铁锹"
+        },
+        {
+            "name": "minecraft:iron_spear",
+            "description": "<工作台>木棍*2+铁锭->铁矛"
         },
         {
             "name": "minecraft:iron_sword",
@@ -5910,6 +5926,10 @@
             "description": "<工作台>木棍*2+类圆石方块->石锹"
         },
         {
+            "name": "minecraft:stone_spear",
+            "description": "<工作台>木棍*2+类圆石方块->石矛"
+        },
+        {
             "name": "minecraft:stone_stairs",
             "description": "<工作台>石头*6->石头楼梯*4"
         },
@@ -7336,6 +7356,10 @@
         {
             "name": "minecraft:wooden_shovel",
             "description": "<工作台>木棍*2+木板->木锹"
+        },
+        {
+            "name": "minecraft:wooden_spear",
+            "description": "<工作台>木棍*2+木板->木矛"
         },
         {
             "name": "minecraft:wooden_sword",

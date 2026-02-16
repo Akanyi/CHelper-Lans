@@ -248,6 +248,9 @@
             "description": "黑森林"
         },
         {
+            "name": "minecraft:fog_roofed_forest_mutated"
+        },
+        {
             "name": "minecraft:fog_savanna",
             "description": "热带草原"
         },

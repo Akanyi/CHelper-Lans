@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import yancey.chelper.android.common.style.CustomTheme
+import yancey.chelper.android.common.util.CustomTheme
 import yancey.chelper.android.common.util.Settings
 
 class SettingsViewModel : ViewModel() {
@@ -42,7 +42,6 @@ class SettingsViewModel : ViewModel() {
     var customApiUrl by mutableStateOf("")
     var cpackBranch by mutableStateOf("")
     private var _themeId = mutableStateOf("")
-//    val themeId = _themeId.value
     private var onThemeChangedCallback: (() -> Unit)? = null
 
     var isShowResumeBackgroundDialog by mutableStateOf(false)

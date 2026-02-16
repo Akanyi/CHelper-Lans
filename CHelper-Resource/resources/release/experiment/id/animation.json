@@ -651,6 +651,12 @@
             "name": "animation.humanoid.look_at_target.swimming.v1.0"
         },
         {
+            "name": "animation.humanoid.melee_spear_hold"
+        },
+        {
+            "name": "animation.humanoid.melee_spear_use"
+        },
+        {
             "name": "animation.humanoid.move"
         },
         {
@@ -754,6 +760,21 @@
         },
         {
             "name": "animation.mooshroom.setup.v1.0"
+        },
+        {
+            "name": "animation.nautilus.breathe"
+        },
+        {
+            "name": "animation.nautilus.charge_warning"
+        },
+        {
+            "name": "animation.nautilus.dashing"
+        },
+        {
+            "name": "animation.nautilus.look_at_target"
+        },
+        {
+            "name": "animation.nautilus.swim"
         },
         {
             "name": "animation.npc.baby_transform"
@@ -912,10 +933,16 @@
             "name": "animation.player.crawl.legs"
         },
         {
+            "name": "animation.player.crawl.no_right_arm"
+        },
+        {
             "name": "animation.player.crossbow_equipped"
         },
         {
             "name": "animation.player.crossbow_hold"
+        },
+        {
+            "name": "animation.player.first_person.attack_item_rotation"
         },
         {
             "name": "animation.player.first_person.attack_rotation"
@@ -951,6 +978,15 @@
             "name": "animation.player.first_person.map_hold_off_hand"
         },
         {
+            "name": "animation.player.first_person.melee_spear_attack"
+        },
+        {
+            "name": "animation.player.first_person.melee_spear_hold"
+        },
+        {
+            "name": "animation.player.first_person.melee_spear_use"
+        },
+        {
             "name": "animation.player.first_person.shield_block"
         },
         {
@@ -979,6 +1015,9 @@
         },
         {
             "name": "animation.player.look_at_target.ui"
+        },
+        {
+            "name": "animation.player.melee_spear_attack"
         },
         {
             "name": "animation.player.move.arms"
@@ -1045,6 +1084,9 @@
         },
         {
             "name": "animation.player.swim.legs.stationary"
+        },
+        {
+            "name": "animation.player.swim.no_right_arm"
         },
         {
             "name": "animation.polarbear.baby_transform"
@@ -1269,6 +1311,15 @@
             "name": "animation.snowgolem.move.v1.8"
         },
         {
+            "name": "animation.spear.held_first_person"
+        },
+        {
+            "name": "animation.spear.held_third_person"
+        },
+        {
+            "name": "animation.spear.hit"
+        },
+        {
             "name": "animation.spider.default_leg_pose"
         },
         {
@@ -1465,6 +1516,12 @@
         },
         {
             "name": "animation.zombie.attack_bare_hand"
+        },
+        {
+            "name": "animation.zombie.melee_spear_hold"
+        },
+        {
+            "name": "animation.zombie.melee_spear_use"
         },
         {
             "name": "animation.zombie.swimming"

@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,13 +45,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.hjq.permissions.XXPermissions
+import com.hjq.permissions.permission.PermissionLists
 import com.hjq.toast.Toaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import yancey.chelper.R
 import yancey.chelper.android.common.util.PolicyGrantManager
-import yancey.chelper.android.completion.util.CompletionWindowManager
+import yancey.chelper.android.window.FloatingWindowManager
 import yancey.chelper.ui.AboutScreenKey
 import yancey.chelper.ui.CompletionScreenKey
 import yancey.chelper.ui.EnumerationScreenKey
@@ -77,13 +79,18 @@ import yancey.chelper.ui.common.widget.Text
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
+    floatingWindowManager: FloatingWindowManager? = null
 ) {
     val context = LocalContext.current
     LaunchedEffect(viewModel) {
+<<<<<<< HEAD
         viewModel.refreshSettings()
         if (viewModel.policyGrantState == PolicyGrantManager.State.AGREE) {
             viewModel.showAnnouncementDialog(context)
         }
+=======
+        viewModel.init(context, floatingWindowManager)
+>>>>>>> upstream/master
     }
     RootView {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -128,7 +135,7 @@ fun HomeScreen(
                     NameAndAction(
                         name = stringResource(R.string.layout_home_command_completion_app_mode),
                         onClick = {
-                            if (CompletionWindowManager.INSTANCE!!.isUsingFloatingWindow) {
+                            if (viewModel.isUsingFloatingWindow()) {
                                 Toaster.show("你必须关闭悬浮窗模式才可以进入应用模式")
                             } else {
                                 navController.navigate(CompletionScreenKey)
@@ -139,10 +146,10 @@ fun HomeScreen(
                     NameAndAction(
                         name = stringResource(R.string.layout_home_command_completion_floating_window_mode),
                         onClick = {
-                            if (CompletionWindowManager.INSTANCE!!.isUsingFloatingWindow) {
-                                CompletionWindowManager.INSTANCE!!.stopFloatingWindow()
+                            if (viewModel.isUsingFloatingWindow()) {
+                                viewModel.stopFloatingWindow()
                             } else {
-                                CompletionWindowManager.INSTANCE!!.startFloatingWindow(context)
+                                viewModel.startFloatingWindow(context)
                             }
                         }
                     )
@@ -193,6 +200,45 @@ fun HomeScreen(
             Copyright(Modifier.align(Alignment.CenterHorizontally))
         }
     }
+    if (viewModel.isShowPermissionRequestWindow) {
+        IsConfirmDialog(
+            onDismissRequest = {
+                viewModel.isShowPermissionRequestWindow = false
+            },
+            content = "需要悬浮窗权限，请进入设置进行授权",
+            confirmText = "打开设置",
+            onConfirm = {
+                XXPermissions.with(context)
+                    .permission(PermissionLists.getSystemAlertWindowPermission())
+                    .request { _, deniedList ->
+                        if (deniedList.isEmpty()) {
+                            Toaster.show("悬浮窗权限获取成功")
+                        } else {
+                            Toaster.show("悬浮窗权限获取失败")
+                        }
+                    }
+            },
+            onCancel = {
+                viewModel.isShowPermissionRequestWindow = false
+            }
+        )
+    }
+    if (viewModel.isShowXiaomiClipboardPermissionTips) {
+        IsConfirmDialog(
+            onDismissRequest = {
+                viewModel.isShowXiaomiClipboardPermissionTips = false
+            },
+            content = "对于小米手机和红米手机，需要将写入剪切板权限设置为始终允许才能在悬浮窗复制文本。具体设置方式如下：设置-应用设置-权限管理-应用权限管理-CHelper-写入剪切板-始终允许。",
+            cancelText = "不再提示",
+            onCancel = {
+                viewModel.dismissShowXiaomiClipboardPermissionTipsForever()
+                viewModel.startFloatingWindow(context, true)
+            },
+            onConfirm = {
+                viewModel.startFloatingWindow(context, true)
+            }
+        )
+    }
     if (viewModel.isShowPolicyGrantDialog) {
         val policyPageTitle = stringResource(R.string.layout_about_privacy_policy)
         PolicyGrantDialog(
@@ -215,14 +261,14 @@ fun HomeScreen(
     }
     if (viewModel.isShowAnnouncementDialog) {
         IsConfirmDialog(
-            onDismissRequest = { viewModel.dismissAnnouncementDialog(context) },
+            onDismissRequest = { viewModel.dismissAnnouncementDialog() },
             isBig = viewModel.announcement!!.isBigDialog!!,
             title = viewModel.announcement!!.title!!,
             content = viewModel.announcement!!.message!!,
             cancelText = if (viewModel.announcement!!.isForce!!) "取消" else "不再提醒",
             onCancel = {
                 if (!viewModel.announcement!!.isForce!!) {
-                    viewModel.ignoreCurrentAnnouncement(context)
+                    viewModel.ignoreCurrentAnnouncement()
                 }
             }
         )
@@ -232,11 +278,11 @@ fun HomeScreen(
             viewModel.latestVersionInfo!!.version_name + "版本已发布，欢迎下载体验。本次更新内容如下：\n" + viewModel.latestVersionInfo!!.changelog
         }
         IsConfirmDialog(
-            onDismissRequest = { viewModel.dismissUpdateNotificationDialog(context) },
+            onDismissRequest = { viewModel.dismissUpdateNotificationDialog() },
             title = "更新提醒",
             content = content,
             cancelText = "忽略此版本",
-            onCancel = { viewModel.ignoreLatestVersion(context) }
+            onCancel = { viewModel.ignoreLatestVersion() }
         )
     }
 }

@@ -198,6 +198,1182 @@
             "name": "birch_stairs_birch_recipeId"
         },
         {
+            "name": "bundle_dye_0"
+        },
+        {
+            "name": "bundle_dye_0_1"
+        },
+        {
+            "name": "bundle_dye_0_10"
+        },
+        {
+            "name": "bundle_dye_0_11"
+        },
+        {
+            "name": "bundle_dye_0_12"
+        },
+        {
+            "name": "bundle_dye_0_13"
+        },
+        {
+            "name": "bundle_dye_0_14"
+        },
+        {
+            "name": "bundle_dye_0_15"
+        },
+        {
+            "name": "bundle_dye_0_17"
+        },
+        {
+            "name": "bundle_dye_0_18"
+        },
+        {
+            "name": "bundle_dye_0_19"
+        },
+        {
+            "name": "bundle_dye_0_2"
+        },
+        {
+            "name": "bundle_dye_0_3"
+        },
+        {
+            "name": "bundle_dye_0_4"
+        },
+        {
+            "name": "bundle_dye_0_5"
+        },
+        {
+            "name": "bundle_dye_0_6"
+        },
+        {
+            "name": "bundle_dye_0_7"
+        },
+        {
+            "name": "bundle_dye_0_8"
+        },
+        {
+            "name": "bundle_dye_0_9"
+        },
+        {
+            "name": "bundle_dye_1"
+        },
+        {
+            "name": "bundle_dye_10"
+        },
+        {
+            "name": "bundle_dye_10_0"
+        },
+        {
+            "name": "bundle_dye_10_1"
+        },
+        {
+            "name": "bundle_dye_10_11"
+        },
+        {
+            "name": "bundle_dye_10_12"
+        },
+        {
+            "name": "bundle_dye_10_13"
+        },
+        {
+            "name": "bundle_dye_10_14"
+        },
+        {
+            "name": "bundle_dye_10_15"
+        },
+        {
+            "name": "bundle_dye_10_16"
+        },
+        {
+            "name": "bundle_dye_10_17"
+        },
+        {
+            "name": "bundle_dye_10_18"
+        },
+        {
+            "name": "bundle_dye_10_19"
+        },
+        {
+            "name": "bundle_dye_10_2"
+        },
+        {
+            "name": "bundle_dye_10_3"
+        },
+        {
+            "name": "bundle_dye_10_4"
+        },
+        {
+            "name": "bundle_dye_10_5"
+        },
+        {
+            "name": "bundle_dye_10_6"
+        },
+        {
+            "name": "bundle_dye_10_7"
+        },
+        {
+            "name": "bundle_dye_10_8"
+        },
+        {
+            "name": "bundle_dye_10_9"
+        },
+        {
+            "name": "bundle_dye_11"
+        },
+        {
+            "name": "bundle_dye_11_0"
+        },
+        {
+            "name": "bundle_dye_11_1"
+        },
+        {
+            "name": "bundle_dye_11_10"
+        },
+        {
+            "name": "bundle_dye_11_12"
+        },
+        {
+            "name": "bundle_dye_11_13"
+        },
+        {
+            "name": "bundle_dye_11_14"
+        },
+        {
+            "name": "bundle_dye_11_15"
+        },
+        {
+            "name": "bundle_dye_11_16"
+        },
+        {
+            "name": "bundle_dye_11_17"
+        },
+        {
+            "name": "bundle_dye_11_18"
+        },
+        {
+            "name": "bundle_dye_11_19"
+        },
+        {
+            "name": "bundle_dye_11_2"
+        },
+        {
+            "name": "bundle_dye_11_3"
+        },
+        {
+            "name": "bundle_dye_11_4"
+        },
+        {
+            "name": "bundle_dye_11_5"
+        },
+        {
+            "name": "bundle_dye_11_6"
+        },
+        {
+            "name": "bundle_dye_11_7"
+        },
+        {
+            "name": "bundle_dye_11_8"
+        },
+        {
+            "name": "bundle_dye_11_9"
+        },
+        {
+            "name": "bundle_dye_12"
+        },
+        {
+            "name": "bundle_dye_12_0"
+        },
+        {
+            "name": "bundle_dye_12_1"
+        },
+        {
+            "name": "bundle_dye_12_10"
+        },
+        {
+            "name": "bundle_dye_12_11"
+        },
+        {
+            "name": "bundle_dye_12_13"
+        },
+        {
+            "name": "bundle_dye_12_14"
+        },
+        {
+            "name": "bundle_dye_12_15"
+        },
+        {
+            "name": "bundle_dye_12_16"
+        },
+        {
+            "name": "bundle_dye_12_17"
+        },
+        {
+            "name": "bundle_dye_12_18"
+        },
+        {
+            "name": "bundle_dye_12_19"
+        },
+        {
+            "name": "bundle_dye_12_2"
+        },
+        {
+            "name": "bundle_dye_12_3"
+        },
+        {
+            "name": "bundle_dye_12_4"
+        },
+        {
+            "name": "bundle_dye_12_5"
+        },
+        {
+            "name": "bundle_dye_12_6"
+        },
+        {
+            "name": "bundle_dye_12_7"
+        },
+        {
+            "name": "bundle_dye_12_8"
+        },
+        {
+            "name": "bundle_dye_12_9"
+        },
+        {
+            "name": "bundle_dye_13"
+        },
+        {
+            "name": "bundle_dye_13_0"
+        },
+        {
+            "name": "bundle_dye_13_1"
+        },
+        {
+            "name": "bundle_dye_13_10"
+        },
+        {
+            "name": "bundle_dye_13_11"
+        },
+        {
+            "name": "bundle_dye_13_12"
+        },
+        {
+            "name": "bundle_dye_13_14"
+        },
+        {
+            "name": "bundle_dye_13_15"
+        },
+        {
+            "name": "bundle_dye_13_16"
+        },
+        {
+            "name": "bundle_dye_13_17"
+        },
+        {
+            "name": "bundle_dye_13_18"
+        },
+        {
+            "name": "bundle_dye_13_19"
+        },
+        {
+            "name": "bundle_dye_13_2"
+        },
+        {
+            "name": "bundle_dye_13_3"
+        },
+        {
+            "name": "bundle_dye_13_4"
+        },
+        {
+            "name": "bundle_dye_13_5"
+        },
+        {
+            "name": "bundle_dye_13_6"
+        },
+        {
+            "name": "bundle_dye_13_7"
+        },
+        {
+            "name": "bundle_dye_13_8"
+        },
+        {
+            "name": "bundle_dye_13_9"
+        },
+        {
+            "name": "bundle_dye_14"
+        },
+        {
+            "name": "bundle_dye_14_0"
+        },
+        {
+            "name": "bundle_dye_14_1"
+        },
+        {
+            "name": "bundle_dye_14_10"
+        },
+        {
+            "name": "bundle_dye_14_11"
+        },
+        {
+            "name": "bundle_dye_14_12"
+        },
+        {
+            "name": "bundle_dye_14_13"
+        },
+        {
+            "name": "bundle_dye_14_15"
+        },
+        {
+            "name": "bundle_dye_14_16"
+        },
+        {
+            "name": "bundle_dye_14_17"
+        },
+        {
+            "name": "bundle_dye_14_18"
+        },
+        {
+            "name": "bundle_dye_14_19"
+        },
+        {
+            "name": "bundle_dye_14_2"
+        },
+        {
+            "name": "bundle_dye_14_3"
+        },
+        {
+            "name": "bundle_dye_14_4"
+        },
+        {
+            "name": "bundle_dye_14_5"
+        },
+        {
+            "name": "bundle_dye_14_6"
+        },
+        {
+            "name": "bundle_dye_14_7"
+        },
+        {
+            "name": "bundle_dye_14_8"
+        },
+        {
+            "name": "bundle_dye_14_9"
+        },
+        {
+            "name": "bundle_dye_15"
+        },
+        {
+            "name": "bundle_dye_15_0"
+        },
+        {
+            "name": "bundle_dye_15_1"
+        },
+        {
+            "name": "bundle_dye_15_10"
+        },
+        {
+            "name": "bundle_dye_15_11"
+        },
+        {
+            "name": "bundle_dye_15_12"
+        },
+        {
+            "name": "bundle_dye_15_13"
+        },
+        {
+            "name": "bundle_dye_15_14"
+        },
+        {
+            "name": "bundle_dye_15_16"
+        },
+        {
+            "name": "bundle_dye_15_17"
+        },
+        {
+            "name": "bundle_dye_15_18"
+        },
+        {
+            "name": "bundle_dye_15_2"
+        },
+        {
+            "name": "bundle_dye_15_3"
+        },
+        {
+            "name": "bundle_dye_15_4"
+        },
+        {
+            "name": "bundle_dye_15_5"
+        },
+        {
+            "name": "bundle_dye_15_6"
+        },
+        {
+            "name": "bundle_dye_15_7"
+        },
+        {
+            "name": "bundle_dye_15_8"
+        },
+        {
+            "name": "bundle_dye_15_9"
+        },
+        {
+            "name": "bundle_dye_16"
+        },
+        {
+            "name": "bundle_dye_16_1"
+        },
+        {
+            "name": "bundle_dye_16_10"
+        },
+        {
+            "name": "bundle_dye_16_11"
+        },
+        {
+            "name": "bundle_dye_16_12"
+        },
+        {
+            "name": "bundle_dye_16_13"
+        },
+        {
+            "name": "bundle_dye_16_14"
+        },
+        {
+            "name": "bundle_dye_16_15"
+        },
+        {
+            "name": "bundle_dye_16_17"
+        },
+        {
+            "name": "bundle_dye_16_18"
+        },
+        {
+            "name": "bundle_dye_16_19"
+        },
+        {
+            "name": "bundle_dye_16_2"
+        },
+        {
+            "name": "bundle_dye_16_3"
+        },
+        {
+            "name": "bundle_dye_16_4"
+        },
+        {
+            "name": "bundle_dye_16_5"
+        },
+        {
+            "name": "bundle_dye_16_6"
+        },
+        {
+            "name": "bundle_dye_16_7"
+        },
+        {
+            "name": "bundle_dye_16_8"
+        },
+        {
+            "name": "bundle_dye_16_9"
+        },
+        {
+            "name": "bundle_dye_17"
+        },
+        {
+            "name": "bundle_dye_17_0"
+        },
+        {
+            "name": "bundle_dye_17_1"
+        },
+        {
+            "name": "bundle_dye_17_10"
+        },
+        {
+            "name": "bundle_dye_17_11"
+        },
+        {
+            "name": "bundle_dye_17_12"
+        },
+        {
+            "name": "bundle_dye_17_13"
+        },
+        {
+            "name": "bundle_dye_17_14"
+        },
+        {
+            "name": "bundle_dye_17_15"
+        },
+        {
+            "name": "bundle_dye_17_16"
+        },
+        {
+            "name": "bundle_dye_17_18"
+        },
+        {
+            "name": "bundle_dye_17_19"
+        },
+        {
+            "name": "bundle_dye_17_2"
+        },
+        {
+            "name": "bundle_dye_17_4"
+        },
+        {
+            "name": "bundle_dye_17_5"
+        },
+        {
+            "name": "bundle_dye_17_6"
+        },
+        {
+            "name": "bundle_dye_17_7"
+        },
+        {
+            "name": "bundle_dye_17_8"
+        },
+        {
+            "name": "bundle_dye_17_9"
+        },
+        {
+            "name": "bundle_dye_18"
+        },
+        {
+            "name": "bundle_dye_18_0"
+        },
+        {
+            "name": "bundle_dye_18_1"
+        },
+        {
+            "name": "bundle_dye_18_10"
+        },
+        {
+            "name": "bundle_dye_18_11"
+        },
+        {
+            "name": "bundle_dye_18_12"
+        },
+        {
+            "name": "bundle_dye_18_13"
+        },
+        {
+            "name": "bundle_dye_18_14"
+        },
+        {
+            "name": "bundle_dye_18_15"
+        },
+        {
+            "name": "bundle_dye_18_16"
+        },
+        {
+            "name": "bundle_dye_18_17"
+        },
+        {
+            "name": "bundle_dye_18_19"
+        },
+        {
+            "name": "bundle_dye_18_2"
+        },
+        {
+            "name": "bundle_dye_18_3"
+        },
+        {
+            "name": "bundle_dye_18_5"
+        },
+        {
+            "name": "bundle_dye_18_6"
+        },
+        {
+            "name": "bundle_dye_18_7"
+        },
+        {
+            "name": "bundle_dye_18_8"
+        },
+        {
+            "name": "bundle_dye_18_9"
+        },
+        {
+            "name": "bundle_dye_19"
+        },
+        {
+            "name": "bundle_dye_19_0"
+        },
+        {
+            "name": "bundle_dye_19_1"
+        },
+        {
+            "name": "bundle_dye_19_10"
+        },
+        {
+            "name": "bundle_dye_19_11"
+        },
+        {
+            "name": "bundle_dye_19_12"
+        },
+        {
+            "name": "bundle_dye_19_13"
+        },
+        {
+            "name": "bundle_dye_19_14"
+        },
+        {
+            "name": "bundle_dye_19_16"
+        },
+        {
+            "name": "bundle_dye_19_17"
+        },
+        {
+            "name": "bundle_dye_19_18"
+        },
+        {
+            "name": "bundle_dye_19_2"
+        },
+        {
+            "name": "bundle_dye_19_3"
+        },
+        {
+            "name": "bundle_dye_19_4"
+        },
+        {
+            "name": "bundle_dye_19_5"
+        },
+        {
+            "name": "bundle_dye_19_6"
+        },
+        {
+            "name": "bundle_dye_19_7"
+        },
+        {
+            "name": "bundle_dye_19_8"
+        },
+        {
+            "name": "bundle_dye_19_9"
+        },
+        {
+            "name": "bundle_dye_1_0"
+        },
+        {
+            "name": "bundle_dye_1_10"
+        },
+        {
+            "name": "bundle_dye_1_11"
+        },
+        {
+            "name": "bundle_dye_1_12"
+        },
+        {
+            "name": "bundle_dye_1_13"
+        },
+        {
+            "name": "bundle_dye_1_14"
+        },
+        {
+            "name": "bundle_dye_1_15"
+        },
+        {
+            "name": "bundle_dye_1_16"
+        },
+        {
+            "name": "bundle_dye_1_17"
+        },
+        {
+            "name": "bundle_dye_1_18"
+        },
+        {
+            "name": "bundle_dye_1_19"
+        },
+        {
+            "name": "bundle_dye_1_2"
+        },
+        {
+            "name": "bundle_dye_1_3"
+        },
+        {
+            "name": "bundle_dye_1_4"
+        },
+        {
+            "name": "bundle_dye_1_5"
+        },
+        {
+            "name": "bundle_dye_1_6"
+        },
+        {
+            "name": "bundle_dye_1_7"
+        },
+        {
+            "name": "bundle_dye_1_8"
+        },
+        {
+            "name": "bundle_dye_1_9"
+        },
+        {
+            "name": "bundle_dye_2"
+        },
+        {
+            "name": "bundle_dye_2_0"
+        },
+        {
+            "name": "bundle_dye_2_1"
+        },
+        {
+            "name": "bundle_dye_2_10"
+        },
+        {
+            "name": "bundle_dye_2_11"
+        },
+        {
+            "name": "bundle_dye_2_12"
+        },
+        {
+            "name": "bundle_dye_2_13"
+        },
+        {
+            "name": "bundle_dye_2_14"
+        },
+        {
+            "name": "bundle_dye_2_15"
+        },
+        {
+            "name": "bundle_dye_2_16"
+        },
+        {
+            "name": "bundle_dye_2_17"
+        },
+        {
+            "name": "bundle_dye_2_18"
+        },
+        {
+            "name": "bundle_dye_2_19"
+        },
+        {
+            "name": "bundle_dye_2_3"
+        },
+        {
+            "name": "bundle_dye_2_4"
+        },
+        {
+            "name": "bundle_dye_2_5"
+        },
+        {
+            "name": "bundle_dye_2_6"
+        },
+        {
+            "name": "bundle_dye_2_7"
+        },
+        {
+            "name": "bundle_dye_2_8"
+        },
+        {
+            "name": "bundle_dye_2_9"
+        },
+        {
+            "name": "bundle_dye_3"
+        },
+        {
+            "name": "bundle_dye_3_0"
+        },
+        {
+            "name": "bundle_dye_3_1"
+        },
+        {
+            "name": "bundle_dye_3_10"
+        },
+        {
+            "name": "bundle_dye_3_11"
+        },
+        {
+            "name": "bundle_dye_3_12"
+        },
+        {
+            "name": "bundle_dye_3_13"
+        },
+        {
+            "name": "bundle_dye_3_14"
+        },
+        {
+            "name": "bundle_dye_3_15"
+        },
+        {
+            "name": "bundle_dye_3_16"
+        },
+        {
+            "name": "bundle_dye_3_18"
+        },
+        {
+            "name": "bundle_dye_3_19"
+        },
+        {
+            "name": "bundle_dye_3_2"
+        },
+        {
+            "name": "bundle_dye_3_4"
+        },
+        {
+            "name": "bundle_dye_3_5"
+        },
+        {
+            "name": "bundle_dye_3_6"
+        },
+        {
+            "name": "bundle_dye_3_7"
+        },
+        {
+            "name": "bundle_dye_3_8"
+        },
+        {
+            "name": "bundle_dye_3_9"
+        },
+        {
+            "name": "bundle_dye_4"
+        },
+        {
+            "name": "bundle_dye_4_0"
+        },
+        {
+            "name": "bundle_dye_4_1"
+        },
+        {
+            "name": "bundle_dye_4_10"
+        },
+        {
+            "name": "bundle_dye_4_11"
+        },
+        {
+            "name": "bundle_dye_4_12"
+        },
+        {
+            "name": "bundle_dye_4_13"
+        },
+        {
+            "name": "bundle_dye_4_14"
+        },
+        {
+            "name": "bundle_dye_4_15"
+        },
+        {
+            "name": "bundle_dye_4_16"
+        },
+        {
+            "name": "bundle_dye_4_17"
+        },
+        {
+            "name": "bundle_dye_4_19"
+        },
+        {
+            "name": "bundle_dye_4_2"
+        },
+        {
+            "name": "bundle_dye_4_3"
+        },
+        {
+            "name": "bundle_dye_4_5"
+        },
+        {
+            "name": "bundle_dye_4_6"
+        },
+        {
+            "name": "bundle_dye_4_7"
+        },
+        {
+            "name": "bundle_dye_4_8"
+        },
+        {
+            "name": "bundle_dye_4_9"
+        },
+        {
+            "name": "bundle_dye_5"
+        },
+        {
+            "name": "bundle_dye_5_0"
+        },
+        {
+            "name": "bundle_dye_5_1"
+        },
+        {
+            "name": "bundle_dye_5_10"
+        },
+        {
+            "name": "bundle_dye_5_11"
+        },
+        {
+            "name": "bundle_dye_5_12"
+        },
+        {
+            "name": "bundle_dye_5_13"
+        },
+        {
+            "name": "bundle_dye_5_14"
+        },
+        {
+            "name": "bundle_dye_5_15"
+        },
+        {
+            "name": "bundle_dye_5_16"
+        },
+        {
+            "name": "bundle_dye_5_17"
+        },
+        {
+            "name": "bundle_dye_5_18"
+        },
+        {
+            "name": "bundle_dye_5_19"
+        },
+        {
+            "name": "bundle_dye_5_2"
+        },
+        {
+            "name": "bundle_dye_5_3"
+        },
+        {
+            "name": "bundle_dye_5_4"
+        },
+        {
+            "name": "bundle_dye_5_6"
+        },
+        {
+            "name": "bundle_dye_5_7"
+        },
+        {
+            "name": "bundle_dye_5_8"
+        },
+        {
+            "name": "bundle_dye_5_9"
+        },
+        {
+            "name": "bundle_dye_6"
+        },
+        {
+            "name": "bundle_dye_6_0"
+        },
+        {
+            "name": "bundle_dye_6_1"
+        },
+        {
+            "name": "bundle_dye_6_10"
+        },
+        {
+            "name": "bundle_dye_6_11"
+        },
+        {
+            "name": "bundle_dye_6_12"
+        },
+        {
+            "name": "bundle_dye_6_13"
+        },
+        {
+            "name": "bundle_dye_6_14"
+        },
+        {
+            "name": "bundle_dye_6_15"
+        },
+        {
+            "name": "bundle_dye_6_16"
+        },
+        {
+            "name": "bundle_dye_6_17"
+        },
+        {
+            "name": "bundle_dye_6_18"
+        },
+        {
+            "name": "bundle_dye_6_19"
+        },
+        {
+            "name": "bundle_dye_6_2"
+        },
+        {
+            "name": "bundle_dye_6_3"
+        },
+        {
+            "name": "bundle_dye_6_4"
+        },
+        {
+            "name": "bundle_dye_6_5"
+        },
+        {
+            "name": "bundle_dye_6_7"
+        },
+        {
+            "name": "bundle_dye_6_8"
+        },
+        {
+            "name": "bundle_dye_6_9"
+        },
+        {
+            "name": "bundle_dye_7"
+        },
+        {
+            "name": "bundle_dye_7_0"
+        },
+        {
+            "name": "bundle_dye_7_1"
+        },
+        {
+            "name": "bundle_dye_7_10"
+        },
+        {
+            "name": "bundle_dye_7_11"
+        },
+        {
+            "name": "bundle_dye_7_12"
+        },
+        {
+            "name": "bundle_dye_7_13"
+        },
+        {
+            "name": "bundle_dye_7_14"
+        },
+        {
+            "name": "bundle_dye_7_15"
+        },
+        {
+            "name": "bundle_dye_7_16"
+        },
+        {
+            "name": "bundle_dye_7_17"
+        },
+        {
+            "name": "bundle_dye_7_18"
+        },
+        {
+            "name": "bundle_dye_7_19"
+        },
+        {
+            "name": "bundle_dye_7_2"
+        },
+        {
+            "name": "bundle_dye_7_3"
+        },
+        {
+            "name": "bundle_dye_7_4"
+        },
+        {
+            "name": "bundle_dye_7_5"
+        },
+        {
+            "name": "bundle_dye_7_6"
+        },
+        {
+            "name": "bundle_dye_7_8"
+        },
+        {
+            "name": "bundle_dye_7_9"
+        },
+        {
+            "name": "bundle_dye_8"
+        },
+        {
+            "name": "bundle_dye_8_0"
+        },
+        {
+            "name": "bundle_dye_8_1"
+        },
+        {
+            "name": "bundle_dye_8_10"
+        },
+        {
+            "name": "bundle_dye_8_11"
+        },
+        {
+            "name": "bundle_dye_8_12"
+        },
+        {
+            "name": "bundle_dye_8_13"
+        },
+        {
+            "name": "bundle_dye_8_14"
+        },
+        {
+            "name": "bundle_dye_8_15"
+        },
+        {
+            "name": "bundle_dye_8_16"
+        },
+        {
+            "name": "bundle_dye_8_17"
+        },
+        {
+            "name": "bundle_dye_8_18"
+        },
+        {
+            "name": "bundle_dye_8_19"
+        },
+        {
+            "name": "bundle_dye_8_2"
+        },
+        {
+            "name": "bundle_dye_8_3"
+        },
+        {
+            "name": "bundle_dye_8_4"
+        },
+        {
+            "name": "bundle_dye_8_5"
+        },
+        {
+            "name": "bundle_dye_8_6"
+        },
+        {
+            "name": "bundle_dye_8_7"
+        },
+        {
+            "name": "bundle_dye_8_9"
+        },
+        {
+            "name": "bundle_dye_9"
+        },
+        {
+            "name": "bundle_dye_9_0"
+        },
+        {
+            "name": "bundle_dye_9_1"
+        },
+        {
+            "name": "bundle_dye_9_10"
+        },
+        {
+            "name": "bundle_dye_9_11"
+        },
+        {
+            "name": "bundle_dye_9_12"
+        },
+        {
+            "name": "bundle_dye_9_13"
+        },
+        {
+            "name": "bundle_dye_9_14"
+        },
+        {
+            "name": "bundle_dye_9_15"
+        },
+        {
+            "name": "bundle_dye_9_16"
+        },
+        {
+            "name": "bundle_dye_9_17"
+        },
+        {
+            "name": "bundle_dye_9_18"
+        },
+        {
+            "name": "bundle_dye_9_19"
+        },
+        {
+            "name": "bundle_dye_9_2"
+        },
+        {
+            "name": "bundle_dye_9_3"
+        },
+        {
+            "name": "bundle_dye_9_4"
+        },
+        {
+            "name": "bundle_dye_9_5"
+        },
+        {
+            "name": "bundle_dye_9_6"
+        },
+        {
+            "name": "bundle_dye_9_7"
+        },
+        {
+            "name": "bundle_dye_9_8"
+        },
+        {
             "name": "chiseled_quartz_recipeId"
         },
         {
@@ -663,11 +1839,11 @@
         },
         {
             "name": "minecraft:bolt_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>镶铆盔甲纹饰 锻造模板+钻石*7+铜块->镶铆盔甲纹饰 锻造模板*2"
+            "description": "<工作台>镶铆盔甲纹饰锻造模板+钻石*7+铜块->镶铆盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:bolt_armor_trim_smithing_template_duplicate_waxed",
-            "description": "<工作台>镶铆盔甲纹饰 锻造模板+钻石*7+涂蜡的铜块->镶铆盔甲纹饰 锻造模板*2"
+            "description": "<工作台>镶铆盔甲纹饰锻造模板+钻石*7+涂蜡的铜块->镶铆盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:bone_block",
@@ -772,6 +1948,10 @@
         {
             "name": "minecraft:bucket",
             "description": "<工作台>铁锭*3->铁桶"
+        },
+        {
+            "name": "minecraft:bundle",
+            "description": "<工作台>线+皮革->收纳袋"
         },
         {
             "name": "minecraft:cake",
@@ -914,6 +2094,10 @@
             "description": "<工作台>磨制黑石台阶*2->雕纹磨制黑石"
         },
         {
+            "name": "minecraft:chiseled_resin_bricks_from_slabs",
+            "description": "<工作台>树脂砖台阶*2->雕纹树脂砖块"
+        },
+        {
             "name": "minecraft:chiseled_tuff",
             "description": "<工作台>凝灰岩台阶*2->雕纹凝灰岩"
         },
@@ -943,7 +2127,7 @@
         },
         {
             "name": "minecraft:coast_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>海岸盔甲纹饰 锻造模板+钻石*7+圆石->海岸盔甲纹饰 锻造模板*2"
+            "description": "<工作台>海岸盔甲纹饰锻造模板+钻石*7+圆石->海岸盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:cobbled_deepslate_slab",
@@ -1126,6 +2310,10 @@
             "description": "<工作台>锈蚀的切制铜块*6->锈蚀的切制铜楼梯*4"
         },
         {
+            "name": "minecraft:creaking_heart",
+            "description": "<工作台>苍白橡木原木*2+树脂块->嘎枝之心"
+        },
+        {
             "name": "minecraft:crimson_button",
             "description": "<工作台>绯红木板->绯红木按钮"
         },
@@ -1219,7 +2407,7 @@
         },
         {
             "name": "minecraft:cyan_dye_from_pitcher_plant",
-            "description": "<工作台>瓶子草~>青色染料"
+            "description": "<工作台>瓶子草~>青色染料*2"
         },
         {
             "name": "minecraft:cyan_stained_glass",
@@ -1519,7 +2707,7 @@
         },
         {
             "name": "minecraft:dune_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>沙丘盔甲纹饰 锻造模板+钻石*7+砂岩/雕纹砂岩/切制砂岩/平滑砂岩->沙丘盔甲纹饰 锻造模板*2"
+            "description": "<工作台>沙丘盔甲纹饰锻造模板+钻石*7+砂岩->沙丘盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:emerald",
@@ -1543,7 +2731,7 @@
         },
         {
             "name": "minecraft:end_brick_wall",
-            "description": "<工作台>末地石砖*6->下界砖墙*6"
+            "description": "<工作台>末地石砖*6->末地石砖墙*6"
         },
         {
             "name": "minecraft:end_bricks",
@@ -1579,7 +2767,7 @@
         },
         {
             "name": "minecraft:eye_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>眼眸盔甲纹饰 锻造模板+钻石*7+末地石->眼眸盔甲纹饰 锻造模板*2"
+            "description": "<工作台>眼眸盔甲纹饰锻造模板+钻石*7+末地石->眼眸盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:fence",
@@ -1607,7 +2795,7 @@
         },
         {
             "name": "minecraft:flow_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>涡流盔甲纹饰 锻造模板+钻石*7+旋风棒->涡流盔甲纹饰 锻造模板*2"
+            "description": "<工作台>涡流盔甲纹饰锻造模板+钻石*7+旋风棒->涡流盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:flower_pot",
@@ -1746,6 +2934,10 @@
             "description": "<工作台>黑色染料+骨粉~>灰色染料*2"
         },
         {
+            "name": "minecraft:gray_dye_from_closed_eyeblossom",
+            "description": "<工作台>闭合的眼眸花~>灰色染料"
+        },
+        {
             "name": "minecraft:gray_dye_from_ink_bonemeal",
             "description": "<工作台>墨囊+骨粉~>灰色染料*2"
         },
@@ -1807,7 +2999,7 @@
         },
         {
             "name": "minecraft:grindstone",
-            "description": "<工作台>木棍*2+木板*2+石头双层台阶->砂轮"
+            "description": "<工作台>木棍*2+木板*2+石头台阶->砂轮"
         },
         {
             "name": "minecraft:hay_block",
@@ -1843,7 +3035,7 @@
         },
         {
             "name": "minecraft:host_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>雇主盔甲纹饰 锻造模板+钻石*7+陶瓦->雇主盔甲纹饰 锻造模板*2"
+            "description": "<工作台>雇主盔甲纹饰锻造模板+钻石*7+陶瓦->雇主盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:ingots_from_copper",
@@ -2471,7 +3663,7 @@
         },
         {
             "name": "minecraft:nether_brick_wall",
-            "description": "<工作台>下界砖块*6->末地石砖墙*6"
+            "description": "<工作台>下界砖块*6->下界砖墙*6"
         },
         {
             "name": "minecraft:nether_wart_block",
@@ -2491,7 +3683,7 @@
         },
         {
             "name": "minecraft:netherite_upgrade_smithing_template_duplicate",
-            "description": "<工作台>下界合金升级 锻造模板+钻石*7+下界岩->下界合金升级 锻造模板*2"
+            "description": "<工作台>下界合金升级锻造模板+钻石*7+下界岩->下界合金升级锻造模板*2"
         },
         {
             "name": "minecraft:noteblock",
@@ -2562,6 +3754,10 @@
             "description": "<工作台>橙色染料+沙子+沙子+沙子+沙子+沙砾+沙砾+沙砾+沙砾~>橙色混凝土粉末*8"
         },
         {
+            "name": "minecraft:orange_dye_from_open_eyeblossom",
+            "description": "<工作台>张开的眼眸花~>橙色染料"
+        },
+        {
             "name": "minecraft:orange_dye_from_orange_tulip",
             "description": "<工作台>橙色郁金香~>橙色染料"
         },
@@ -2612,6 +3808,82 @@
         {
             "name": "minecraft:painting",
             "description": "<工作台>木棍*8+羊毛->画"
+        },
+        {
+            "name": "minecraft:pale_moss_carpet",
+            "description": "<工作台>苍白苔藓块*2->苍白覆地苔藓*3"
+        },
+        {
+            "name": "minecraft:pale_oak_boat",
+            "description": "<工作台>苍白橡木木板*5->苍白橡木船"
+        },
+        {
+            "name": "minecraft:pale_oak_button",
+            "description": "<工作台>苍白橡木木板->苍白橡木按钮"
+        },
+        {
+            "name": "minecraft:pale_oak_chest_boat",
+            "description": "<工作台>箱子+苍白橡木船~>苍白橡木运输船"
+        },
+        {
+            "name": "minecraft:pale_oak_door",
+            "description": "<工作台>苍白橡木木板*6->苍白橡木门*3"
+        },
+        {
+            "name": "minecraft:pale_oak_fence",
+            "description": "<工作台>木棍*2+苍白橡木木板*4->苍白橡木栅栏*3"
+        },
+        {
+            "name": "minecraft:pale_oak_fence_gate",
+            "description": "<工作台>木棍*4+苍白橡木木板*2->苍白橡木栅栏门"
+        },
+        {
+            "name": "minecraft:pale_oak_hanging_sign",
+            "description": "<工作台>去皮苍白橡木原木*6+锁链*2->悬挂式苍白橡木告示牌*6"
+        },
+        {
+            "name": "minecraft:pale_oak_planks_from_log",
+            "description": "<工作台>苍白橡木原木->苍白橡木木板*4"
+        },
+        {
+            "name": "minecraft:pale_oak_planks_from_stripped_log",
+            "description": "<工作台>去皮苍白橡木原木->苍白橡木木板*4"
+        },
+        {
+            "name": "minecraft:pale_oak_planks_from_stripped_wood",
+            "description": "<工作台>去皮苍白橡木->苍白橡木木板*4"
+        },
+        {
+            "name": "minecraft:pale_oak_planks_from_wood",
+            "description": "<工作台>苍白橡木->苍白橡木木板*4"
+        },
+        {
+            "name": "minecraft:pale_oak_pressure_plate",
+            "description": "<工作台>苍白橡木木板*2->苍白橡木压力板"
+        },
+        {
+            "name": "minecraft:pale_oak_sign",
+            "description": "<工作台>苍白橡木木板*6+木棍->苍白橡木告示牌*3"
+        },
+        {
+            "name": "minecraft:pale_oak_slab",
+            "description": "<工作台>苍白橡木木板*3->苍白橡木台阶*6"
+        },
+        {
+            "name": "minecraft:pale_oak_stairs",
+            "description": "<工作台>苍白橡木木板*6->苍白橡木楼梯*4"
+        },
+        {
+            "name": "minecraft:pale_oak_trapdoor",
+            "description": "<工作台>苍白橡木木板*6->苍白橡木活板门*2"
+        },
+        {
+            "name": "minecraft:pale_oak_wood_from_log",
+            "description": "<工作台>苍白橡木原木*4->苍白橡木*3"
+        },
+        {
+            "name": "minecraft:pale_oak_wood_from_stripped_log",
+            "description": "<工作台>去皮苍白橡木原木*4->去皮苍白橡木*3"
         },
         {
             "name": "minecraft:paper",
@@ -2887,11 +4159,15 @@
         },
         {
             "name": "minecraft:purpur_block",
-            "description": "<工作台>爆裂紫颂果*4->紫珀块/雕纹紫珀块/紫珀柱/平滑紫珀块*4"
+            "description": "<工作台>爆裂紫颂果*4->紫珀块*4"
+        },
+        {
+            "name": "minecraft:purpur_slab",
+            "description": "<工作台>紫珀柱*3->紫珀台阶*6"
         },
         {
             "name": "minecraft:purpur_stairs",
-            "description": "<工作台>紫珀块/雕纹紫珀块/紫珀柱/平滑紫珀块*6->紫珀楼梯*4"
+            "description": "<工作台>紫珀块*6->紫珀楼梯*4"
         },
         {
             "name": "minecraft:quartz_block",
@@ -2899,7 +4175,7 @@
         },
         {
             "name": "minecraft:quartz_bricks",
-            "description": "<工作台>石英块*4->石英砖"
+            "description": "<工作台>石英块*4->石英砖*4"
         },
         {
             "name": "minecraft:quartz_stairs",
@@ -2919,7 +4195,7 @@
         },
         {
             "name": "minecraft:raiser_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>牧民盔甲纹饰 锻造模板+钻石*7+陶瓦->牧民盔甲纹饰 锻造模板*2"
+            "description": "<工作台>牧民盔甲纹饰锻造模板+钻石*7+陶瓦->牧民盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:raw_copper",
@@ -3014,6 +4290,14 @@
             "description": "<工作台>红砂岩*6->红砂岩楼梯*4"
         },
         {
+            "name": "minecraft:red_sandstone_stairs_from_chiseled",
+            "description": "<工作台>雕纹红砂岩*6->红砂岩楼梯*4"
+        },
+        {
+            "name": "minecraft:red_sandstone_stairs_from_cut",
+            "description": "<工作台>切制红砂岩*6->红砂岩楼梯*4"
+        },
+        {
             "name": "minecraft:red_sandstone_wall",
             "description": "<工作台>红砂岩*6->红砂岩墙*6"
         },
@@ -3054,12 +4338,36 @@
             "description": "<工作台>红石火把*2+红石粉+石头*3->红石中继器"
         },
         {
+            "name": "minecraft:resin_block",
+            "description": "<工作台>树脂团*9->树脂块"
+        },
+        {
+            "name": "minecraft:resin_brick_slab",
+            "description": "<工作台>树脂砖块*3->树脂砖台阶*6"
+        },
+        {
+            "name": "minecraft:resin_brick_stairs",
+            "description": "<工作台>树脂砖块*6->树脂砖楼梯*4"
+        },
+        {
+            "name": "minecraft:resin_brick_wall",
+            "description": "<工作台>树脂砖块*6->树脂砖墙*6"
+        },
+        {
+            "name": "minecraft:resin_bricks",
+            "description": "<工作台>树脂砖*4->树脂砖块"
+        },
+        {
+            "name": "minecraft:resin_clump_from_resin_block",
+            "description": "<工作台>树脂块->树脂团*9"
+        },
+        {
             "name": "minecraft:respawn_anchor",
             "description": "<工作台>哭泣的黑曜石*6+荧石*3->重生锚"
         },
         {
             "name": "minecraft:rib_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>肋骨盔甲纹饰 锻造模板+钻石*7+下界岩->肋骨盔甲纹饰 锻造模板*2"
+            "description": "<工作台>肋骨盔甲纹饰锻造模板+钻石*7+下界岩->肋骨盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:sandstone",
@@ -3068,6 +4376,14 @@
         {
             "name": "minecraft:sandstone_stairs",
             "description": "<工作台>砂岩*6->砂岩楼梯*4"
+        },
+        {
+            "name": "minecraft:sandstone_stairs_from_chiseled",
+            "description": "<工作台>雕纹砂岩*6->砂岩楼梯*4"
+        },
+        {
+            "name": "minecraft:sandstone_stairs_from_cut",
+            "description": "<工作台>切制砂岩*6->砂岩楼梯*4"
         },
         {
             "name": "minecraft:sandstone_wall",
@@ -3083,11 +4399,11 @@
         },
         {
             "name": "minecraft:sentry_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>哨兵盔甲纹饰 锻造模板+钻石*7+圆石->哨兵盔甲纹饰 锻造模板*2"
+            "description": "<工作台>哨兵盔甲纹饰锻造模板+钻石*7+圆石->哨兵盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:shaper_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>塑造盔甲纹饰 锻造模板+钻石*7+陶瓦->塑造盔甲纹饰 锻造模板*2"
+            "description": "<工作台>塑造盔甲纹饰锻造模板+钻石*7+陶瓦->塑造盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:shears",
@@ -3127,7 +4443,7 @@
         },
         {
             "name": "minecraft:silence_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>幽静盔甲纹饰 锻造模板+钻石*7+深板岩圆石->幽静盔甲纹饰 锻造模板*2"
+            "description": "<工作台>幽静盔甲纹饰锻造模板+钻石*7+深板岩圆石->幽静盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:slime",
@@ -3167,7 +4483,7 @@
         },
         {
             "name": "minecraft:snout_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>猪鼻盔甲纹饰 锻造模板+钻石*7+黑石->猪鼻盔甲纹饰 锻造模板*2"
+            "description": "<工作台>猪鼻盔甲纹饰锻造模板+钻石*7+黑石->猪鼻盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:snow",
@@ -3195,7 +4511,7 @@
         },
         {
             "name": "minecraft:spire_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>尖塔盔甲纹饰 锻造模板+钻石*7+紫珀块/雕纹紫珀块/紫珀柱/平滑紫珀块->尖塔盔甲纹饰 锻造模板*2"
+            "description": "<工作台>尖塔盔甲纹饰锻造模板+钻石*7+紫珀块->尖塔盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:spruce_boat",
@@ -3315,7 +4631,7 @@
         },
         {
             "name": "minecraft:stonecutter_andesite_slab",
-            "description": "<切石机>安山岩~>安山岩双层台阶*2"
+            "description": "<切石机>安山岩~>安山岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_andesite_stairs",
@@ -3423,7 +4739,7 @@
         },
         {
             "name": "minecraft:stonecutter_dark_prismarine_slab",
-            "description": "<切石机>暗海晶石~>暗海晶石双层台阶*2"
+            "description": "<切石机>暗海晶石~>暗海晶石台阶*2"
         },
         {
             "name": "minecraft:stonecutter_dark_prismarine_stairs",
@@ -3431,7 +4747,7 @@
         },
         {
             "name": "minecraft:stonecutter_diorite_slab",
-            "description": "<切石机>闪长岩~>闪长岩双层台阶*2"
+            "description": "<切石机>闪长岩~>闪长岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_diorite_stairs",
@@ -3443,15 +4759,15 @@
         },
         {
             "name": "minecraft:stonecutter_double_stone_slab",
-            "description": "<切石机>石头~>石头双层台阶*2"
+            "description": "<切石机>石头~>石头台阶*2"
         },
         {
             "name": "minecraft:stonecutter_endbrick_slab",
-            "description": "<切石机>末地石~>末地石砖双层台阶*2"
+            "description": "<切石机>末地石~>末地石砖台阶*2"
         },
         {
             "name": "minecraft:stonecutter_endbrick_slab2",
-            "description": "<切石机>末地石砖~>末地石砖双层台阶*2"
+            "description": "<切石机>末地石砖~>末地石砖台阶*2"
         },
         {
             "name": "minecraft:stonecutter_endbrick_stairs",
@@ -3463,11 +4779,11 @@
         },
         {
             "name": "minecraft:stonecutter_endbrick_wall",
-            "description": "<切石机>末地石~>下界砖墙"
+            "description": "<切石机>末地石~>末地石砖墙"
         },
         {
             "name": "minecraft:stonecutter_endbrick_wall2",
-            "description": "<切石机>末地石砖~>下界砖墙"
+            "description": "<切石机>末地石砖~>末地石砖墙"
         },
         {
             "name": "minecraft:stonecutter_endbricks",
@@ -3507,7 +4823,7 @@
         },
         {
             "name": "minecraft:stonecutter_granite_slab",
-            "description": "<切石机>花岗岩~>花岗岩双层台阶*2"
+            "description": "<切石机>花岗岩~>花岗岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_granite_stairs",
@@ -3519,7 +4835,7 @@
         },
         {
             "name": "minecraft:stonecutter_mossy_cobbledouble_stone_slab",
-            "description": "<切石机>苔石~>苔石双层台阶*2"
+            "description": "<切石机>苔石~>苔石台阶*2"
         },
         {
             "name": "minecraft:stonecutter_mossy_cobblestone_stairs",
@@ -3531,7 +4847,7 @@
         },
         {
             "name": "minecraft:stonecutter_mossy_stonebrick_slab",
-            "description": "<切石机>苔石砖~>苔石砖双层台阶*2"
+            "description": "<切石机>苔石砖~>苔石砖台阶*2"
         },
         {
             "name": "minecraft:stonecutter_mossy_stonebrick_stairs",
@@ -3563,7 +4879,7 @@
         },
         {
             "name": "minecraft:stonecutter_nether_brick_wall",
-            "description": "<切石机>下界砖块~>末地石砖墙"
+            "description": "<切石机>下界砖块~>下界砖墙"
         },
         {
             "name": "minecraft:stonecutter_oxidized_copper_to_cut_copper",
@@ -3603,11 +4919,11 @@
         },
         {
             "name": "minecraft:stonecutter_polished_andesite_slab",
-            "description": "<切石机>安山岩~>磨制安山岩双层台阶*2"
+            "description": "<切石机>安山岩~>磨制安山岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_polished_andesite_slab2",
-            "description": "<切石机>磨制安山岩~>磨制安山岩双层台阶*2"
+            "description": "<切石机>磨制安山岩~>磨制安山岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_polished_andesite_stairs",
@@ -3643,11 +4959,11 @@
         },
         {
             "name": "minecraft:stonecutter_polished_diorite_slab",
-            "description": "<切石机>闪长岩~>磨制闪长岩双层台阶*2"
+            "description": "<切石机>闪长岩~>磨制闪长岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_polished_diorite_slab2",
-            "description": "<切石机>磨制闪长岩~>磨制闪长岩双层台阶*2"
+            "description": "<切石机>磨制闪长岩~>磨制闪长岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_polished_diorite_stairs",
@@ -3667,11 +4983,11 @@
         },
         {
             "name": "minecraft:stonecutter_polished_granite_slab",
-            "description": "<切石机>花岗岩~>磨制花岗岩双层台阶*2"
+            "description": "<切石机>花岗岩~>磨制花岗岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_polished_granite_slab2",
-            "description": "<切石机>磨制花岗岩~>磨制花岗岩双层台阶*2"
+            "description": "<切石机>磨制花岗岩~>磨制花岗岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_polished_granite_stairs",
@@ -3727,7 +5043,7 @@
         },
         {
             "name": "minecraft:stonecutter_prismarine_brick_slab",
-            "description": "<切石机>海晶石砖~>海晶石砖双层台阶*2"
+            "description": "<切石机>海晶石砖~>海晶石砖台阶*2"
         },
         {
             "name": "minecraft:stonecutter_prismarine_brick_stairs",
@@ -3735,7 +5051,7 @@
         },
         {
             "name": "minecraft:stonecutter_prismarine_slab",
-            "description": "<切石机>海晶石~>海晶石双层台阶*2"
+            "description": "<切石机>海晶石~>海晶石台阶*2"
         },
         {
             "name": "minecraft:stonecutter_prismarine_stairs",
@@ -3751,7 +5067,7 @@
         },
         {
             "name": "minecraft:stonecutter_purpur_slab",
-            "description": "<切石机>紫珀块~>紫珀双层台阶*2"
+            "description": "<切石机>紫珀块~>紫珀台阶*2"
         },
         {
             "name": "minecraft:stonecutter_purpur_stairs",
@@ -3779,7 +5095,7 @@
         },
         {
             "name": "minecraft:stonecutter_red_nether_brick_slab",
-            "description": "<切石机>红色下界砖块~>红色下界砖双层台阶*2"
+            "description": "<切石机>红色下界砖块~>红色下界砖台阶*2"
         },
         {
             "name": "minecraft:stonecutter_red_nether_brick_stairs",
@@ -3791,7 +5107,7 @@
         },
         {
             "name": "minecraft:stonecutter_red_sanddouble_stone_slab",
-            "description": "<切石机>红砂岩~>红砂岩双层台阶*2"
+            "description": "<切石机>红砂岩~>红砂岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_red_sandstone_cut",
@@ -3808,6 +5124,22 @@
         {
             "name": "minecraft:stonecutter_red_sandstone_wall",
             "description": "<切石机>红砂岩~>红砂岩墙"
+        },
+        {
+            "name": "minecraft:stonecutter_resin_brick_chiseled",
+            "description": "<切石机>树脂砖块~>雕纹树脂砖块"
+        },
+        {
+            "name": "minecraft:stonecutter_resin_brick_slab",
+            "description": "<切石机>树脂砖块~>树脂砖台阶*2"
+        },
+        {
+            "name": "minecraft:stonecutter_resin_brick_stairs",
+            "description": "<切石机>树脂砖块~>树脂砖楼梯"
+        },
+        {
+            "name": "minecraft:stonecutter_resin_brick_wall",
+            "description": "<切石机>树脂砖块~>树脂砖墙"
         },
         {
             "name": "minecraft:stonecutter_sanddouble_stone_slab",
@@ -3843,7 +5175,7 @@
         },
         {
             "name": "minecraft:stonecutter_smooth_quartz_slab",
-            "description": "<切石机>平滑石英块~>平滑石英双层台阶*2"
+            "description": "<切石机>平滑石英块~>平滑石英台阶*2"
         },
         {
             "name": "minecraft:stonecutter_smooth_quartz_stairs",
@@ -3851,7 +5183,7 @@
         },
         {
             "name": "minecraft:stonecutter_smooth_red_sanddouble_stone_slab",
-            "description": "<切石机>平滑红砂岩~>平滑红砂岩双层台阶*2"
+            "description": "<切石机>平滑红砂岩~>平滑红砂岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_smooth_red_sandstone_stairs",
@@ -3859,7 +5191,7 @@
         },
         {
             "name": "minecraft:stonecutter_smooth_sanddouble_stone_slab",
-            "description": "<切石机>平滑砂岩~>平滑砂岩双层台阶*2"
+            "description": "<切石机>平滑砂岩~>平滑砂岩台阶*2"
         },
         {
             "name": "minecraft:stonecutter_smooth_sandstone_stairs",
@@ -3880,6 +5212,10 @@
         {
             "name": "minecraft:stonecutter_stonebrick_chiseled",
             "description": "<切石机>石头~>雕纹石砖"
+        },
+        {
+            "name": "minecraft:stonecutter_stonebrick_chiseled2",
+            "description": "<切石机>石砖~>雕纹石砖"
         },
         {
             "name": "minecraft:stonecutter_stonebrick_slab",
@@ -4067,7 +5403,7 @@
         },
         {
             "name": "minecraft:stonecutter_waxed_oxidized_cut_copper_to_cut_copper_slab",
-            "description": "<切石机>涂蜡的氧化切制铜块~>涂蜡的氧化切制铜台阶"
+            "description": "<切石机>涂蜡的氧化切制铜块~>涂蜡的氧化切制铜台阶*2"
         },
         {
             "name": "minecraft:stonecutter_waxed_oxidized_cut_copper_to_cut_copper_stairs",
@@ -4167,7 +5503,7 @@
         },
         {
             "name": "minecraft:tide_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>潮汐盔甲纹饰 锻造模板+钻石*7+海晶石/暗海晶石/海晶石砖->潮汐盔甲纹饰 锻造模板*2"
+            "description": "<工作台>潮汐盔甲纹饰锻造模板+钻石*7+海晶石->潮汐盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:tinted_glass",
@@ -4175,7 +5511,7 @@
         },
         {
             "name": "minecraft:tnt",
-            "description": "<工作台>沙子/红沙*4+火药*5->TNT"
+            "description": "<工作台>沙子*4+火药*5->TNT"
         },
         {
             "name": "minecraft:tnt_minecart",
@@ -4227,11 +5563,11 @@
         },
         {
             "name": "minecraft:vex_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>恼鬼盔甲纹饰 锻造模板+钻石*7+圆石->恼鬼盔甲纹饰 锻造模板*2"
+            "description": "<工作台>恼鬼盔甲纹饰锻造模板+钻石*7+圆石->恼鬼盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:ward_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>监守盔甲纹饰 锻造模板+钻石*7+深板岩圆石->监守盔甲纹饰 锻造模板*2"
+            "description": "<工作台>监守盔甲纹饰锻造模板+钻石*7+深板岩圆石->监守盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:warped_button",
@@ -4491,7 +5827,7 @@
         },
         {
             "name": "minecraft:wayfinder_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>向导盔甲纹饰 锻造模板+钻石*7+陶瓦->向导盔甲纹饰 锻造模板*2"
+            "description": "<工作台>向导盔甲纹饰锻造模板+钻石*7+陶瓦->向导盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:weathered_chiseled_copper",
@@ -4567,7 +5903,7 @@
         },
         {
             "name": "minecraft:wild_armor_trim_smithing_template_duplicate",
-            "description": "<工作台>荒野盔甲纹饰 锻造模板+钻石*7+苔石->荒野盔甲纹饰 锻造模板*2"
+            "description": "<工作台>荒野盔甲纹饰锻造模板+钻石*7+苔石->荒野盔甲纹饰锻造模板*2"
         },
         {
             "name": "minecraft:wind_charge",

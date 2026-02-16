@@ -6,11 +6,13 @@ on:
     paths:
       - '.github/workflows/build-wasm.yml'
       - 'CHelper-Core/**'
+      - 'script/**'
   pull_request:
     branches: [ "master", "dev" ]
     paths:
       - '.github/workflows/build-wasm.yml'
       - 'CHelper-Core/**'
+      - 'script/**'
 
 jobs:
   build:
@@ -21,5 +23,8 @@ jobs:
         with:
           submodules: 'recursive'
 
-      - name: Install emsdk and build wasm
-        run: cd ./CHelper-Core/script && sudo bash ./build-wasm.bash
+      - name: Install dependencies
+        run: sudo apt-get install -y cmake ninja-build
+
+      - name: Build Web Core
+        run: python ./script/build_web_core.py

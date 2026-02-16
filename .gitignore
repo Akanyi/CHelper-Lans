@@ -6,5 +6,10 @@
 /plan/
 
 # toolchain
-/android-ndk-*.zip
-/android-ndk-*/
+/toolchain/
+
+# python
+__pycache__/
+
+# script
+release.py

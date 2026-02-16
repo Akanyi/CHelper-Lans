@@ -1,6 +1,20 @@
-//
-// Created by Yancey on 2023/11/5.
-//
+/**
+* It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
+ * Copyright (C) 2026  Yancey
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 #include "CHelperResourceGenerator.h"
 #include <chelper/parser/Parser.h>
@@ -282,7 +296,7 @@ namespace CHelper::Test {
             }
             end = std::chrono::high_resolution_clock::now();
             SPDLOG_INFO("{} commands", FORMAT_ARG(commands.size()));
-            SPDLOG_INFO("run successfully({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
+            SPDLOG_INFO("run successfully ({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
         } catch (const std::exception &e) {
             Profile::printAndClear(e);
             exit(-1);
@@ -311,7 +325,7 @@ namespace CHelper::Test {
             start = std::chrono::high_resolution_clock::now();
             core->getCPack().writeJsonToDirectory(realOutput);
             end = std::chrono::high_resolution_clock::now();
-            SPDLOG_INFO("CPack write successfully({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
+            SPDLOG_INFO("CPack write successfully ({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
             core2 = CHelperCore::createByDirectory(realOutput);
         } catch (const std::exception &e) {
             Profile::printAndClear(e);
@@ -343,7 +357,7 @@ namespace CHelper::Test {
             start = std::chrono::high_resolution_clock::now();
             core->getCPack().writeJsonToFile(realOutput);
             end = std::chrono::high_resolution_clock::now();
-            SPDLOG_INFO("CPack write successfully({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
+            SPDLOG_INFO("CPack write successfully ({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
             core2 = CHelperCore::createByJson(realOutput);
         } catch (const std::exception &e) {
             Profile::printAndClear(e);
@@ -375,7 +389,7 @@ namespace CHelper::Test {
             start = std::chrono::high_resolution_clock::now();
             core->getCPack().writeBinToFile(realOutput);
             end = std::chrono::high_resolution_clock::now();
-            SPDLOG_INFO("run successfully({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
+            SPDLOG_INFO("run successfully ({})", FORMAT_ARG(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)));
             core2 = CHelperCore::createByBinary(realOutput);
         } catch (const std::exception &e) {
             Profile::printAndClear(e);

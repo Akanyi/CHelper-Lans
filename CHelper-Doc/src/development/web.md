@@ -36,7 +36,7 @@ export class CHelperCore {
     // 获取命令结构
   }
 
-  getDescription() {
+  getParamHint() {
     // 获取参数注释
   }
 

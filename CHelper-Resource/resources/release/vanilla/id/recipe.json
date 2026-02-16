@@ -2646,6 +2646,10 @@
             "description": "<工作台>金合欢木->金合欢木板*4"
         },
         {
+            "name": "minecraft:acacia_shelf_from_stripped_acacia_log",
+            "description": "<工作台>去皮金合欢原木*6->金合欢木展示架*6"
+        },
+        {
             "name": "minecraft:acacia_stairs",
             "description": "<工作台>金合欢木板*6->金合欢木楼梯*4"
         },
@@ -2750,6 +2754,10 @@
             "description": "<工作台>竹板*5->竹筏"
         },
         {
+            "name": "minecraft:bamboo_shelf_from_stripped_bamboo_block",
+            "description": "<工作台>去皮竹块*6->竹展示架*6"
+        },
+        {
             "name": "minecraft:bamboo_sign",
             "description": "<工作台>竹板*6+木棍->竹告示牌*3"
         },
@@ -2848,6 +2856,10 @@
         {
             "name": "minecraft:birch_planks_from_wood",
             "description": "<工作台>白桦木->白桦木板*4"
+        },
+        {
+            "name": "minecraft:birch_shelf_from_stripped_birch_log",
+            "description": "<工作台>去皮白桦原木*6->白桦木展示架*6"
         },
         {
             "name": "minecraft:birch_stairs",
@@ -3218,6 +3230,10 @@
             "description": "<工作台>樱花木板*2->樱花木压力板"
         },
         {
+            "name": "minecraft:cherry_shelf_from_stripped_cherry_log",
+            "description": "<工作台>去皮樱花原木*6->樱花木展示架*6"
+        },
+        {
             "name": "minecraft:cherry_sign",
             "description": "<工作台>樱花木板*6+木棍->樱花木告示牌*3"
         },
@@ -3358,12 +3374,36 @@
             "description": "<工作台>小麦*2+可可豆->曲奇*8"
         },
         {
+            "name": "minecraft:copper_axe",
+            "description": "<工作台>木棍*2+铜锭*3->铜斧"
+        },
+        {
+            "name": "minecraft:copper_bars",
+            "description": "<工作台>铜锭*6->铜栏杆*16"
+        },
+        {
             "name": "minecraft:copper_block_from_ingots",
             "description": "<工作台>铜锭*9->铜块"
         },
         {
+            "name": "minecraft:copper_boots",
+            "description": "<工作台>铜锭*4->铜靴子"
+        },
+        {
             "name": "minecraft:copper_bulb",
             "description": "<工作台>红石粉+铜块*3+烈焰棒->铜灯*4"
+        },
+        {
+            "name": "minecraft:copper_chain",
+            "description": "<工作台>铜粒*2+铜锭->铜链"
+        },
+        {
+            "name": "minecraft:copper_chest",
+            "description": "<工作台>箱子+铜锭*8->铜箱子"
+        },
+        {
+            "name": "minecraft:copper_chestplate",
+            "description": "<工作台>铜锭*8->铜胸甲"
         },
         {
             "name": "minecraft:copper_door",
@@ -3374,8 +3414,52 @@
             "description": "<工作台>铜块*4->铜格栅*4"
         },
         {
+            "name": "minecraft:copper_helmet",
+            "description": "<工作台>铜锭*5->铜头盔"
+        },
+        {
+            "name": "minecraft:copper_hoe",
+            "description": "<工作台>木棍*2+铜锭*2->铜锄"
+        },
+        {
+            "name": "minecraft:copper_ingot_from_nuggets",
+            "description": "<工作台>铜粒*9->铜锭"
+        },
+        {
+            "name": "minecraft:copper_lantern",
+            "description": "<工作台>铜粒*8+铜火把->铜灯笼"
+        },
+        {
+            "name": "minecraft:copper_leggings",
+            "description": "<工作台>铜锭*7->铜护腿"
+        },
+        {
+            "name": "minecraft:copper_nugget",
+            "description": "<工作台>铜锭->铜粒*9"
+        },
+        {
+            "name": "minecraft:copper_pickaxe",
+            "description": "<工作台>木棍*2+铜锭*3->铜镐"
+        },
+        {
+            "name": "minecraft:copper_shovel",
+            "description": "<工作台>木棍*2+铜锭->铜锹"
+        },
+        {
+            "name": "minecraft:copper_spear",
+            "description": "<工作台>木棍*2+铜锭->铜矛"
+        },
+        {
+            "name": "minecraft:copper_sword",
+            "description": "<工作台>木棍+铜锭*2->铜剑"
+        },
+        {
+            "name": "minecraft:copper_torch",
+            "description": "<工作台>煤炭/木炭+木棍+铜粒->铜火把*4"
+        },
+        {
             "name": "minecraft:copper_trapdoor",
-            "description": "<工作台>铜锭*6->铜活板门*2"
+            "description": "<工作台>铜锭*4->铜活板门"
         },
         {
             "name": "minecraft:crafter",
@@ -3534,6 +3618,10 @@
             "description": "<工作台>绯红木板*2->绯红木压力板"
         },
         {
+            "name": "minecraft:crimson_shelf_from_stripped_crimson_stem",
+            "description": "<工作台>去皮绯红菌柄*6->绯红木展示架*6"
+        },
+        {
             "name": "minecraft:crimson_sign",
             "description": "<工作台>绯红木板*6+木棍->绯红木告示牌*3"
         },
@@ -3640,6 +3728,10 @@
         {
             "name": "minecraft:dark_oak_planks_from_wood",
             "description": "<工作台>深色橡木->深色橡木木板*4"
+        },
+        {
+            "name": "minecraft:dark_oak_shelf_from_stripped_dark_oak_log",
+            "description": "<工作台>去皮深色橡木原木*6->深色橡木展示架*6"
         },
         {
             "name": "minecraft:dark_oak_stairs",
@@ -3844,6 +3936,10 @@
         {
             "name": "minecraft:diamond_shovel",
             "description": "<工作台>木棍*2+钻石->钻石锹"
+        },
+        {
+            "name": "minecraft:diamond_spear",
+            "description": "<工作台>木棍*2+钻石->钻石矛"
         },
         {
             "name": "minecraft:diamond_sword",
@@ -4070,6 +4166,10 @@
             "description": "<工作台>木棍*2+金锭->金锹"
         },
         {
+            "name": "minecraft:golden_spear",
+            "description": "<工作台>木棍*2+金锭->金矛"
+        },
+        {
             "name": "minecraft:golden_sword",
             "description": "<工作台>木棍+金锭*2->金剑"
         },
@@ -4282,6 +4382,10 @@
             "description": "<工作台>木棍*2+铁锭->铁锹"
         },
         {
+            "name": "minecraft:iron_spear",
+            "description": "<工作台>木棍*2+铁锭->铁矛"
+        },
+        {
             "name": "minecraft:iron_sword",
             "description": "<工作台>木棍+铁锭*2->铁剑"
         },
@@ -4332,6 +4436,10 @@
         {
             "name": "minecraft:jungle_planks_from_wood",
             "description": "<工作台>丛林木->丛林木板*4"
+        },
+        {
+            "name": "minecraft:jungle_shelf_from_stripped_jungle_log",
+            "description": "<工作台>去皮丛林原木*6->丛林木展示架*6"
         },
         {
             "name": "minecraft:jungle_stairs",
@@ -4730,6 +4838,10 @@
             "description": "<工作台>红树木板*2->红树木压力板"
         },
         {
+            "name": "minecraft:mangrove_shelf_from_stripped_mangrove_log",
+            "description": "<工作台>去皮红树原木*6->红树木展示架*6"
+        },
+        {
             "name": "minecraft:mangrove_sign",
             "description": "<工作台>红树木板*6+木棍->红树木告示牌*3"
         },
@@ -4894,6 +5006,10 @@
             "description": "<工作台>橡木->橡木木板*4"
         },
         {
+            "name": "minecraft:oak_shelf_from_stripped_oak_log",
+            "description": "<工作台>去皮橡木原木*6->橡木展示架*6"
+        },
+        {
             "name": "minecraft:oak_stairs",
             "description": "<工作台>橡木木板*6->橡木楼梯*4"
         },
@@ -5040,6 +5156,10 @@
         {
             "name": "minecraft:pale_oak_pressure_plate",
             "description": "<工作台>苍白橡木木板*2->苍白橡木压力板"
+        },
+        {
+            "name": "minecraft:pale_oak_shelf_from_stripped_pale_oak_log",
+            "description": "<工作台>去皮苍白橡木原木*6->苍白橡木展示架*6"
         },
         {
             "name": "minecraft:pale_oak_sign",
@@ -5742,6 +5862,10 @@
             "description": "<工作台>云杉木->云杉木板*4"
         },
         {
+            "name": "minecraft:spruce_shelf_from_stripped_spruce_log",
+            "description": "<工作台>去皮云杉原木*6->云杉木展示架*6"
+        },
+        {
             "name": "minecraft:spruce_stairs",
             "description": "<工作台>云杉木板*6->云杉木楼梯*4"
         },
@@ -5800,6 +5924,10 @@
         {
             "name": "minecraft:stone_shovel",
             "description": "<工作台>木棍*2+类圆石方块->石锹"
+        },
+        {
+            "name": "minecraft:stone_spear",
+            "description": "<工作台>木棍*2+类圆石方块->石矛"
         },
         {
             "name": "minecraft:stone_stairs",
@@ -6814,6 +6942,10 @@
             "description": "<工作台>诡异木板*2->诡异木压力板"
         },
         {
+            "name": "minecraft:warped_shelf_from_stripped_warped_stem",
+            "description": "<工作台>去皮诡异菌柄*6->诡异木展示架*6"
+        },
+        {
             "name": "minecraft:warped_sign",
             "description": "<工作台>诡异木板*6+木棍->诡异木告示牌*3"
         },
@@ -6894,6 +7026,10 @@
             "description": "<工作台>雕纹铜块+蜜脾~>涂蜡的雕纹铜块"
         },
         {
+            "name": "minecraft:waxing_copper_bars",
+            "description": "<工作台>铜栏杆+蜜脾~>涂蜡的铜栏杆"
+        },
+        {
             "name": "minecraft:waxing_copper_block",
             "description": "<工作台>铜块+蜜脾~>涂蜡的铜块"
         },
@@ -6902,12 +7038,28 @@
             "description": "<工作台>铜灯+蜜脾~>涂蜡的铜灯"
         },
         {
+            "name": "minecraft:waxing_copper_chain",
+            "description": "<工作台>铜链+蜜脾~>涂蜡的铜链"
+        },
+        {
+            "name": "minecraft:waxing_copper_chest",
+            "description": "<工作台>铜箱子+蜜脾~>涂蜡的铜箱子"
+        },
+        {
             "name": "minecraft:waxing_copper_door",
             "description": "<工作台>铜门+蜜脾~>涂蜡的铜门"
         },
         {
+            "name": "minecraft:waxing_copper_golem_statue",
+            "description": "<工作台>铜傀儡像+蜜脾~>涂蜡的铜傀儡像"
+        },
+        {
             "name": "minecraft:waxing_copper_grate",
             "description": "<工作台>铜格栅+蜜脾~>涂蜡的铜格栅"
+        },
+        {
+            "name": "minecraft:waxing_copper_lantern",
+            "description": "<工作台>铜灯笼+蜜脾~>涂蜡的铜灯笼"
         },
         {
             "name": "minecraft:waxing_copper_trapdoor",
@@ -6930,16 +7082,36 @@
             "description": "<工作台>斑驳的铜块+蜜脾~>涂蜡的斑驳铜块"
         },
         {
+            "name": "minecraft:waxing_exposed_copper_bars",
+            "description": "<工作台>斑驳的铜栏杆+蜜脾~>涂蜡的斑驳铜栏杆"
+        },
+        {
             "name": "minecraft:waxing_exposed_copper_bulb",
             "description": "<工作台>斑驳的铜灯+蜜脾~>涂蜡的斑驳铜灯"
+        },
+        {
+            "name": "minecraft:waxing_exposed_copper_chain",
+            "description": "<工作台>斑驳的铜链+蜜脾~>涂蜡的斑驳铜链"
+        },
+        {
+            "name": "minecraft:waxing_exposed_copper_chest",
+            "description": "<工作台>斑驳的铜箱子+蜜脾~>涂蜡的斑驳铜箱子"
         },
         {
             "name": "minecraft:waxing_exposed_copper_door",
             "description": "<工作台>斑驳的铜门+蜜脾~>涂蜡的斑驳铜门"
         },
         {
+            "name": "minecraft:waxing_exposed_copper_golem_statue",
+            "description": "<工作台>斑驳的铜傀儡像+蜜脾~>涂蜡的斑驳铜傀儡像"
+        },
+        {
             "name": "minecraft:waxing_exposed_copper_grate",
             "description": "<工作台>斑驳的铜格栅+蜜脾~>涂蜡的斑驳铜格栅"
+        },
+        {
+            "name": "minecraft:waxing_exposed_copper_lantern",
+            "description": "<工作台>斑驳的铜灯笼+蜜脾~>涂蜡的斑驳铜灯笼"
         },
         {
             "name": "minecraft:waxing_exposed_copper_trapdoor",
@@ -6958,20 +7130,48 @@
             "description": "<工作台>斑驳的切制铜楼梯+蜜脾~>涂蜡的斑驳切制铜楼梯"
         },
         {
+            "name": "minecraft:waxing_exposed_lightning_rod",
+            "description": "<工作台>斑驳的避雷针+蜜脾~>涂蜡的斑驳避雷针"
+        },
+        {
+            "name": "minecraft:waxing_lightning_rod",
+            "description": "<工作台>避雷针+蜜脾~>涂蜡的避雷针"
+        },
+        {
             "name": "minecraft:waxing_oxidized_copper",
             "description": "<工作台>氧化的铜块+蜜脾~>涂蜡的氧化铜块"
+        },
+        {
+            "name": "minecraft:waxing_oxidized_copper_bars",
+            "description": "<工作台>氧化的铜栏杆+蜜脾~>涂蜡的氧化铜栏杆"
         },
         {
             "name": "minecraft:waxing_oxidized_copper_bulb",
             "description": "<工作台>氧化的铜灯+蜜脾~>涂蜡的氧化铜灯"
         },
         {
+            "name": "minecraft:waxing_oxidized_copper_chain",
+            "description": "<工作台>氧化的铜链+蜜脾~>涂蜡的氧化铜链"
+        },
+        {
+            "name": "minecraft:waxing_oxidized_copper_chest",
+            "description": "<工作台>氧化的铜箱子+蜜脾~>涂蜡的氧化铜箱子"
+        },
+        {
             "name": "minecraft:waxing_oxidized_copper_door",
             "description": "<工作台>氧化的铜门+蜜脾~>涂蜡的氧化铜门"
         },
         {
+            "name": "minecraft:waxing_oxidized_copper_golem_statue",
+            "description": "<工作台>氧化的铜傀儡像+蜜脾~>涂蜡的氧化铜傀儡像"
+        },
+        {
             "name": "minecraft:waxing_oxidized_copper_grate",
             "description": "<工作台>氧化的铜格栅+蜜脾~>涂蜡的氧化铜格栅"
+        },
+        {
+            "name": "minecraft:waxing_oxidized_copper_lantern",
+            "description": "<工作台>氧化的铜灯笼+蜜脾~>涂蜡的氧化铜灯笼"
         },
         {
             "name": "minecraft:waxing_oxidized_copper_trapdoor",
@@ -6990,20 +7190,44 @@
             "description": "<工作台>氧化的切制铜楼梯+蜜脾~>涂蜡的氧化切制铜楼梯"
         },
         {
+            "name": "minecraft:waxing_oxidized_lightning_rod",
+            "description": "<工作台>氧化的避雷针+蜜脾~>涂蜡的氧化避雷针"
+        },
+        {
             "name": "minecraft:waxing_weathered_copper",
             "description": "<工作台>锈蚀的铜块+蜜脾~>涂蜡的锈蚀铜块"
+        },
+        {
+            "name": "minecraft:waxing_weathered_copper_bars",
+            "description": "<工作台>锈蚀的铜栏杆+蜜脾~>涂蜡的锈蚀铜栏杆"
         },
         {
             "name": "minecraft:waxing_weathered_copper_bulb",
             "description": "<工作台>锈蚀的铜灯+蜜脾~>涂蜡的锈蚀铜灯"
         },
         {
+            "name": "minecraft:waxing_weathered_copper_chain",
+            "description": "<工作台>锈蚀的铜链+蜜脾~>涂蜡的锈蚀铜链"
+        },
+        {
+            "name": "minecraft:waxing_weathered_copper_chest",
+            "description": "<工作台>锈蚀的铜箱子+蜜脾~>涂蜡的锈蚀铜箱子"
+        },
+        {
             "name": "minecraft:waxing_weathered_copper_door",
             "description": "<工作台>锈蚀的铜门+蜜脾~>涂蜡的锈蚀铜门"
         },
         {
+            "name": "minecraft:waxing_weathered_copper_golem_statue",
+            "description": "<工作台>锈蚀的铜傀儡像+蜜脾~>涂蜡的锈蚀铜傀儡像"
+        },
+        {
             "name": "minecraft:waxing_weathered_copper_grate",
             "description": "<工作台>锈蚀的铜格栅+蜜脾~>涂蜡的锈蚀铜格栅"
+        },
+        {
+            "name": "minecraft:waxing_weathered_copper_lantern",
+            "description": "<工作台>锈蚀的铜灯笼+蜜脾~>涂蜡的锈蚀铜灯笼"
         },
         {
             "name": "minecraft:waxing_weathered_copper_trapdoor",
@@ -7020,6 +7244,10 @@
         {
             "name": "minecraft:waxing_weathered_cut_copper_stairs",
             "description": "<工作台>锈蚀的切制铜楼梯+蜜脾~>涂蜡的锈蚀切制铜楼梯"
+        },
+        {
+            "name": "minecraft:waxing_weathered_lightning_rod",
+            "description": "<工作台>锈蚀的避雷针+蜜脾~>涂蜡的锈蚀避雷针"
         },
         {
             "name": "minecraft:wayfinder_armor_trim_smithing_template_duplicate",
@@ -7128,6 +7356,10 @@
         {
             "name": "minecraft:wooden_shovel",
             "description": "<工作台>木棍*2+木板->木锹"
+        },
+        {
+            "name": "minecraft:wooden_spear",
+            "description": "<工作台>木棍*2+木板->木矛"
         },
         {
             "name": "minecraft:wooden_sword",

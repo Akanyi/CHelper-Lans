@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -131,7 +131,7 @@ public class CHelperCore implements Closeable {
         if (pointer == 0) {
             return null;
         }
-        return getDescription0(pointer);
+        return getParamHint0(pointer);
     }
 
     /**
@@ -305,7 +305,7 @@ public class CHelperCore implements Closeable {
      *
      * @param pointer 内核的内存地址
      */
-    private static native String getDescription0(long pointer);
+    private static native String getParamHint0(long pointer);
 
     /**
      * 获取当前命令的错误原因

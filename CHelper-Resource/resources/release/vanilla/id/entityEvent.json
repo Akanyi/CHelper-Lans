@@ -147,6 +147,9 @@
             "name": "minecraft:ageable_set_baby"
         },
         {
+            "name": "minecraft:all_riders_dismounted"
+        },
+        {
             "name": "minecraft:ambient_night"
         },
         {
@@ -160,6 +163,15 @@
         },
         {
             "name": "minecraft:as_baby"
+        },
+        {
+            "name": "minecraft:as_baby_jockey"
+        },
+        {
+            "name": "minecraft:as_ranged_adult"
+        },
+        {
+            "name": "minecraft:as_rider"
         },
         {
             "name": "minecraft:ate_allium"
@@ -336,6 +348,9 @@
             "name": "minecraft:become_sheperd"
         },
         {
+            "name": "minecraft:become_statue"
+        },
+        {
             "name": "minecraft:become_stunned"
         },
         {
@@ -363,6 +378,9 @@
             "name": "minecraft:become_yellow_tang"
         },
         {
+            "name": "minecraft:begin_oxidizing"
+        },
+        {
             "name": "minecraft:born_default"
         },
         {
@@ -370,6 +388,12 @@
         },
         {
             "name": "minecraft:calm"
+        },
+        {
+            "name": "minecraft:camel_husk_saddled"
+        },
+        {
+            "name": "minecraft:camel_husk_unsaddled"
         },
         {
             "name": "minecraft:camel_saddled"
@@ -504,6 +528,24 @@
             "name": "minecraft:from_player"
         },
         {
+            "name": "minecraft:from_player_default"
+        },
+        {
+            "name": "minecraft:from_player_exposed"
+        },
+        {
+            "name": "minecraft:from_player_oxidized"
+        },
+        {
+            "name": "minecraft:from_player_spawned"
+        },
+        {
+            "name": "minecraft:from_player_weathered"
+        },
+        {
+            "name": "minecraft:from_serialized_entity"
+        },
+        {
             "name": "minecraft:from_village"
         },
         {
@@ -541,6 +583,12 @@
         },
         {
             "name": "minecraft:horse_unsaddled"
+        },
+        {
+            "name": "minecraft:hostile_dismounted"
+        },
+        {
+            "name": "minecraft:hostile_mounted"
         },
         {
             "name": "minecraft:increase_max_health"
@@ -585,6 +633,9 @@
             "name": "minecraft:make_white"
         },
         {
+            "name": "minecraft:maximum_oxidation"
+        },
+        {
             "name": "minecraft:melee_mode"
         },
         {
@@ -615,6 +666,15 @@
             "name": "minecraft:on_deflate"
         },
         {
+            "name": "minecraft:on_dismount"
+        },
+        {
+            "name": "minecraft:on_drowned_dismount"
+        },
+        {
+            "name": "minecraft:on_drowned_mount"
+        },
+        {
             "name": "minecraft:on_eat_block"
         },
         {
@@ -636,6 +696,9 @@
             "name": "minecraft:on_leash"
         },
         {
+            "name": "minecraft:on_mount"
+        },
+        {
             "name": "minecraft:on_normal_puff"
         },
         {
@@ -648,6 +711,12 @@
             "name": "minecraft:on_passenger_mount"
         },
         {
+            "name": "minecraft:on_player_dismount"
+        },
+        {
+            "name": "minecraft:on_player_mount"
+        },
+        {
             "name": "minecraft:on_prime"
         },
         {
@@ -657,13 +726,34 @@
             "name": "minecraft:on_saddled"
         },
         {
+            "name": "minecraft:on_saddled_in_water"
+        },
+        {
+            "name": "minecraft:on_saddled_out_of_water"
+        },
+        {
             "name": "minecraft:on_scared"
         },
         {
             "name": "minecraft:on_sheared"
         },
         {
+            "name": "minecraft:on_start_riding_camel_husk"
+        },
+        {
+            "name": "minecraft:on_start_riding_zombie_horse"
+        },
+        {
+            "name": "minecraft:on_stop_riding_camel_husk"
+        },
+        {
+            "name": "minecraft:on_stop_riding_zombie_horse"
+        },
+        {
             "name": "minecraft:on_stop_tempting"
+        },
+        {
+            "name": "minecraft:on_take_flower"
         },
         {
             "name": "minecraft:on_tame"
@@ -688,6 +778,9 @@
         },
         {
             "name": "minecraft:on_unsaddled"
+        },
+        {
+            "name": "minecraft:oxidize_copper"
         },
         {
             "name": "minecraft:panda_aggressive"
@@ -726,6 +819,9 @@
             "name": "minecraft:ranged_mode"
         },
         {
+            "name": "minecraft:remove_oxidation_layer"
+        },
+        {
             "name": "minecraft:remove_persistence"
         },
         {
@@ -735,7 +831,13 @@
             "name": "minecraft:reset_swaying_ticks"
         },
         {
+            "name": "minecraft:restart_oxidation_timer"
+        },
+        {
             "name": "minecraft:resupply_trades"
+        },
+        {
+            "name": "minecraft:rider_mounted"
         },
         {
             "name": "minecraft:roll_up"
@@ -771,6 +873,9 @@
             "name": "minecraft:scheduled"
         },
         {
+            "name": "minecraft:serialize_entity_succeeded"
+        },
+        {
             "name": "minecraft:set_trap"
         },
         {
@@ -780,6 +885,9 @@
             "name": "minecraft:spawn_adult"
         },
         {
+            "name": "minecraft:spawn_adult_with_rider"
+        },
+        {
             "name": "minecraft:spawn_armorer"
         },
         {
@@ -787,6 +895,9 @@
         },
         {
             "name": "minecraft:spawn_as_patrol_follower"
+        },
+        {
+            "name": "minecraft:spawn_as_rider"
         },
         {
             "name": "minecraft:spawn_as_strider_jockey"
@@ -888,6 +999,9 @@
             "name": "minecraft:spawn_with_pillager_rider"
         },
         {
+            "name": "minecraft:spawn_with_rider"
+        },
+        {
             "name": "minecraft:spawn_with_vindicator_captain_rider"
         },
         {
@@ -898,6 +1012,9 @@
         },
         {
             "name": "minecraft:start_celebrating"
+        },
+        {
+            "name": "minecraft:start_charge"
         },
         {
             "name": "minecraft:start_death"
@@ -960,6 +1077,9 @@
             "name": "minecraft:stop_celebrating"
         },
         {
+            "name": "minecraft:stop_charge"
+        },
+        {
             "name": "minecraft:stop_dryingout"
         },
         {
@@ -984,7 +1104,13 @@
             "name": "minecraft:stopped_riding"
         },
         {
+            "name": "minecraft:switch_to_ai_controlled"
+        },
+        {
             "name": "minecraft:switch_to_melee"
+        },
+        {
+            "name": "minecraft:switch_to_player_controlled"
         },
         {
             "name": "minecraft:switch_to_ranged"
@@ -1003,6 +1129,21 @@
         },
         {
             "name": "minecraft:to_full_puff"
+        },
+        {
+            "name": "minecraft:transport_items.start_place_fail"
+        },
+        {
+            "name": "minecraft:transport_items.start_place_succeed"
+        },
+        {
+            "name": "minecraft:transport_items.start_take_fail"
+        },
+        {
+            "name": "minecraft:transport_items.start_take_succeed"
+        },
+        {
+            "name": "minecraft:transport_items.stop_interaction"
         },
         {
             "name": "minecraft:trigger_raid"
@@ -1062,7 +1203,16 @@
             "name": "minecraft:upgrade_to_1_21_100"
         },
         {
+            "name": "minecraft:upgrade_to_1_21_130"
+        },
+        {
             "name": "minecraft:warm_color"
+        },
+        {
+            "name": "minecraft:wax_off"
+        },
+        {
+            "name": "minecraft:wax_on"
         },
         {
             "name": "navigation_off_land"

@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import yancey.chelper.android.common.style.CustomTheme
+import yancey.chelper.android.common.util.CustomTheme
 import yancey.chelper.android.common.util.Settings
 import yancey.chelper.ui.common.CHelperTheme
 
@@ -49,8 +49,6 @@ abstract class BaseComposeActivity : ComponentActivity() {
     protected var backgroundBitmap by mutableStateOf<ImageBitmap?>(null)
     protected var theme by mutableStateOf(CHelperTheme.Theme.Light)
     protected var isSystemDarkMode = false
-
-    abstract val pageName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isSystemDarkMode =

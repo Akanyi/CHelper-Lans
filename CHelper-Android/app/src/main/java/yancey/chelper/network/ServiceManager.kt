@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ import okhttp3.OkHttpClient
 import okhttp3.brotli.BrotliInterceptor
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import yancey.chelper.BuildConfig
 import yancey.chelper.android.common.util.Settings
@@ -76,13 +75,11 @@ object ServiceManager {
             .baseUrl("https://www.yanceymc.cn/api/chelper/")
             .client(CLIENT!!)
             .addConverterFactory(GsonConverterFactory.create(GSON!!))
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
         COMMAND_LAB_RETROFIT = Retrofit.Builder()
             .baseUrl(Settings.INSTANCE.apiUrl?.takeIf { it.isNotEmpty() } ?: LAB_BASE_URL)
             .client(CLIENT!!)
             .addConverterFactory(GsonConverterFactory.create(GSON!!))
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
         CHELPER_SERVICE = CHELPER_RETROFIT!!.create(CHelperService::class.java)
         COMMAND_LAB_PUBLIC_SERVICE =

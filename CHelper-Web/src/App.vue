@@ -15,7 +15,7 @@ export default {
       ALL_BRANCH: ALL_BRANCH,
       ALL_BRANCH_CHINESE: ALL_BRANCH_CHINESE,
       structure: 'CHelper正在加载中，请稍候',
-      description: '作者：Yancey',
+      paramHint: '作者：Yancey',
       errorReason: '',
       suggestions: [],
       realSuggestionSize: 0,
@@ -65,7 +65,7 @@ export default {
       if (newEditorValue.text.length === 0) {
         this.editorValue = newEditorValue
         this.structure = '欢迎使用CHelper'
-        this.description = '作者：Yancey'
+        this.paramHint = '作者：Yancey'
         this.errorReason = ''
         if (this.core !== undefined) {
           this.core.onTextChanged(this.editorValue.text, this.editorValue.cursorPosition)
@@ -99,7 +99,7 @@ export default {
         }
         this.syntaxTokens = this.core.getSyntaxTokens()
       }
-      this.description = this.core.getDescription()
+      this.paramHint = this.core.getParamHint()
       this.updateSuggestions()
     },
     loadMore(count) {
@@ -159,7 +159,7 @@ export default {
     <header class="header">
       <div>
         <div class="text-structure">{{ structure }}</div>
-        <div class="text-description">{{ description }}</div>
+        <div class="text-param-hint">{{ paramHint }}</div>
         <div class="text-error-reason" v-if="errorReason">{{ errorReason }}</div>
         <div class="line"></div>
       </div>
@@ -221,7 +221,7 @@ main {
   white-space: pre-wrap;
 }
 
-.text-description {
+.text-param-hint {
   height: auto;
   padding: 10px;
   margin: 5px 5px 0 5px;

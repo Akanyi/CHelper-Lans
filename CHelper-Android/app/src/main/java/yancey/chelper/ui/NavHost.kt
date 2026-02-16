@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2025  Yancey
+ * Copyright (C) 2026  Yancey
  * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,9 +33,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import yancey.chelper.android.library.util.LocalLibraryManager
+import yancey.chelper.android.common.util.LocalLibraryManager
+import yancey.chelper.android.window.FloatingWindowManager
 import yancey.chelper.core.CHelperCore
 import yancey.chelper.ui.about.AboutScreen
+import yancey.chelper.ui.common.dialog.IsConfirmDialog
 import yancey.chelper.ui.completion.CompletionScreen
 import yancey.chelper.ui.completion.HistoryScreen
 import yancey.chelper.ui.enumeration.EnumerationScreen
@@ -108,8 +112,10 @@ data class ShowTextScreenKey(
 @Composable
 fun NavHost(
     navController: NavHostController,
+    floatingWindowManager: FloatingWindowManager,
     chooseBackground: () -> Unit,
     restoreBackground: () -> Unit,
+    isShowSavingBackgroundDialog: MutableState<Boolean> = mutableStateOf(false),
     onChooseTheme: () -> Unit,
     shutdown: () -> Unit
 ) {
@@ -122,7 +128,7 @@ fun NavHost(
         popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) }
     ) {
         composable<HomeScreenKey> {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, floatingWindowManager = floatingWindowManager)
         }
         composable<CompletionScreenKey> {
             CompletionScreen(
@@ -194,6 +200,12 @@ fun NavHost(
             val viewModel: PublicLibraryShowViewModel = viewModel()
             PublicLibraryShowScreen(id = publicLibraryShow.id, viewModel = viewModel)
         }
+    }
+    if (isShowSavingBackgroundDialog.value) {
+        IsConfirmDialog(
+            onDismissRequest = { isShowSavingBackgroundDialog.value = false },
+            content = "背景图片正在保存中，请稍候",
+        )
     }
 }
 

@@ -51,6 +51,10 @@
             "description": "金合欢树苗"
         },
         {
+            "name": "acacia_shelf",
+            "description": "金合欢木展示架"
+        },
+        {
             "name": "acacia_sign",
             "description": "金合欢木告示牌"
         },
@@ -243,6 +247,10 @@
             "description": "竹筏"
         },
         {
+            "name": "bamboo_shelf",
+            "description": "竹展示架"
+        },
+        {
             "name": "bamboo_sign",
             "description": "竹告示牌"
         },
@@ -373,6 +381,10 @@
         {
             "name": "birch_sapling",
             "description": "白桦树苗"
+        },
+        {
+            "name": "birch_shelf",
+            "description": "白桦木展示架"
         },
         {
             "name": "birch_sign",
@@ -763,6 +775,10 @@
             "description": "校频幽匿感测体"
         },
         {
+            "name": "camel_husk_spawn_egg",
+            "description": "骆驼尸壳刷怪蛋"
+        },
+        {
             "name": "camel_spawn_egg",
             "description": "骆驼刷怪蛋"
         },
@@ -801,10 +817,6 @@
         {
             "name": "cave_spider_spawn_egg",
             "description": "洞穴蜘蛛刷怪蛋"
-        },
-        {
-            "name": "chain",
-            "description": "锁链"
         },
         {
             "name": "chain_command_block",
@@ -877,6 +889,10 @@
         {
             "name": "cherry_sapling",
             "description": "樱花树苗"
+        },
+        {
+            "name": "cherry_shelf",
+            "description": "樱花木展示架"
         },
         {
             "name": "cherry_sign",
@@ -1115,28 +1131,108 @@
             "description": "曲奇"
         },
         {
+            "name": "copper_axe",
+            "description": "铜斧"
+        },
+        {
+            "name": "copper_bars",
+            "description": "铜栏杆"
+        },
+        {
             "name": "copper_block",
             "description": "铜块"
+        },
+        {
+            "name": "copper_boots",
+            "description": "铜靴子"
         },
         {
             "name": "copper_bulb",
             "description": "铜灯"
         },
         {
+            "name": "copper_chain",
+            "description": "铜链"
+        },
+        {
+            "name": "copper_chest",
+            "description": "铜箱子"
+        },
+        {
+            "name": "copper_chestplate",
+            "description": "铜胸甲"
+        },
+        {
             "name": "copper_door",
             "description": "铜门"
+        },
+        {
+            "name": "copper_golem_spawn_egg",
+            "description": "铜傀儡刷怪蛋"
+        },
+        {
+            "name": "copper_golem_statue",
+            "description": "铜傀儡像"
         },
         {
             "name": "copper_grate",
             "description": "铜格栅"
         },
         {
+            "name": "copper_helmet",
+            "description": "铜头盔"
+        },
+        {
+            "name": "copper_hoe",
+            "description": "铜锄"
+        },
+        {
+            "name": "copper_horse_armor",
+            "description": "铜马铠"
+        },
+        {
             "name": "copper_ingot",
             "description": "铜锭"
         },
         {
+            "name": "copper_lantern",
+            "description": "铜灯笼"
+        },
+        {
+            "name": "copper_leggings",
+            "description": "铜护腿"
+        },
+        {
+            "name": "copper_nautilus_armor",
+            "description": "铜鹦鹉螺铠"
+        },
+        {
+            "name": "copper_nugget",
+            "description": "铜粒"
+        },
+        {
             "name": "copper_ore",
             "description": "铜矿石"
+        },
+        {
+            "name": "copper_pickaxe",
+            "description": "铜镐"
+        },
+        {
+            "name": "copper_shovel",
+            "description": "铜锹"
+        },
+        {
+            "name": "copper_spear",
+            "description": "铜矛"
+        },
+        {
+            "name": "copper_sword",
+            "description": "铜剑"
+        },
+        {
+            "name": "copper_torch",
+            "description": "铜火把"
         },
         {
             "name": "copper_trapdoor",
@@ -1241,6 +1337,10 @@
         {
             "name": "crimson_roots",
             "description": "绯红菌索"
+        },
+        {
+            "name": "crimson_shelf",
+            "description": "绯红木展示架"
         },
         {
             "name": "crimson_sign",
@@ -1409,6 +1509,10 @@
         {
             "name": "dark_oak_sapling",
             "description": "深色橡树树苗"
+        },
+        {
+            "name": "dark_oak_shelf",
+            "description": "深色橡木展示架"
         },
         {
             "name": "dark_oak_sign",
@@ -1627,6 +1731,10 @@
             "description": "钻石护腿"
         },
         {
+            "name": "diamond_nautilus_armor",
+            "description": "钻石鹦鹉螺铠"
+        },
+        {
             "name": "diamond_ore",
             "description": "钻石矿石"
         },
@@ -1637,6 +1745,10 @@
         {
             "name": "diamond_shovel",
             "description": "钻石锹"
+        },
+        {
+            "name": "diamond_spear",
+            "description": "钻石矛"
         },
         {
             "name": "diamond_sword",
@@ -1843,16 +1955,36 @@
             "description": "斑驳的铜块"
         },
         {
+            "name": "exposed_copper_bars",
+            "description": "斑驳的铜栏杆"
+        },
+        {
             "name": "exposed_copper_bulb",
             "description": "斑驳的铜灯"
+        },
+        {
+            "name": "exposed_copper_chain",
+            "description": "斑驳的铜链"
+        },
+        {
+            "name": "exposed_copper_chest",
+            "description": "斑驳的铜箱子"
         },
         {
             "name": "exposed_copper_door",
             "description": "斑驳的铜门"
         },
         {
+            "name": "exposed_copper_golem_statue",
+            "description": "斑驳的铜傀儡像"
+        },
+        {
             "name": "exposed_copper_grate",
             "description": "斑驳的铜格栅"
+        },
+        {
+            "name": "exposed_copper_lantern",
+            "description": "斑驳的铜灯笼"
         },
         {
             "name": "exposed_copper_trapdoor",
@@ -1869,6 +2001,10 @@
         {
             "name": "exposed_cut_copper_stairs",
             "description": "斑驳的切制铜楼梯"
+        },
+        {
+            "name": "exposed_lightning_rod",
+            "description": "斑驳的避雷针"
         },
         {
             "name": "eye_armor_trim_smithing_template",
@@ -2119,6 +2255,10 @@
             "description": "金护腿"
         },
         {
+            "name": "golden_nautilus_armor",
+            "description": "金鹦鹉螺铠"
+        },
+        {
             "name": "golden_pickaxe",
             "description": "金镐"
         },
@@ -2129,6 +2269,10 @@
         {
             "name": "golden_shovel",
             "description": "金锹"
+        },
+        {
+            "name": "golden_spear",
+            "description": "金矛"
         },
         {
             "name": "golden_sword",
@@ -2431,6 +2575,10 @@
             "description": "铁靴子"
         },
         {
+            "name": "iron_chain",
+            "description": "铁链"
+        },
+        {
             "name": "iron_chestplate",
             "description": "铁胸甲"
         },
@@ -2463,6 +2611,10 @@
             "description": "铁护腿"
         },
         {
+            "name": "iron_nautilus_armor",
+            "description": "铁鹦鹉螺铠"
+        },
+        {
             "name": "iron_nugget",
             "description": "铁粒"
         },
@@ -2477,6 +2629,10 @@
         {
             "name": "iron_shovel",
             "description": "铁锹"
+        },
+        {
+            "name": "iron_spear",
+            "description": "铁矛"
         },
         {
             "name": "iron_sword",
@@ -2543,6 +2699,10 @@
             "description": "丛林树苗"
         },
         {
+            "name": "jungle_shelf",
+            "description": "丛林木展示架"
+        },
+        {
             "name": "jungle_sign",
             "description": "丛林木告示牌"
         },
@@ -2604,7 +2764,7 @@
         },
         {
             "name": "leaf_litter",
-            "description": "枯叶"
+            "description": "枯叶堆"
         },
         {
             "name": "leather",
@@ -3064,6 +3224,10 @@
             "description": "红树根"
         },
         {
+            "name": "mangrove_shelf",
+            "description": "红树木展示架"
+        },
+        {
             "name": "mangrove_sign",
             "description": "红树木告示牌"
         },
@@ -3304,6 +3468,10 @@
             "description": "鹦鹉螺壳"
         },
         {
+            "name": "nautilus_spawn_egg",
+            "description": "鹦鹉螺刷怪蛋"
+        },
+        {
             "name": "nether_brick",
             "description": "下界砖块"
         },
@@ -3372,12 +3540,20 @@
             "description": "下界合金锄"
         },
         {
+            "name": "netherite_horse_armor",
+            "description": "下界合金马铠"
+        },
+        {
             "name": "netherite_ingot",
             "description": "下界合金锭"
         },
         {
             "name": "netherite_leggings",
             "description": "下界合金护腿"
+        },
+        {
+            "name": "netherite_nautilus_armor",
+            "description": "下界合金鹦鹉螺铠"
         },
         {
             "name": "netherite_pickaxe",
@@ -3390,6 +3566,10 @@
         {
             "name": "netherite_shovel",
             "description": "下界合金锹"
+        },
+        {
+            "name": "netherite_spear",
+            "description": "下界合金矛"
         },
         {
             "name": "netherite_sword",
@@ -3446,6 +3626,10 @@
         {
             "name": "oak_sapling",
             "description": "橡树树苗"
+        },
+        {
+            "name": "oak_shelf",
+            "description": "橡木展示架"
         },
         {
             "name": "oak_sign",
@@ -3560,16 +3744,36 @@
             "description": "氧化的铜块"
         },
         {
+            "name": "oxidized_copper_bars",
+            "description": "氧化的铜栏杆"
+        },
+        {
             "name": "oxidized_copper_bulb",
             "description": "氧化的铜灯"
+        },
+        {
+            "name": "oxidized_copper_chain",
+            "description": "氧化的铜链"
+        },
+        {
+            "name": "oxidized_copper_chest",
+            "description": "氧化的铜箱子"
         },
         {
             "name": "oxidized_copper_door",
             "description": "氧化的铜门"
         },
         {
+            "name": "oxidized_copper_golem_statue",
+            "description": "氧化的铜傀儡像"
+        },
+        {
             "name": "oxidized_copper_grate",
             "description": "氧化的铜格栅"
+        },
+        {
+            "name": "oxidized_copper_lantern",
+            "description": "氧化的铜灯笼"
         },
         {
             "name": "oxidized_copper_trapdoor",
@@ -3586,6 +3790,10 @@
         {
             "name": "oxidized_cut_copper_stairs",
             "description": "氧化的切制铜楼梯"
+        },
+        {
+            "name": "oxidized_lightning_rod",
+            "description": "氧化的避雷针"
         },
         {
             "name": "packed_ice",
@@ -3660,6 +3868,10 @@
             "description": "苍白橡树树苗"
         },
         {
+            "name": "pale_oak_shelf",
+            "description": "苍白橡木展示架"
+        },
+        {
             "name": "pale_oak_sign",
             "description": "苍白橡木告示牌"
         },
@@ -3686,6 +3898,10 @@
         {
             "name": "paper",
             "description": "纸"
+        },
+        {
+            "name": "parched_spawn_egg",
+            "description": "焦骸刷怪蛋"
         },
         {
             "name": "parrot_spawn_egg",
@@ -4818,6 +5034,10 @@
             "description": "云杉树苗"
         },
         {
+            "name": "spruce_shelf",
+            "description": "云杉木展示架"
+        },
+        {
             "name": "spruce_sign",
             "description": "云杉木告示牌"
         },
@@ -4896,6 +5116,10 @@
         {
             "name": "stone_shovel",
             "description": "石锹"
+        },
+        {
+            "name": "stone_spear",
+            "description": "石矛"
         },
         {
             "name": "stone_stairs",
@@ -5298,6 +5522,10 @@
             "description": "诡异菌索"
         },
         {
+            "name": "warped_shelf",
+            "description": "诡异木展示架"
+        },
+        {
             "name": "warped_sign",
             "description": "诡异木告示牌"
         },
@@ -5338,16 +5566,36 @@
             "description": "涂蜡的铜块"
         },
         {
+            "name": "waxed_copper_bars",
+            "description": "涂蜡的铜栏杆"
+        },
+        {
             "name": "waxed_copper_bulb",
             "description": "涂蜡的铜灯"
+        },
+        {
+            "name": "waxed_copper_chain",
+            "description": "涂蜡的铜链"
+        },
+        {
+            "name": "waxed_copper_chest",
+            "description": "涂蜡的铜箱子"
         },
         {
             "name": "waxed_copper_door",
             "description": "涂蜡的铜门"
         },
         {
+            "name": "waxed_copper_golem_statue",
+            "description": "涂蜡的铜傀儡像"
+        },
+        {
             "name": "waxed_copper_grate",
             "description": "涂蜡的铜格栅"
+        },
+        {
+            "name": "waxed_copper_lantern",
+            "description": "涂蜡的铜灯笼"
         },
         {
             "name": "waxed_copper_trapdoor",
@@ -5374,16 +5622,36 @@
             "description": "涂蜡的斑驳铜块"
         },
         {
+            "name": "waxed_exposed_copper_bars",
+            "description": "涂蜡的斑驳铜栏杆"
+        },
+        {
             "name": "waxed_exposed_copper_bulb",
             "description": "涂蜡的斑驳铜灯"
+        },
+        {
+            "name": "waxed_exposed_copper_chain",
+            "description": "涂蜡的斑驳铜链"
+        },
+        {
+            "name": "waxed_exposed_copper_chest",
+            "description": "涂蜡的斑驳铜箱子"
         },
         {
             "name": "waxed_exposed_copper_door",
             "description": "涂蜡的斑驳铜门"
         },
         {
+            "name": "waxed_exposed_copper_golem_statue",
+            "description": "涂蜡的斑驳铜傀儡像"
+        },
+        {
             "name": "waxed_exposed_copper_grate",
             "description": "涂蜡的斑驳铜格栅"
+        },
+        {
+            "name": "waxed_exposed_copper_lantern",
+            "description": "涂蜡的斑驳铜灯笼"
         },
         {
             "name": "waxed_exposed_copper_trapdoor",
@@ -5402,6 +5670,14 @@
             "description": "涂蜡的斑驳切制铜楼梯"
         },
         {
+            "name": "waxed_exposed_lightning_rod",
+            "description": "涂蜡的斑驳避雷针"
+        },
+        {
+            "name": "waxed_lightning_rod",
+            "description": "涂蜡的避雷针"
+        },
+        {
             "name": "waxed_oxidized_chiseled_copper",
             "description": "涂蜡的氧化雕纹铜块"
         },
@@ -5410,16 +5686,36 @@
             "description": "涂蜡的氧化铜块"
         },
         {
+            "name": "waxed_oxidized_copper_bars",
+            "description": "涂蜡的氧化铜栏杆"
+        },
+        {
             "name": "waxed_oxidized_copper_bulb",
             "description": "涂蜡的氧化铜灯"
+        },
+        {
+            "name": "waxed_oxidized_copper_chain",
+            "description": "涂蜡的氧化铜链"
+        },
+        {
+            "name": "waxed_oxidized_copper_chest",
+            "description": "涂蜡的氧化铜箱子"
         },
         {
             "name": "waxed_oxidized_copper_door",
             "description": "涂蜡的氧化铜门"
         },
         {
+            "name": "waxed_oxidized_copper_golem_statue",
+            "description": "涂蜡的氧化铜傀儡像"
+        },
+        {
             "name": "waxed_oxidized_copper_grate",
             "description": "涂蜡的氧化铜格栅"
+        },
+        {
+            "name": "waxed_oxidized_copper_lantern",
+            "description": "涂蜡的氧化铜灯笼"
         },
         {
             "name": "waxed_oxidized_copper_trapdoor",
@@ -5438,6 +5734,10 @@
             "description": "涂蜡的氧化切制铜楼梯"
         },
         {
+            "name": "waxed_oxidized_lightning_rod",
+            "description": "涂蜡的氧化避雷针"
+        },
+        {
             "name": "waxed_weathered_chiseled_copper",
             "description": "涂蜡的锈蚀雕纹铜块"
         },
@@ -5446,16 +5746,36 @@
             "description": "涂蜡的锈蚀铜块"
         },
         {
+            "name": "waxed_weathered_copper_bars",
+            "description": "涂蜡的锈蚀铜栏杆"
+        },
+        {
             "name": "waxed_weathered_copper_bulb",
             "description": "涂蜡的锈蚀铜灯"
+        },
+        {
+            "name": "waxed_weathered_copper_chain",
+            "description": "涂蜡的锈蚀铜链"
+        },
+        {
+            "name": "waxed_weathered_copper_chest",
+            "description": "涂蜡的锈蚀铜箱子"
         },
         {
             "name": "waxed_weathered_copper_door",
             "description": "涂蜡的锈蚀铜门"
         },
         {
+            "name": "waxed_weathered_copper_golem_statue",
+            "description": "涂蜡的锈蚀铜傀儡像"
+        },
+        {
             "name": "waxed_weathered_copper_grate",
             "description": "涂蜡的锈蚀铜格栅"
+        },
+        {
+            "name": "waxed_weathered_copper_lantern",
+            "description": "涂蜡的锈蚀铜灯笼"
         },
         {
             "name": "waxed_weathered_copper_trapdoor",
@@ -5474,6 +5794,10 @@
             "description": "涂蜡的锈蚀切制铜楼梯"
         },
         {
+            "name": "waxed_weathered_lightning_rod",
+            "description": "涂蜡的锈蚀避雷针"
+        },
+        {
             "name": "wayfinder_armor_trim_smithing_template",
             "description": "向导盔甲纹饰 锻造模板"
         },
@@ -5486,16 +5810,36 @@
             "description": "锈蚀的铜块"
         },
         {
+            "name": "weathered_copper_bars",
+            "description": "锈蚀的铜栏杆"
+        },
+        {
             "name": "weathered_copper_bulb",
             "description": "锈蚀的铜灯"
+        },
+        {
+            "name": "weathered_copper_chain",
+            "description": "锈蚀的铜链"
+        },
+        {
+            "name": "weathered_copper_chest",
+            "description": "锈蚀的铜箱子"
         },
         {
             "name": "weathered_copper_door",
             "description": "锈蚀的铜门"
         },
         {
+            "name": "weathered_copper_golem_statue",
+            "description": "锈蚀的铜傀儡像"
+        },
+        {
             "name": "weathered_copper_grate",
             "description": "锈蚀的铜格栅"
+        },
+        {
+            "name": "weathered_copper_lantern",
+            "description": "锈蚀的铜灯笼"
         },
         {
             "name": "weathered_copper_trapdoor",
@@ -5512,6 +5856,10 @@
         {
             "name": "weathered_cut_copper_stairs",
             "description": "锈蚀的切制铜楼梯"
+        },
+        {
+            "name": "weathered_lightning_rod",
+            "description": "锈蚀的避雷针"
         },
         {
             "name": "web",
@@ -5658,6 +6006,10 @@
             "description": "木锹"
         },
         {
+            "name": "wooden_spear",
+            "description": "木矛"
+        },
+        {
             "name": "wooden_sword",
             "description": "木剑"
         },
@@ -5728,6 +6080,10 @@
         {
             "name": "zombie_horse_spawn_egg",
             "description": "僵尸马刷怪蛋"
+        },
+        {
+            "name": "zombie_nautilus_spawn_egg",
+            "description": "僵尸鹦鹉螺刷怪蛋"
         },
         {
             "name": "zombie_pigman_spawn_egg",
