@@ -54,6 +54,14 @@ class CHelperApplication : Application() {
                 resources.displayMetrics
             ).toInt()
         )
+        // 设置初始化 (Must be before ServiceManager)
+        Settings.init(
+            this,
+            dataDir.resolve("settings").resolve("settings.json")
+        ) { throwable ->
+            Log.e("Settings", "fail to read settings from json", throwable)
+            MonitorUtil.generateCustomLog(throwable, "ReadSettingException")
+        }
         // 网络服务初始化
         ServiceManager.init(this)
         LoginUtil.init(dataDir.resolve("library").resolve("user.json")) { throwable ->
@@ -62,14 +70,7 @@ class CHelperApplication : Application() {
         }
         // 访客认证初始化（用于自动访客登录）
         GuestAuthUtil.init(this)
-        // 设置初始化
-        Settings.init(
-            this,
-            dataDir.resolve("settings").resolve("settings.json")
-        ) { throwable ->
-            Log.e("Settings", "fail to read settings from json", throwable)
-            MonitorUtil.generateCustomLog(throwable, "ReadSettingException")
-        }
+
         // 自定义主题初始化
         CustomTheme.init(dataDir.resolve("theme"))
         // 本地命令库初始化
