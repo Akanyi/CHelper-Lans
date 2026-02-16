@@ -58,6 +58,7 @@ import yancey.chelper.ui.EnumerationScreenKey
 import yancey.chelper.ui.LocalLibraryListScreenKey
 import yancey.chelper.ui.Old2NewIMEGuideScreenKey
 import yancey.chelper.ui.Old2NewScreenKey
+import yancey.chelper.ui.PublicLibraryListScreenKey
 import yancey.chelper.ui.RawtextScreenKey
 import yancey.chelper.ui.SettingsScreenKey
 import yancey.chelper.ui.ShowTextScreenKey
@@ -79,6 +80,7 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     LaunchedEffect(viewModel) {
+        viewModel.refreshSettings()
         if (viewModel.policyGrantState == PolicyGrantManager.State.AGREE) {
             viewModel.showAnnouncementDialog(context)
         }
@@ -170,9 +172,11 @@ fun HomeScreen(
                     NameAndAction(stringResource(R.string.layout_home_experimental_feature_local_library)) {
                         navController.navigate(LocalLibraryListScreenKey)
                     }
-                    Divider()
-                    NameAndAction(stringResource(R.string.layout_home_experimental_feature_public_library)) {
-                        // TODO
+                    if (viewModel.isShowPublicLibrary) {
+                        Divider()
+                        NameAndAction(stringResource(R.string.layout_home_experimental_feature_public_library)) {
+                            navController.navigate(PublicLibraryListScreenKey)
+                        }
                     }
                     Divider()
                     NameAndAction(stringResource(R.string.layout_home_experimental_feature_raw_json_studio)) {

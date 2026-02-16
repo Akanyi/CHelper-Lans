@@ -31,26 +31,20 @@ import yancey.chelper.network.library.data.LibraryFunction
 @Suppress("unused")
 interface CommandLabPublicService {
     class GetFunctionsResponse {
-        @JvmField
+        @com.google.gson.annotations.SerializedName("list")
         var functions: MutableList<LibraryFunction?>? = null
-        var pagination: Pagination? = null
 
-        class Pagination {
-            @Suppress("PropertyName")
-            var current_page: Int? = null // 当前页码
+        @com.google.gson.annotations.SerializedName("pageNum")
+        var currentPage: Int? = null
 
-            @Suppress("PropertyName")
-            var per_page: Int? = null // 每页数量
+        @com.google.gson.annotations.SerializedName("pageSize")
+        var perPage: Int? = null
 
-            @Suppress("PropertyName")
-            var total_pages: Int? = null // 总页数
-
-            @Suppress("PropertyName")
-            var total_count: Int? = null // 总记录数
-        }
+        @com.google.gson.annotations.SerializedName("total")
+        var totalCount: Int? = null
     }
 
-    @GET("functions")
+    @GET("library")
     suspend fun getFunctions(
         @Query("page") page: Int,
         @Suppress("LocalVariableName")
