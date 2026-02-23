@@ -92,30 +92,30 @@ private fun CaptchaDialogContent(
     // 用 Handler 而不是 rememberCoroutineScope，因为 Handler 不受 Composition 生命周期约束
     val handler = remember { Handler(Looper.getMainLooper()) }
 
-    val jsInterface = remember {
-        object {
-            @JavascriptInterface
-            fun onSuccess(code: String?) {
-                handler.post {
-                    if (!code.isNullOrEmpty()) {
-                        handleSuccess(code)
-                    } else {
-                        handleFailure("验证返回为空")
-                    }
+    class CaptchaJsInterface {
+        @JavascriptInterface
+        fun onSuccess(code: String?) {
+            handler.post {
+                if (!code.isNullOrEmpty()) {
+                    handleSuccess(code)
+                } else {
+                    handleFailure("验证返回为空")
                 }
             }
+        }
 
-            @JavascriptInterface
-            fun onFail() {
-                handler.post { handleFailure("验证失败") }
-            }
+        @JavascriptInterface
+        fun onFail() {
+            handler.post { handleFailure("验证失败") }
+        }
 
-            @JavascriptInterface
-            fun onCancel() {
-                handler.post { onDismissRequest() }
-            }
+        @JavascriptInterface
+        fun onCancel() {
+            handler.post { onDismissRequest() }
         }
     }
+
+    val jsInterface = remember { CaptchaJsInterface() }
 
     // 当 captchaUrl 和 webView 都就绪时加载页面
     LaunchedEffect(captchaUrl, webView) {
