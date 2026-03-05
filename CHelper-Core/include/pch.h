@@ -98,8 +98,6 @@
 #include <chelper/util/JsonUtil.h>
 // 简单的调用栈
 #include <chelper/util/Profile.h>
-// 字符串工具类
-#include <chelper/util/StringUtil.h>
 // KMP字符串匹配算法
 #include <chelper/util/KMPMatcher.h>
 

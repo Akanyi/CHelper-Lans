@@ -247,7 +247,7 @@ namespace CHelper {
             }
         }
         for (const auto &item: *commands) {
-            Profile::next(R"(init command: "{}")", FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", StringUtil::join(item.name, u",")))));
+            Profile::next(R"(init command: "{}")", FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", fmt::join(item.name, u",")))));
             Node::initNode(item, *this);
         }
         Profile::next("sort command nodes");

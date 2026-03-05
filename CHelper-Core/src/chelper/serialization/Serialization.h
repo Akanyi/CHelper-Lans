@@ -243,7 +243,7 @@ struct serialization::Codec<CHelper::Node::NodePerCommand> : BaseCodec<CHelper::
                 }
             }
             if (flag) [[unlikely]] {
-                CHelper::Profile::push(R"("unknown node id -> {} (in command \"{}\")", FORMAT_ARG(startNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", CHelper::StringUtil::join(t.name, u",")))));
+                CHelper::Profile::push(R"("unknown node id -> {} (in command \"{}\")", FORMAT_ARG(startNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", fmt::join(t.name, u",")))));
                 throw std::runtime_error("unknown node id");
             }
         }
@@ -256,13 +256,13 @@ struct serialization::Codec<CHelper::Node::NodePerCommand> : BaseCodec<CHelper::
             for (const auto &childNodes: ast) {
                 CHelper::Profile::next("linking child nodes to parent node");
                 if (childNodes.empty()) [[unlikely]] {
-                    CHelper::Profile::push(R"("dismiss parent node id (in command "{}"))", FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", CHelper::StringUtil::join(t.name, u",")))));
+                    CHelper::Profile::push(R"("dismiss parent node id (in command "{}"))", FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", fmt::join(t.name, u",")))));
                     throw std::runtime_error("dismiss parent node id");
                 }
                 auto parentNodeId = childNodes.at(0);
                 CHelper::Profile::next(R"("linking child nodes to parent node "{}"))", FORMAT_ARG(parentNodeId));
                 if (childNodes.size() == 1) [[unlikely]] {
-                    CHelper::Profile::push(R"("dismiss parent node id, the parent node is {} (in command "{}"))", FORMAT_ARG(parentNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", CHelper::StringUtil::join(t.name, u",")))));
+                    CHelper::Profile::push(R"("dismiss parent node id, the parent node is {} (in command "{}"))", FORMAT_ARG(parentNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", fmt::join(t.name, u",")))));
                     throw std::runtime_error("dismiss parent node id");
                 }
                 CHelper::Node::NodeWrapped *parentNode = nullptr;
@@ -273,16 +273,16 @@ struct serialization::Codec<CHelper::Node::NodePerCommand> : BaseCodec<CHelper::
                     }
                 }
                 if (parentNode == nullptr) [[unlikely]] {
-                    CHelper::Profile::push(R"("unknown node id -> {} (in command "{}"))", FORMAT_ARG(parentNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", CHelper::StringUtil::join(t.name, u",")))));
+                    CHelper::Profile::push(R"("unknown node id -> {} (in command "{}"))", FORMAT_ARG(parentNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}",fmt::join(t.name, u",")))));
                     throw std::runtime_error("unknown node id");
                 }
                 if (!parentNode->nextNodes.empty()) [[unlikely]] {
-                    CHelper::Profile::push(R"(repeating parent node -> {} (in command "{}"))", FORMAT_ARG(parentNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", CHelper::StringUtil::join(t.name, u",")))));
+                    CHelper::Profile::push(R"(repeating parent node -> {} (in command "{}"))", FORMAT_ARG(parentNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", fmt::join(t.name, u",")))));
                     throw std::runtime_error("repeating parent node");
                 }
                 parentNode->nextNodes.reserve(childNodes.size() - 1);
                 for_each(childNodes.begin() + 1, childNodes.end(), [&](const auto &childNodeId) {
-                    CHelper::Profile::next(R"(linking child nodes "{}" to parent node "{} (in command "{}"))", FORMAT_ARG(childNodeId), FORMAT_ARG(parentNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", CHelper::StringUtil::join(t.name, u",")))));
+                    CHelper::Profile::next(R"(linking child nodes "{}" to parent node "{} (in command "{}"))", FORMAT_ARG(childNodeId), FORMAT_ARG(parentNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", fmt::join(t.name, u",")))));
                     if (childNodeId == "LF") [[unlikely]] {
                         parentNode->nextNodes.push_back(CHelper::Node::NodeLF::getInstance());
                         return;
@@ -295,7 +295,7 @@ struct serialization::Codec<CHelper::Node::NodePerCommand> : BaseCodec<CHelper::
                         }
                     }
                     if (childNode == nullptr) [[unlikely]] {
-                        CHelper::Profile::push(R"("unknown node id -> {} (in command "{}"))", FORMAT_ARG(childNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", CHelper::StringUtil::join(t.name, u",")))));
+                        CHelper::Profile::push(R"("unknown node id -> {} (in command "{}"))", FORMAT_ARG(childNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", fmt::join(t.name, u",")))));
                         throw std::runtime_error("unknown node id");
                     }
                     parentNode->nextNodes.push_back(childNode);
@@ -364,7 +364,7 @@ struct serialization::Codec<CHelper::Node::NodePerCommand> : BaseCodec<CHelper::
                 }
             }
             if (flag) [[unlikely]] {
-                CHelper::Profile::push(R"("unknown node id -> {} (in command "{}"))", FORMAT_ARG(startNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", CHelper::StringUtil::join(t.name, u",")))));
+                CHelper::Profile::push(R"("unknown node id -> {} (in command "{}"))", FORMAT_ARG(startNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", fmt::join(t.name, u",")))));
                 throw std::runtime_error("unknown node id");
             }
         }
@@ -388,7 +388,7 @@ struct serialization::Codec<CHelper::Node::NodePerCommand> : BaseCodec<CHelper::
                     }
                 }
                 if (childNode == nullptr) [[unlikely]] {
-                    CHelper::Profile::push(R"("unknown node id -> {} (in command "{}"))", FORMAT_ARG(childNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", CHelper::StringUtil::join(t.name, u",")))));
+                    CHelper::Profile::push(R"("unknown node id -> {} (in command "{}"))", FORMAT_ARG(childNodeId), FORMAT_ARG(utf8::utf16to8(fmt::format(u"{}", fmt::join(t.name, u",")))));
                     throw std::runtime_error("unknown node id");
                 }
                 parentNode.nextNodes.push_back(childNode);

@@ -17,7 +17,6 @@
  */
 
 #include <chelper/util/Profile.h>
-#include <chelper/util/StringUtil.h>
 
 namespace CHelper::Profile {
 
@@ -43,7 +42,7 @@ namespace CHelper::Profile {
 
     void printAndClear(const std::exception &e) {
 #ifndef CHELPER_NO_FILESYSTEM
-        SPDLOG_ERROR("{}\nstack trace:\n{}", e.what(), StringUtil::join(stack, "\n"));
+        SPDLOG_ERROR("{}\nstack trace:\n{}", e.what(), fmt::join(stack, "\n"));
         stack.clear();
 #endif
     }

@@ -151,7 +151,7 @@ namespace CHelper::Node {
                 if (item.nextNodes.empty()) [[unlikely]] {
                     Profile::push("dismiss child node ids, the parent node is {} (in command {})",
                                   FORMAT_ARG(item.getNodeSerializable().id.value_or("UNKNOWN")),
-                                  FORMAT_ARG(utf8::utf16to8(fmt::format(u"", StringUtil::join(node.name, u",")))));
+                                  FORMAT_ARG(utf8::utf16to8(fmt::format(u"", fmt::join(node.name, u",")))));
                     throw std::runtime_error("dismiss child node ids");
                 }
             }
