@@ -58,9 +58,8 @@ class HomeViewModel : ViewModel() {
     private lateinit var skipVersionFile: File
 
     init {
-        this.policyGrantState = PolicyGrantManager.INSTANCE.state
+        this.policyGrantState = PolicyGrantManager.INSTANCE?.state ?: PolicyGrantManager.State.AGREE
     }
-
 
     fun init(
         context: Context,
