@@ -99,6 +99,8 @@ fun HomeScreen(
         .collectAsState(initial = 40)
     val floatingWindowAlpha by settingsDataStore.floatingWindowAlpha()
         .collectAsState(initial = 1.0f)
+    val publicLibraryMinVersion by settingsDataStore.publicLibraryMinVersion()
+        .collectAsState(initial = 0)
     RootView {
         Column(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -195,7 +197,7 @@ fun HomeScreen(
                     if (isShowPublicLibrary) {
                         Divider()
                         NameAndAction(stringResource(R.string.layout_home_experimental_feature_public_library)) {
-                            viewModel.checkCommandLabVersion {
+                            viewModel.checkCommandLabVersion(publicLibraryMinVersion) {
                                 navController.navigate(PublicLibraryListScreenKey)
                             }
                         }

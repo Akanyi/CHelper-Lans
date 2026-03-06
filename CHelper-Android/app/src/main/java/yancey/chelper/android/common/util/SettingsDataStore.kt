@@ -52,6 +52,7 @@ data class Settings(
     val isSyntaxHighlight: Boolean,
     val cpackBranch: String,
     val isShowPublicLibrary: Boolean,
+    val publicLibraryMinVersion: Int,
 )
 
 object SettingsSerializer : Serializer<Settings> {
@@ -69,6 +70,7 @@ object SettingsSerializer : Serializer<Settings> {
         isSyntaxHighlight = true,
         cpackBranch = "release-experiment",
         isShowPublicLibrary = true,
+        publicLibraryMinVersion = 0,
     )
 
     override suspend fun readFrom(input: InputStream): Settings =
@@ -130,6 +132,9 @@ class SettingsDataStore(private val context: Context) {
     fun isShowPublicLibrary(): Flow<Boolean> =
         context.settingsDataStore.data.map { it.isShowPublicLibrary }
 
+    fun publicLibraryMinVersion(): Flow<Int> =
+        context.settingsDataStore.data.map { it.publicLibraryMinVersion }
+
     suspend fun setIsEnableUpdateNotifications(value: Boolean) {
         context.settingsDataStore.updateData { it.copy(isEnableUpdateNotifications = value) }
     }
@@ -176,5 +181,9 @@ class SettingsDataStore(private val context: Context) {
 
     suspend fun setIsShowPublicLibrary(value: Boolean) {
         context.settingsDataStore.updateData { it.copy(isShowPublicLibrary = value) }
+    }
+
+    suspend fun setPublicLibraryMinVersion(value: Int) {
+        context.settingsDataStore.updateData { it.copy(publicLibraryMinVersion = value) }
     }
 }
