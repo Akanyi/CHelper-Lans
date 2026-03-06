@@ -18,6 +18,8 @@
 
 package yancey.chelper.network.library.data
 
+import kotlinx.serialization.Serializable
+
 /**
  * 人机验证相关的数据模型
  */
@@ -26,6 +28,7 @@ package yancey.chelper.network.library.data
  * 请求验证凭证的请求体
  */
 @Suppress("unused")
+@Serializable
 class CaptchaTokenRequest {
     @Suppress("PropertyName")
     var special_code: String? = null
@@ -43,6 +46,7 @@ class CaptchaTokenRequest {
  * 请求验证凭证的响应
  */
 @Suppress("unused")
+@Serializable
 class CaptchaTokenResponse {
     @Suppress("PropertyName")
     var verification_token: String? = null
@@ -56,6 +60,7 @@ class CaptchaTokenResponse {
  * 验证状态响应
  */
 @Suppress("unused")
+@Serializable
 class CaptchaStatusResponse {
     @Suppress("PropertyName")
     var special_code: String? = null

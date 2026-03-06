@@ -18,6 +18,9 @@
 
 package yancey.chelper.network.chelper.data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class Announcement {
     var isEnable: Boolean? = null
     var isForce: Boolean? = null

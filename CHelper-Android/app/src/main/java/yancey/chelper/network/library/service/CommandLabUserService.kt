@@ -43,6 +43,7 @@ interface CommandLabUserService {
     // Guest System
     // -------------------------------------------------------------
 
+    @Serializable
     class GuestAuthRequest {
         var fingerprint: String? = null
 
@@ -68,6 +69,7 @@ interface CommandLabUserService {
     /**
      * 发送邮箱验证码请求体
      */
+    @Serializable
     class SendCodeRequest {
         @SerialName("special_code")
         var specialCode: String? = null
@@ -97,6 +99,7 @@ interface CommandLabUserService {
     /**
      * 注册请求体
      */
+    @Serializable
     class RegisterRequest {
         @SerialName("special_code")
         var specialCode: String? = null
@@ -121,6 +124,7 @@ interface CommandLabUserService {
     /**
      * 登录请求体
      */
+    @Serializable
     class LoginRequest {
         @JvmField
         var account: String? = null
@@ -154,6 +158,7 @@ interface CommandLabUserService {
     /**
      * 登录响应
      */
+    @Serializable
     class LoginResponse {
         @SerialName("user_id")
         var userId: Int? = null // Added from upstream
@@ -172,6 +177,7 @@ interface CommandLabUserService {
     // Library Management
     // -------------------------------------------------------------
 
+    @Serializable
     class UploadLibraryRequest {
         var content: String? = null
 
@@ -180,6 +186,7 @@ interface CommandLabUserService {
         var isPublish: Boolean = false
     }
 
+    @Serializable
     class UploadLibraryResponse {
         var uuid: String? = null
     }
@@ -237,6 +244,7 @@ interface CommandLabUserService {
     // Quota
     // -------------------------------------------------------------
 
+    @Serializable
     class QuotaResponse {
         var used: Int? = null
         var limit: Int? = null

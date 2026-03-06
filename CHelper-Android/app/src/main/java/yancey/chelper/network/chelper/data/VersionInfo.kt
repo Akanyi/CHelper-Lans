@@ -18,6 +18,9 @@
 
 package yancey.chelper.network.chelper.data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class VersionInfo {
     @Suppress("PropertyName", "unused")
     var version_code: Int? = null

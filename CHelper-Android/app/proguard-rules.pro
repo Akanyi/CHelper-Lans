@@ -33,6 +33,14 @@
 -keep class yancey.chelper.core.ErrorReason{ *; }
 -keep class yancey.chelper.core.ClickSuggestionResult{ *; }
 
+# ===== CHelper Server -----
+
+-keep class yancey.chelper.network.chelper.service.**{ *; }
+
+# ----- Command Lab -----
+
+-keep class yancey.chelper.network.library.service.**{ *; }
+
 # ----- umeng -----
 
 -keep class com.umeng.** { *; }
