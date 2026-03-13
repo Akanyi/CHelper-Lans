@@ -174,6 +174,7 @@ class FloatingWindowManager(
                 WindowManager.LayoutParams.MATCH_PARENT
             )
             .removeWindowFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
+            .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
             .setSystemUiVisibility(
                 (mainView.systemUiVisibility
                         or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
