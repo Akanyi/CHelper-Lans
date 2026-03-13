@@ -356,18 +356,20 @@ fun CompletionScreen(
     }
     val clipboard = LocalClipboard.current
     val errorReason = remember(viewModel.errorReasons) {
-        if (viewModel.errorReasons == null || viewModel.errorReasons!!.isEmpty()) {
-            return@remember null
-        } else {
-            if (viewModel.errorReasons!!.size == 1) {
-                return@remember viewModel.errorReasons!![0]!!.errorReason
+        viewModel.errorReasons.let {
+            if (it.isNullOrEmpty()) {
+                return@remember null
             } else {
-                val errorReasonStr = StringBuilder("可能的错误原因：")
-                for (i in viewModel.errorReasons!!.indices) {
-                    errorReasonStr.append("\n").append(i + 1).append(". ")
-                        .append(viewModel.errorReasons!![i]!!.errorReason)
+                if (it.size == 1) {
+                    return@remember it[0].errorReason
+                } else {
+                    val errorReasonStr = StringBuilder("可能的错误原因：")
+                    for (i in it.indices) {
+                        errorReasonStr.append("\n").append(i + 1).append(". ")
+                            .append(it[i].errorReason)
+                    }
+                    return@remember errorReasonStr.toString()
                 }
-                return@remember errorReasonStr.toString()
             }
         }
     }
@@ -591,8 +593,7 @@ fun CompletionScreen(
                                 viewModel.command.edit {
                                     selection = TextRange(selectionStart, selectionEnd)
                                 }
-                            }, { true }
-                            )
+                            })
                         }
                     },
                     update = { view ->
@@ -603,7 +604,13 @@ fun CompletionScreen(
                             view.selectionStart != selectionStart ||
                             view.selectionEnd != selectionEnd
                         ) {
-                            view.selectedString = SelectedString(str, selectionStart, selectionEnd)
+                            view.setSelectedString(
+                                SelectedString(
+                                    str,
+                                    selectionStart,
+                                    selectionEnd
+                                )
+                            )
                         }
                         view.setErrorReasons(viewModel.errorReasons)
                         view.setColors(viewModel.syntaxHighlightTokens)

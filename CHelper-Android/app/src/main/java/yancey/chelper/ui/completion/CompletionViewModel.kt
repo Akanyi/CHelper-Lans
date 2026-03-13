@@ -52,7 +52,7 @@ class CompletionViewModel : ViewModel() {
     var command by mutableStateOf(TextFieldState())
     var structure by mutableStateOf<String?>(null)
     var paramHint by mutableStateOf<String?>(null)
-    var errorReasons by mutableStateOf<Array<ErrorReason?>?>(null)
+    var errorReasons by mutableStateOf<Array<ErrorReason>?>(null)
     var suggestionsSize by mutableIntStateOf(0)
     var suggestionsUpdateTimes by mutableIntStateOf(0)
     var syntaxHighlightTokens by mutableStateOf<IntArray?>(null)
