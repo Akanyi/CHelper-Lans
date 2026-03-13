@@ -69,6 +69,7 @@ import yancey.chelper.ui.common.widget.TextField
 fun LocalLibraryListScreen(
     viewModel: LocalLibraryListViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
+    isFloatingWindow: Boolean = false,
 ) {
     val clipboard = LocalClipboard.current
     val filteredLibraries =
@@ -83,36 +84,38 @@ fun LocalLibraryListScreen(
     RootViewWithHeaderAndCopyright(
         title = stringResource(R.string.layout_library_list_title_local),
         headerRight = {
-            Icon(
-                id = R.drawable.file_arrow_left,
-                modifier = Modifier
-                    .clickable {
-                        viewModel.isShowImportDialog = true
-                    }
-                    .padding(5.dp)
-                    .size(24.dp),
-                contentDescription = stringResource(R.string.layout_library_list_icon_import_content_description)
-            )
-            Icon(
-                id = R.drawable.share,
-                modifier = Modifier
-                    .clickable {
-                        viewModel.isShowExportDialog = true
-                    }
-                    .padding(5.dp)
-                    .size(24.dp),
-                contentDescription = stringResource(R.string.layout_library_list_icon_export_content_description)
-            )
-            Icon(
-                id = R.drawable.plus,
-                modifier = Modifier
-                    .clickable {
-                        navController.navigate(LibraryEditScreenKey(id = null))
-                    }
-                    .padding(5.dp)
-                    .size(24.dp),
-                contentDescription = stringResource(R.string.layout_library_list_icon_add_content_description)
-            )
+            if (!isFloatingWindow) {
+                Icon(
+                    id = R.drawable.file_arrow_left,
+                    modifier = Modifier
+                        .clickable {
+                            viewModel.isShowImportDialog = true
+                        }
+                        .padding(5.dp)
+                        .size(24.dp),
+                    contentDescription = stringResource(R.string.layout_library_list_icon_import_content_description)
+                )
+                Icon(
+                    id = R.drawable.share,
+                    modifier = Modifier
+                        .clickable {
+                            viewModel.isShowExportDialog = true
+                        }
+                        .padding(5.dp)
+                        .size(24.dp),
+                    contentDescription = stringResource(R.string.layout_library_list_icon_export_content_description)
+                )
+                Icon(
+                    id = R.drawable.plus,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate(LibraryEditScreenKey(id = null))
+                        }
+                        .padding(5.dp)
+                        .size(24.dp),
+                    contentDescription = stringResource(R.string.layout_library_list_icon_add_content_description)
+                )
+            }
         }) {
         Column {
             Spacer(Modifier.height(10.dp))
@@ -163,16 +166,18 @@ fun LocalLibraryListScreen(
                                 )
                             )
                         }
-                        Icon(
-                            id = R.drawable.pencil,
-                            contentDescription = stringResource(R.string.layout_library_list_icon_edit_content_description),
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .clickable {
-                                    navController.navigate(LibraryEditScreenKey(id = index))
-                                }
-                                .size(24.dp)
-                        )
+                        if (!isFloatingWindow) {
+                            Icon(
+                                id = R.drawable.pencil,
+                                contentDescription = stringResource(R.string.layout_library_list_icon_edit_content_description),
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                                    .clickable {
+                                        navController.navigate(LibraryEditScreenKey(id = index))
+                                    }
+                                    .size(24.dp)
+                            )
+                        }
                     }
                     Divider(padding = 0.dp)
                 }

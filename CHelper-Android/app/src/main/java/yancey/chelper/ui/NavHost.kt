@@ -295,7 +295,7 @@ fun FloatingWindowNavHost(
                     viewModel.isInit = true
                 }
             }
-            LocalLibraryListScreen(navController = navController)
+            LocalLibraryListScreen(navController = navController, isFloatingWindow = true)
         }
         composable<LocalLibraryShowScreenKey> { navBackStackEntry ->
             val localLibraryShow: LocalLibraryShowScreenKey = navBackStackEntry.toRoute()
