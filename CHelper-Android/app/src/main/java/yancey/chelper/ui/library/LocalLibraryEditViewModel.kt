@@ -38,4 +38,5 @@ class LocalLibraryEditViewModel : ViewModel() {
     var description by mutableStateOf(TextFieldState())
     var tags by mutableStateOf(TextFieldState())
     var commands by mutableStateOf(TextFieldState())
+    var isShowDeleteDialog by mutableStateOf(false)
 }

@@ -45,6 +45,7 @@ import yancey.chelper.R
 import yancey.chelper.android.util.LocalLibraryManager
 import yancey.chelper.network.library.data.LibraryFunction
 import yancey.chelper.ui.common.CHelperTheme
+import yancey.chelper.ui.common.dialog.IsConfirmDialog
 import yancey.chelper.ui.common.layout.RootViewWithHeaderAndCopyright
 import yancey.chelper.ui.common.widget.Button
 import yancey.chelper.ui.common.widget.Text
@@ -207,16 +208,25 @@ fun LocalLibraryEditScreen(viewModel: LocalLibraryEditViewModel = viewModel(), i
             }
             if (viewModel.mode == EditMode.UPDATE) {
                 Button(stringResource(R.string.layout_library_edit_delete)) {
-                    viewModel.viewModelScope.launch {
-                        LocalLibraryManager.INSTANCE!!.ensureInit()
-                        val functions = LocalLibraryManager.INSTANCE!!.getFunctions()
-                        functions.removeAt(id!!)
-                        LocalLibraryManager.INSTANCE!!.save()
-                        onBackPressedDispatcher?.onBackPressed()
-                    }
+                    viewModel.isShowDeleteDialog = true
                 }
             }
         }
+    }
+    if (viewModel.isShowDeleteDialog) {
+        IsConfirmDialog(
+            onDismissRequest = { viewModel.isShowDeleteDialog = false },
+            content = stringResource(R.string.layout_library_edit_is_confirm_delete),
+            onConfirm = {
+                viewModel.viewModelScope.launch {
+                    LocalLibraryManager.INSTANCE!!.ensureInit()
+                    val functions = LocalLibraryManager.INSTANCE!!.getFunctions()
+                    functions.removeAt(id!!)
+                    LocalLibraryManager.INSTANCE!!.save()
+                    onBackPressedDispatcher?.onBackPressed()
+                }
+            }
+        )
     }
 }
 

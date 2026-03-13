@@ -118,6 +118,7 @@
     <string name="layout_library_edit_upload">上传</string>
     <string name="layout_library_edit_update">更新</string>
     <string name="layout_library_edit_delete">删除</string>
+    <string name="layout_library_edit_is_confirm_delete">确定要删除这个命令库吗？</string>
 
     <!--    use in LocalLibraryListView and PublicLibraryListView    -->
     <string name="layout_library_list_title_local">本地命令库</string>
