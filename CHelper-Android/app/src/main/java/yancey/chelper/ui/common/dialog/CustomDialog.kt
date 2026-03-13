@@ -18,6 +18,8 @@
 
 package yancey.chelper.ui.common.dialog
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -26,10 +28,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -46,6 +54,27 @@ fun CustomDialog(
     properties: CustomDialogProperties = CustomDialogProperties(),
     content: @Composable () -> Unit
 ) {
+    var visible by remember { mutableStateOf(false) }
+    val backgroundAlpha by animateFloatAsState(
+        targetValue = if (visible) 0.5f else 0f,
+        animationSpec = tween(durationMillis = 300),
+        label = "backgroundAlpha"
+    )
+    val dialogScale by animateFloatAsState(
+        targetValue = if (visible) 1f else 0.8f,
+        animationSpec = tween(durationMillis = 300),
+        label = "dialogScale"
+    )
+    val dialogAlpha by animateFloatAsState(
+        targetValue = if (visible) 1f else 0f,
+        animationSpec = tween(durationMillis = 300),
+        label = "dialogAlpha"
+    )
+
+    LaunchedEffect(Unit) {
+        visible = true
+    }
+
     Popup(
         alignment = Alignment.Center,
         properties = PopupProperties(
@@ -60,13 +89,14 @@ fun CustomDialog(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.5f))
+                    .background(Color.Black.copy(alpha = backgroundAlpha))
                     .clickable(
                         enabled = dismissOnClickOutside,
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
                         if (dismissOnClickOutside) {
+                            visible = false
                             onDismissRequest()
                         }
                     }
@@ -74,12 +104,16 @@ fun CustomDialog(
                 // 对话框内容
                 DialogContentBox(
                     properties = properties,
+                    dialogScale = dialogScale,
+                    dialogAlpha = dialogAlpha,
                     content = content
                 )
             }
         } else {
             DialogContentBox(
                 properties = properties,
+                dialogScale = dialogScale,
+                dialogAlpha = dialogAlpha,
                 content = content
             )
         }
@@ -89,6 +123,8 @@ fun CustomDialog(
 @Composable
 private fun DialogContentBox(
     properties: CustomDialogProperties,
+    dialogScale: Float,
+    dialogAlpha: Float,
     content: @Composable () -> Unit
 ) {
     Box(
@@ -100,6 +136,8 @@ private fun DialogContentBox(
                 .then(
                     if (properties.usePlatformDefaultWidth) Modifier.fillMaxWidth(0.8f) else Modifier
                 )
+                .scale(dialogScale)
+                .alpha(dialogAlpha)
                 .clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
