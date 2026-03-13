@@ -67,6 +67,8 @@ class FloatingWindowManager(
     private var iconViewWindow: EasyWindow<*>? = null
     private var composeLifecycleOwner: ComposeLifecycleOwner? = null
     private var floatBackPressedOwner: FloatWindowBackPressedOwner? = null
+    private var iconView: ImageView? = null
+    private var navController: androidx.navigation.NavController? = null
 
     val isUsingFloatingWindow: Boolean
         /**
@@ -105,7 +107,11 @@ class FloatingWindowManager(
         val mainView = object : FrameLayout(context) {
             override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
                 if (event?.keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                    floatBackPressedOwner?.onBackPressedDispatcher?.onBackPressed()
+                    if (navController != null && navController?.currentBackStackEntry != null && navController?.previousBackStackEntry == null) {
+                        iconView.callOnClick()
+                    } else {
+                        floatBackPressedOwner?.onBackPressedDispatcher?.onBackPressed()
+                    }
                     return true
                 }
                 return super.dispatchKeyEvent(event)
@@ -130,6 +136,7 @@ class FloatingWindowManager(
                     val navController = rememberNavController()
                     val softwareKeyboardController = LocalSoftwareKeyboardController.current
                     LaunchedEffect(navController) {
+                        this@FloatingWindowManager.navController = navController
                         navController.setLifecycleOwner(lifecycleOwner)
                         navController.setOnBackPressedDispatcher(floatBackPressedOwner!!.onBackPressedDispatcher)
                         navController.addOnDestinationChangedListener { _, _, _ ->
@@ -152,6 +159,7 @@ class FloatingWindowManager(
             }
         }
         mainView.addView(composeView)
+        this@FloatingWindowManager.iconView = iconView
         iconViewWindow = EasyWindow.with(application)
             .setContentView(iconView)
             .setWindowDraggableRule(MovingWindowDraggableRule())
@@ -215,6 +223,8 @@ class FloatingWindowManager(
             }
             composeLifecycleOwner = null
             floatBackPressedOwner = null
+            navController = null
+            iconView = null
             mainViewWindow!!.recycle()
             mainViewWindow = null
         }
