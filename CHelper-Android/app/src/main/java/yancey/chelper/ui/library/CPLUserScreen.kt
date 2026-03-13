@@ -70,7 +70,7 @@ import yancey.chelper.ui.common.widget.Button
 import yancey.chelper.ui.common.widget.Divider
 import yancey.chelper.ui.common.widget.Icon
 import yancey.chelper.ui.common.widget.Text
-import yancey.chelper.ui.common.widget.TextField
+import yancey.chelper.ui.common.widget.TextFieldWithIcon
 
 @Composable
 fun CPLUserScreen(
@@ -399,7 +399,7 @@ fun LoginRegisterView(
 
                 if (viewModel.currentTab == CPLUserViewModel.UserTab.LOGIN) {
                     // Login Inputs
-                    TextField(
+                    TextFieldWithIcon(
                         state = viewModel.loginAccount,
                         hint = "用户邮箱 / 账号",
                         modifier = Modifier
@@ -408,7 +408,7 @@ fun LoginRegisterView(
                         leadingIcon = { Icon(R.drawable.ic_user, Modifier.size(20.dp)) }
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    TextField(
+                    TextFieldWithIcon(
                         state = viewModel.loginPassword,
                         hint = "密码",
                         modifier = Modifier
@@ -428,7 +428,7 @@ fun LoginRegisterView(
                     )
                 } else {
                     // Register Inputs
-                    TextField(
+                    TextFieldWithIcon(
                         state = viewModel.registerAccount,
                         hint = "电子邮箱 / 手机号",
                         modifier = Modifier
@@ -438,7 +438,7 @@ fun LoginRegisterView(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Row {
-                        TextField(
+                        TextFieldWithIcon(
                             state = viewModel.registerCode,
                             hint = "验证码",
                             modifier = Modifier
@@ -463,7 +463,7 @@ fun LoginRegisterView(
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    TextField(
+                    TextFieldWithIcon(
                         state = viewModel.registerNickname,
                         hint = "用户昵称",
                         modifier = Modifier
@@ -472,7 +472,7 @@ fun LoginRegisterView(
                         leadingIcon = { Icon(R.drawable.ic_user, Modifier.size(20.dp)) }
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    TextField(
+                    TextFieldWithIcon(
                         state = viewModel.registerPassword,
                         hint = "设置密码",
                         modifier = Modifier

@@ -18,6 +18,9 @@
 
 package yancey.chelper.ui.common.widget
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,7 +48,7 @@ import yancey.chelper.ui.common.CHelperTheme
 import yancey.chelper.ui.common.layout.Surface
 
 @Composable
-fun TextField(
+fun TextFieldWithIcon(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.TopStart,
@@ -55,10 +58,14 @@ fun TextField(
     clipCornerSize: Dp = 10.dp,
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.Default,
     style: TextStyle = TextStyle(),
+    outputTransformation: OutputTransformation? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     BasicTextField(
         state = state,
         modifier = modifier,
+        outputTransformation = outputTransformation,
         textStyle = style.copy(
             color = if (style.color == Color.Unspecified) CHelperTheme.colors.textMain else style.color,
             fontSize = if (style.fontSize == TextUnit.Unspecified) 16.sp else style.fontSize,
@@ -78,15 +85,31 @@ fun TextField(
                 verticalPadding = verticalPadding,
                 clipCornerSize = clipCornerSize,
             ) {
-                innerTextField()
-                if (state.text.isEmpty() && hint != null) {
-                    Text(
-                        text = hint,
-                        modifier = Modifier.fillMaxWidth(),
-                        style = TextStyle(
-                            color = CHelperTheme.colors.textHint,
-                        ),
-                    )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    if (leadingIcon != null) {
+                        leadingIcon()
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                    Box(modifier = Modifier.weight(1f)) {
+                        innerTextField()
+                        if (state.text.isEmpty() && hint != null) {
+                            Text(
+                                text = hint,
+                                modifier = Modifier.fillMaxWidth(),
+                                style = TextStyle(
+                                    color = CHelperTheme.colors.textHint,
+                                    fontSize = if (style.fontSize == TextUnit.Unspecified) 16.sp else style.fontSize
+                                ),
+                            )
+                        }
+                    }
+                    if (trailingIcon != null) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        trailingIcon()
+                    }
                 }
             }
         }
@@ -95,7 +118,7 @@ fun TextField(
 
 @Preview(showBackground = true)
 @Composable
-fun TextFieldPreview() {
+fun TextFieldWithIconPreview() {
     CHelperTheme(
         theme = CHelperTheme.Theme.Light,
         backgroundBitmap = null
