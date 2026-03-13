@@ -35,6 +35,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.rememberLifecycleOwner
 import androidx.navigation.compose.rememberNavController
@@ -70,7 +71,7 @@ class FloatingWindowManager(
     private var iconViewWindow: EasyWindow<*>? = null
     private var composeLifecycleOwner: ComposeLifecycleOwner? = null
     private var floatBackPressedOwner: FloatWindowBackPressedOwner? = null
-    private var isCompose = false
+    private var isCompose = true
 
     val isUsingFloatingWindow: Boolean
         /**
@@ -111,11 +112,9 @@ class FloatingWindowManager(
                 override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
                     if (event?.keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
                         floatBackPressedOwner?.onBackPressedDispatcher?.onBackPressed()
-                        requestFocus()
                         return true
-                    } else {
-                        return false
                     }
+                    return super.dispatchKeyEvent(event)
                 }
             }.apply {
                 isFocusable = true
@@ -135,9 +134,15 @@ class FloatingWindowManager(
                         val navigationEventOwner =
                             remember { FloatWindowNavigationEventOwner(navigationEventDispatcher) }
                         val navController = rememberNavController()
+                        val softwareKeyboardController = LocalSoftwareKeyboardController.current
                         LaunchedEffect(navController) {
                             navController.setLifecycleOwner(lifecycleOwner)
                             navController.setOnBackPressedDispatcher(floatBackPressedOwner!!.onBackPressedDispatcher)
+                            navController.addOnDestinationChangedListener { _, _, _ ->
+                                mainView.clearFocus()
+                                mainView.requestFocus()
+                                softwareKeyboardController?.hide()
+                            }
                         }
                         CompositionLocalProvider(
                             LocalOnBackPressedDispatcherOwner provides floatBackPressedOwner!!,
