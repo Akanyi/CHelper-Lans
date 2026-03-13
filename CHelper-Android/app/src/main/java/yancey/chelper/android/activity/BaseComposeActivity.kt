@@ -16,7 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package yancey.chelper.android.activit
+package yancey.chelper.android.activity
+
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
