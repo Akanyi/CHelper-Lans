@@ -25,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -135,6 +136,12 @@ fun NavHost(
     onChooseTheme: () -> Unit,
     shutdown: () -> Unit
 ) {
+    val softwareKeyboardController = LocalSoftwareKeyboardController.current
+    LaunchedEffect(navController) {
+        navController.addOnDestinationChangedListener { _, _, _ ->
+            softwareKeyboardController?.hide()
+        }
+    }
     NavHost(
         navController = navController,
         startDestination = HomeScreenKey,
