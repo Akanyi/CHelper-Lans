@@ -35,15 +35,21 @@ class PolicyGrantManager private constructor(
         private set
 
     init {
-        val lastRead = lastReadContentFile.readBytes().decodeToString()
-        this.state = State.AGREE
-        if (!lastReadContentFile.exists()) {
-            this.state = State.NOT_READ
-        } else {
-            if (privacyPolicyHashStr != lastRead) {
-                this.state = State.UPDATED
+        try {
+            if (!lastReadContentFile.exists()) {
+                this.state = State.NOT_READ
+            } else {
+                val lastRead = lastReadContentFile.readBytes().decodeToString()
+                if (privacyPolicyHashStr != lastRead) {
+                    this.state = State.UPDATED
+                } else {
+                    this.state = State.AGREE
+                }
             }
+        } catch (_: Throwable) {
+            this.state = State.NOT_READ
         }
+
     }
 
     fun agree() {
