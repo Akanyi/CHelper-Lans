@@ -25,7 +25,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -84,7 +83,6 @@ fun CustomDialog(
         ),
         onDismissRequest = onDismissRequest
     ) {
-        // 遮罩层
         if (properties.dimBackground) {
             Box(
                 modifier = Modifier
@@ -100,53 +98,23 @@ fun CustomDialog(
                             onDismissRequest()
                         }
                     }
-            ) {
-                // 对话框内容
-                DialogContentBox(
-                    properties = properties,
-                    dialogScale = dialogScale,
-                    dialogAlpha = dialogAlpha,
-                    content = content
-                )
-            }
-        } else {
-            DialogContentBox(
-                properties = properties,
-                dialogScale = dialogScale,
-                dialogAlpha = dialogAlpha,
-                content = content
             )
         }
-    }
-}
-
-@Composable
-private fun DialogContentBox(
-    properties: CustomDialogProperties,
-    dialogScale: Float,
-    dialogAlpha: Float,
-    content: @Composable () -> Unit
-) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
         Box(
-            modifier = Modifier
-                .then(
-                    if (properties.usePlatformDefaultWidth) Modifier.fillMaxWidth(0.8f) else Modifier
-                )
-                .scale(dialogScale)
-                .alpha(dialogAlpha)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) {
-                    // 拦截点击，防止传递到遮罩层
-                },
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            content()
+            Box(
+                modifier = Modifier
+                    .then(
+                        if (properties.usePlatformDefaultWidth) Modifier.fillMaxSize(0.8f) else Modifier
+                    )
+                    .scale(dialogScale)
+                    .alpha(dialogAlpha),
+                contentAlignment = Alignment.Center
+            ) {
+                content()
+            }
         }
     }
 }

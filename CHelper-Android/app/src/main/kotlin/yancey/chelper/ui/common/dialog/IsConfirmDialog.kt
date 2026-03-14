@@ -63,7 +63,7 @@ fun IsConfirmDialog(
         ) {
             Column(
                 modifier = if (isBig) {
-                    Modifier.fillMaxHeight(0.9f)
+                    Modifier.fillMaxHeight()
                 } else {
                     Modifier
                 }
