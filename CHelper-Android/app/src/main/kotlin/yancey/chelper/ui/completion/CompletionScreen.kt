@@ -61,10 +61,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import yancey.chelper.R
-import yancey.chelper.data.SettingsDataStore
 import yancey.chelper.android.widget.CommandEditText
 import yancey.chelper.core.SelectedString
 import yancey.chelper.core.Theme
+import yancey.chelper.data.SettingsDataStore
 import yancey.chelper.ui.HistoryScreenKey
 import yancey.chelper.ui.LocalLibraryListScreenKey
 import yancey.chelper.ui.common.CHelperTheme
@@ -555,17 +555,14 @@ fun CompletionScreen(
                         CommandEditText(context).apply {
                             layoutParams = ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
-                                TypedValue.applyDimension(
-                                    TypedValue.COMPLEX_UNIT_DIP,
-                                    40f,
-                                    context.resources.displayMetrics
-                                ).toInt()
+                                ViewGroup.LayoutParams.MATCH_PARENT
                             )
                             background = null
                             gravity = Gravity.CENTER_VERTICAL
                             hint = hintStr
                             maxLines = 1
                             isSingleLine = true
+                            includeFontPadding = false// 修复：REDMI Turbo 4 Pro 输入框可以滚动导致文本显示不全
                             setTextColor(textMain.toArgb())
                             setHintTextColor(textSecondary.toArgb())
                             setTheme(if (theme == CHelperTheme.Theme.Light) Theme.THEME_DAY else Theme.THEME_NIGHT)
