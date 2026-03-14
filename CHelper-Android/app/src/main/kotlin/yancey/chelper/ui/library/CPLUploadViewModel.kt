@@ -23,7 +23,6 @@ class CPLUploadViewModel : ViewModel() {
     val tags = TextFieldState()
     val commands = TextFieldState() // The commands content
 
-    var isPublic by mutableStateOf(true)
     var isLoading by mutableStateOf(false)
 
     fun loadFromLocal(library: LibraryFunction) {
@@ -77,19 +76,9 @@ class CPLUploadViewModel : ViewModel() {
                     ServiceManager.COMMAND_LAB_USER_SERVICE!!.uploadLibrary(request).execute()
 
                 if (response.body()?.isSuccess() == true) {
-                    // 原来设计上：如果用户勾了公开且有验证码，紧接着调 release
-                    // 现在：麻烦，暂时不实现
-                    if (isPublic && !specialCode.isNullOrEmpty()) {
-                        // 暂时只提示上传成功，用户可在"我的云端"里手动发布
-                        withContext(Dispatchers.Main) {
-                            Toaster.show("上传成功，请在我的云端库中发布到公开市场")
-                            onSuccess()
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toaster.show("上传成功")
-                            onSuccess()
-                        }
+                    withContext(Dispatchers.Main) {
+                        Toaster.show("上传成功，请在我的云端库中发布到公开市场")
+                        onSuccess()
                     }
                 } else {
                     withContext(Dispatchers.Main) {

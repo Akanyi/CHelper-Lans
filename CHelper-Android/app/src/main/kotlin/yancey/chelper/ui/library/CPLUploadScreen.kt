@@ -4,13 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -37,7 +35,6 @@ import yancey.chelper.ui.common.dialog.CustomDialogProperties
 import yancey.chelper.ui.common.dialog.DialogContainer
 import yancey.chelper.ui.common.layout.RootViewWithHeaderAndCopyright
 import yancey.chelper.ui.common.widget.Button
-import yancey.chelper.ui.common.widget.Switch
 import yancey.chelper.ui.common.widget.Text
 import yancey.chelper.ui.common.widget.TextField
 
@@ -107,38 +104,17 @@ fun CPLUploadScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Public Toggle
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Switch(
-                    checked = viewModel.isPublic,
-                    onCheckedChange = { viewModel.isPublic = it }
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "公开到指令市场 (需审核)",
-                    modifier = Modifier.clickable { viewModel.isPublic = !viewModel.isPublic },
-                    style = TextStyle(color = CHelperTheme.colors.textMain)
-                )
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-
             // Upload Button
             Button(
                 text = if (viewModel.isLoading) "上传中..." else "确认上传",
                 onClick = {
                     if (!viewModel.isLoading) {
-                        if (viewModel.isPublic) {
-                            captchaCallback = { code ->
-                                viewModel.upload(code) {
-                                    navController.popBackStack()
-                                }
-                            }
-                            showCaptchaDialog = true
-                        } else {
-                            viewModel.upload(null) {
+                        captchaCallback = { code ->
+                            viewModel.upload(code) {
                                 navController.popBackStack()
                             }
                         }
+                        showCaptchaDialog = true
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
