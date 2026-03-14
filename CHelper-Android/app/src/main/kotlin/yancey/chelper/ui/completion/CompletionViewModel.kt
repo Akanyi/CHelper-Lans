@@ -32,8 +32,8 @@ import com.hjq.toast.Toaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import yancey.chelper.android.util.HistoryManager
 import yancey.chelper.android.util.MonitorUtil
+import yancey.chelper.data.CopyHistoryDataStore
 import yancey.chelper.core.CHelperCore
 import yancey.chelper.core.ErrorReason
 import yancey.chelper.core.SelectedString
@@ -58,12 +58,12 @@ class CompletionViewModel : ViewModel() {
     var syntaxHighlightTokens by mutableStateOf<IntArray?>(null)
     var core: CHelperCore? = null
     var lastInput: SelectedString = SelectedString("", 0, 0)
-    private var historyManager: HistoryManager? = null
+    private var copyHistoryDataStore: CopyHistoryDataStore? = null
     private var file: File? = null
     private var isResumed = false
 
     fun init(context: Context) {
-        historyManager = HistoryManager.getInstance(context)
+        copyHistoryDataStore = CopyHistoryDataStore(context)
         file = context.filesDir.resolve("cache").resolve("lastInput.dat")
     }
 
@@ -233,12 +233,13 @@ class CompletionViewModel : ViewModel() {
     }
 
     fun onCopy(content: String) {
-        historyManager?.add(content)
+        viewModelScope.launch {
+            copyHistoryDataStore?.add(content)
+        }
     }
 
     override fun onCleared() {
         super.onCleared()
-        historyManager?.save()
         core?.close()
         // 保存上次的输入内容
         if (file != null) {

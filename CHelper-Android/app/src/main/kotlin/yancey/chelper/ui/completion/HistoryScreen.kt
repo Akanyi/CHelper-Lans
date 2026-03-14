@@ -34,8 +34,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,10 +48,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import yancey.chelper.R
+import yancey.chelper.data.CopyHistoryDataStore
 import yancey.chelper.ui.common.CHelperTheme
 import yancey.chelper.ui.common.layout.RootViewWithHeaderAndCopyright
 import yancey.chelper.ui.common.widget.Divider
@@ -57,98 +58,97 @@ import yancey.chelper.ui.common.widget.Icon
 import yancey.chelper.ui.common.widget.Text
 
 @Composable
-fun HistoryScreen(viewModel: HistoryViewModel = viewModel()) {
-    val context = LocalContext.current
+fun HistoryScreen(history: List<String>?) {
+    val coroutineScope = rememberCoroutineScope()
     val clipboard = LocalClipboard.current
-    LaunchedEffect(viewModel) {
-        viewModel.init(context)
-    }
     RootViewWithHeaderAndCopyright(
         title = stringResource(R.string.layout_library_list_title_local)
     ) {
         Column {
             Spacer(Modifier.height(10.dp))
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(15.dp, 0.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(color = CHelperTheme.colors.backgroundComponent)
-            ) {
-                items(viewModel.contents) {
-                    Row(
-                        modifier = Modifier
-                            .padding(20.dp, 10.dp)
-                            .defaultMinSize(minHeight = 24.dp)
-                    ) {
-                        Text(
-                            text = it,
+            history?.let { history ->
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(15.dp, 0.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(color = CHelperTheme.colors.backgroundComponent)
+                ) {
+                    items(history) {
+                        Row(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.CenterVertically)
-                                .weight(1f),
-                            style = TextStyle(
-                                color = CHelperTheme.colors.mainColor,
+                                .padding(20.dp, 10.dp)
+                                .defaultMinSize(minHeight = 24.dp)
+                        ) {
+                            Text(
+                                text = it,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.CenterVertically)
+                                    .weight(1f),
+                                style = TextStyle(
+                                    color = CHelperTheme.colors.mainColor,
+                                )
                             )
-                        )
-                        Icon(
-                            id = R.drawable.copy,
-                            contentDescription = stringResource(R.string.common_icon_copy_content_description),
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .clickable {
-                                    viewModel.viewModelScope.launch {
-                                        clipboard.setClipEntry(
-                                            ClipEntry(
-                                                ClipData.newPlainText(
-                                                    null,
-                                                    it
+                            Icon(
+                                id = R.drawable.copy,
+                                contentDescription = stringResource(R.string.common_icon_copy_content_description),
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                                    .clickable {
+                                        coroutineScope.launch {
+                                            clipboard.setClipEntry(
+                                                ClipEntry(
+                                                    ClipData.newPlainText(
+                                                        null,
+                                                        it
+                                                    )
                                                 )
                                             )
-                                        )
+                                        }
                                     }
-                                }
-                                .padding(start = 5.dp)
-                                .size(24.dp)
-                        )
+                                    .padding(start = 5.dp)
+                                    .size(24.dp)
+                            )
+                        }
+                        Divider(padding = 0.dp)
                     }
-                    Divider(padding = 0.dp)
                 }
             }
         }
     }
 }
 
+@Composable
+fun HistoryScreen() {
+    val context = LocalContext.current
+    val copyHistoryDataStore = remember { CopyHistoryDataStore(context) }
+    val history by copyHistoryDataStore.history().collectAsState(initial = null)
+    HistoryScreen(history)
+}
+
 @Preview
 @Composable
 fun HistoryScreenLightThemePreview() {
-    val viewModel = remember {
-        HistoryViewModel().apply {
-            contents = mutableListOf<String>().apply {
-                for (i in 0..100) {
-                    add("Command $i")
-                }
-            }.toList()
+    val history = mutableListOf<String>().apply {
+        for (i in 0..100) {
+            add("Command $i")
         }
-    }
+    }.toList()
     CHelperTheme(theme = CHelperTheme.Theme.Light, backgroundBitmap = null) {
-        HistoryScreen(viewModel = viewModel)
+        HistoryScreen(history = history)
     }
 }
 
 @Preview
 @Composable
 fun HistoryScreenDarkThemePreview() {
-    val viewModel = remember {
-        HistoryViewModel().apply {
-            contents = mutableListOf<String>().apply {
-                for (i in 0..100) {
-                    add("Command $i")
-                }
-            }.toList()
+    val history = mutableListOf<String>().apply {
+        for (i in 0..100) {
+            add("Command $i")
         }
-    }
+    }.toList()
     CHelperTheme(theme = CHelperTheme.Theme.Dark, backgroundBitmap = null) {
-        HistoryScreen(viewModel = viewModel)
+        HistoryScreen(history = history)
     }
 }

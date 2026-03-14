@@ -159,7 +159,7 @@ fun NavHost(
             )
         }
         composable<HistoryScreenKey> {
-            HistoryScreen(viewModel = viewModel())
+            HistoryScreen()
         }
         composable<SettingsScreenKey> {
             SettingsScreen(
@@ -259,7 +259,7 @@ fun FloatingWindowNavHost(
             )
         }
         composable<HistoryScreenKey> {
-            HistoryScreen(viewModel = viewModel())
+            HistoryScreen()
         }
         composable<Old2NewScreenKey> {
             val context = LocalContext.current
