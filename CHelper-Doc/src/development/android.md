@@ -22,7 +22,7 @@ sourceSets.all {
 
 ## 与 java 代码交互
 
-你可以直接使用 CHelper-Android 项目的内核交互相关代码：<https://github.com/Yancey2023/CHelper/tree/master/CHelper-Android/app/src/main/java/yancey/chelper/core>
+你可以直接使用 CHelper-Android 项目的内核交互相关代码：<https://github.com/Yancey2023/CHelper/tree/master/CHelper-Android/app/src/main/kotlin/yancey/chelper/core>
 
 需要注意的是，如果你开启了代码混淆，那么你需要在代码混淆配置文件中添加以下内容：
 
