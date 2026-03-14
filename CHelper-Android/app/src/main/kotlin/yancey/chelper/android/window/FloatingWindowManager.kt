@@ -152,6 +152,7 @@ class FloatingWindowManager(
                         navController.setLifecycleOwner(lifecycleOwner)
                         navController.setOnBackPressedDispatcher(floatBackPressedOwner!!.onBackPressedDispatcher)
                         navController.addOnDestinationChangedListener { _, _, _ ->
+                            // 修复：输入框获取到焦点后切换页面，焦点仍停留在上一个页面的的输入框，导致无法获取返回键事件
                             mainView.clearFocus()
                             mainView.requestFocus()
                             softwareKeyboardController?.hide()
@@ -200,7 +201,7 @@ class FloatingWindowManager(
             onStart()
         }
         floatBackPressedOwner = FloatWindowBackPressedOwner(composeLifecycleOwner!!.lifecycle)
-        mainView.requestFocus()
+        mainView.requestFocus()// 修复：不获取到焦点无法获取返回键事件
         iconView.setOnClickListener {
             mainViewWindow?.apply {
                 if (windowViewVisibility == View.VISIBLE) {
@@ -209,7 +210,7 @@ class FloatingWindowManager(
                     windowViewVisibility = View.INVISIBLE
                 } else {
                     composeLifecycleOwner?.onResume()
-                    mainView.requestFocus()
+                    mainView.requestFocus()// 修复：不获取到焦点无法获取返回键事件
                     windowViewVisibility = View.VISIBLE
                 }
             }
