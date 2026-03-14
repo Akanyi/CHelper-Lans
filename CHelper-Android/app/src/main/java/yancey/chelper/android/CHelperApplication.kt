@@ -23,7 +23,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import com.hjq.toast.Toaster
-import yancey.chelper.android.util.CustomTheme
+import yancey.chelper.data.BackgroundStore
 import yancey.chelper.android.util.MonitorUtil
 import yancey.chelper.android.util.PolicyGrantManager
 import yancey.chelper.network.ServiceManager
@@ -61,6 +61,6 @@ class CHelperApplication : Application() {
         GuestAuthUtil.init(this)
 
         // 自定义主题初始化
-        CustomTheme.init(dataDir.resolve("theme"))
+        BackgroundStore.init(dataDir.resolve("theme"))
     }
 }

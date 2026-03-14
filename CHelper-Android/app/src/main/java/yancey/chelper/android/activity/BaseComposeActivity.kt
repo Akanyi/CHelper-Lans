@@ -28,10 +28,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionContext
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -42,15 +42,13 @@ import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import kotlinx.coroutines.launch
-import yancey.chelper.android.util.CustomTheme
+import yancey.chelper.data.BackgroundStore
 import yancey.chelper.data.SettingsDataStore
 import yancey.chelper.ui.common.CHelperTheme
 
 abstract class BaseComposeActivity : ComponentActivity() {
 
-    private var backgroundUpdateTimes = 0
     protected var settingsDataStore = SettingsDataStore(this)
-    protected var backgroundBitmap by mutableStateOf<ImageBitmap?>(null)
     protected var theme by mutableStateOf(CHelperTheme.Theme.Light)
     protected var isSystemDarkMode = false
 
@@ -94,15 +92,6 @@ abstract class BaseComposeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onResume() {
-        super.onResume()
-        val updateTimes = CustomTheme.INSTANCE.backgroundBitmap.updateTimes
-        if (backgroundUpdateTimes != updateTimes) {
-            backgroundUpdateTimes = updateTimes
-            backgroundBitmap = CustomTheme.INSTANCE.backgroundBitmap.imageBitmap
-        }
-    }
-
     protected fun setContent(parent: CompositionContext? = null, content: @Composable () -> Unit) {
         val existingComposeView =
             window.decorView.findViewById<ViewGroup>(android.R.id.content)
@@ -117,7 +106,11 @@ abstract class BaseComposeActivity : ComponentActivity() {
             ComposeView(this).apply {
                 setParentCompositionContext(parent)
                 setContent {
-                    CHelperTheme(theme, backgroundBitmap) {
+                    val backgroundBitmap =
+                        BackgroundStore.INSTANCE?.backgroundBitmapFlow?.collectAsState(
+                            initial = null
+                        )
+                    CHelperTheme(theme, backgroundBitmap?.value) {
                         content()
                     }
                 }

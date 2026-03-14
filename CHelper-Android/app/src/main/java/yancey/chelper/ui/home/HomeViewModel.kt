@@ -87,7 +87,6 @@ class HomeViewModel : ViewModel() {
     fun startFloatingWindow(
         context: Context,
         isSkipXiaomiClipboardPermissionTips: Boolean,
-        themeId: String,
         floatingWindowSize: Int,
         floatingWindowAlpha: Float
     ) {
@@ -111,7 +110,6 @@ class HomeViewModel : ViewModel() {
         }
         floatingWindowManager?.startFloatingWindow(
             context,
-            themeId,
             floatingWindowSize,
             floatingWindowAlpha
         )

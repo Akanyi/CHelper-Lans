@@ -55,8 +55,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import yancey.chelper.R
 import yancey.chelper.android.util.PolicyGrantManager
-import yancey.chelper.data.SettingsDataStore
 import yancey.chelper.android.window.FloatingWindowManager
+import yancey.chelper.data.SettingsDataStore
 import yancey.chelper.ui.AboutScreenKey
 import yancey.chelper.ui.CompletionScreenKey
 import yancey.chelper.ui.EnumerationScreenKey
@@ -92,8 +92,6 @@ fun HomeScreen(
         .collectAsState(initial = false)
     val isEnableUpdateNotifications by settingsDataStore.isShowPublicLibrary()
         .collectAsState(initial = false)
-    val themeId by settingsDataStore.themeId()
-        .collectAsState(initial = "MODE_NIGHT_FOLLOW_SYSTEM")
     val floatingWindowSize by settingsDataStore.floatingWindowSize()
         .collectAsState(initial = 40)
     val floatingWindowAlpha by settingsDataStore.floatingWindowAlpha()
@@ -160,7 +158,6 @@ fun HomeScreen(
                                 viewModel.startFloatingWindow(
                                     context,
                                     false,
-                                    themeId,
                                     floatingWindowSize,
                                     floatingWindowAlpha
                                 )
@@ -255,7 +252,6 @@ fun HomeScreen(
                 viewModel.startFloatingWindow(
                     context,
                     true,
-                    themeId,
                     floatingWindowSize,
                     floatingWindowAlpha
                 )
@@ -264,7 +260,6 @@ fun HomeScreen(
                 viewModel.startFloatingWindow(
                     context,
                     true,
-                    themeId,
                     floatingWindowSize,
                     floatingWindowAlpha
                 )

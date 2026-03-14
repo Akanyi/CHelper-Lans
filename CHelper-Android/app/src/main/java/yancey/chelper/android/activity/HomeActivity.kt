@@ -26,7 +26,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.hjq.permissions.XXPermissions
@@ -36,7 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import yancey.chelper.android.util.CustomTheme
+import yancey.chelper.data.BackgroundStore
 import yancey.chelper.android.util.MonitorUtil
 import yancey.chelper.android.window.FloatingWindowManager
 import yancey.chelper.ui.NavHost
@@ -121,9 +120,7 @@ class HomeActivity : BaseComposeActivity() {
                             BitmapFactory.decodeStream(it)
                         }
                     } ?: throw IOException("无法打开图片")
-                    CustomTheme.INSTANCE.setBackGroundDrawableWithoutSave(bitmap)
-                    backgroundBitmap = bitmap.asImageBitmap()
-                    CustomTheme.INSTANCE.setBackGroundDrawable(bitmap)
+                    BackgroundStore.INSTANCE?.setBackGroundDrawable(bitmap)
                 }
             } catch (e: Exception) {
                 Toaster.show(e.message ?: "未知错误")
@@ -136,8 +133,7 @@ class HomeActivity : BaseComposeActivity() {
 
     private fun restoreBackground() {
         try {
-            CustomTheme.INSTANCE.setBackGroundDrawable(null)
-            backgroundBitmap = null
+            BackgroundStore.INSTANCE?.setBackGroundDrawable(null)
         } catch (e: IOException) {
             Toaster.show(e.message)
             MonitorUtil.generateCustomLog(e, "ResetBackgroundException")

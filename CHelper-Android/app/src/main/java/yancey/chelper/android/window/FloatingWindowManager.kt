@@ -33,19 +33,23 @@ import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.rememberLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import androidx.navigationevent.NavigationEventDispatcher
 import androidx.navigationevent.NavigationEventDispatcherOwner
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.hjq.window.EasyWindow
 import com.hjq.window.draggable.MovingWindowDraggableRule
+import kotlinx.coroutines.launch
 import yancey.chelper.R
-import yancey.chelper.android.util.CustomTheme
+import yancey.chelper.data.BackgroundStore
+import yancey.chelper.data.SettingsDataStore
 import yancey.chelper.ui.FloatingWindowNavHost
 import yancey.chelper.ui.common.CHelperTheme
 
@@ -86,7 +90,6 @@ class FloatingWindowManager(
     @Suppress("deprecation")
     fun startFloatingWindow(
         context: Context,
-        themeId: String,
         floatingWindowSize: Int,
         floatingWindowAlpha: Float
     ) {
@@ -121,13 +124,22 @@ class FloatingWindowManager(
             isFocusableInTouchMode = true
         }
         val composeView = ComposeView(context).apply {
+            val settingsDataStore = SettingsDataStore(context)
+            var themeId = "MODE_NIGHT_FOLLOW_SYSTEM"
+            composeLifecycleOwner?.lifecycleScope?.launch {
+                settingsDataStore.themeId().collect {
+                    themeId = it
+                }
+            }
             setContent {
+                val backgroundBitmap =
+                    BackgroundStore.INSTANCE?.backgroundBitmapFlow?.collectAsState(initial = null)
                 CHelperTheme(
                     when (themeId) {
                         "MODE_NIGHT_NO" -> CHelperTheme.Theme.Light
                         "MODE_NIGHT_YES" -> CHelperTheme.Theme.Dark
                         else -> if ((application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) CHelperTheme.Theme.Dark else CHelperTheme.Theme.Light
-                    }, CustomTheme.INSTANCE.backgroundBitmap.imageBitmap
+                    }, backgroundBitmap?.value
                 ) {
                     val lifecycleOwner = rememberLifecycleOwner()
                     val navigationEventDispatcher = remember { NavigationEventDispatcher() }
