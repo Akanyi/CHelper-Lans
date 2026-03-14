@@ -41,7 +41,7 @@ private val Context.copyHistoryDataStore: DataStore<CopyHistoryData> by dataStor
     fileName = "copy_history.json",
     serializer = CopyHistorySerializer,
     produceMigrations = {
-        listOf(MigrationToV76(it))
+        listOf(CopyHistoryDataMigrationToV75(it))
     }
 )
 
@@ -101,9 +101,9 @@ class CopyHistoryDataStore(private val context: Context) {
 }
 
 /**
- * 0.4.2 版本之后，复制历史记录存储从 HistoryManager 改为使用官方方案 DataStore，该文件用于数据迁移
+ * 0.4.1 版本之后，复制历史记录从自己写的框架改为使用官方方案 DataStore，该文件用于数据迁移
  */
-class MigrationToV76(private val context: Context) : DataMigration<CopyHistoryData> {
+class CopyHistoryDataMigrationToV75(private val context: Context) : DataMigration<CopyHistoryData> {
     override suspend fun shouldMigrate(currentData: CopyHistoryData): Boolean {
         return context.dataDir.resolve("history.txt").exists()
     }

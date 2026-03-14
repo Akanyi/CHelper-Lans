@@ -43,7 +43,7 @@ private val Context.settingsDataStore: DataStore<Settings> by dataStore(
     fileName = "settings.json",
     serializer = SettingsSerializer,
     produceMigrations = {
-        listOf(MigrationToV74(it))
+        listOf(SettingsMigrationToV74(it))
     }
 )
 
@@ -186,7 +186,7 @@ class SettingsDataStore(private val context: Context) {
 /**
  * 0.4.0 版本之后，软件设置存储从自己写的框架改为使用官方方案 DataScore，该文件用于数据迁移
  */
-class MigrationToV74(private val context: Context) : DataMigration<Settings> {
+class SettingsMigrationToV74(private val context: Context) : DataMigration<Settings> {
     override suspend fun shouldMigrate(currentData: Settings): Boolean {
         return context.dataDir.resolve("settings").resolve("settings.json").exists()
     }
