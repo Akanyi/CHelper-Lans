@@ -63,7 +63,7 @@ fun HistoryScreen(history: List<String>?) {
     val coroutineScope = rememberCoroutineScope()
     val clipboard = LocalClipboard.current
     RootViewWithHeaderAndCopyright(
-        title = stringResource(R.string.layout_library_list_title_local)
+        title = stringResource(R.string.layout_favorite_history)
     ) {
         Column {
             Spacer(Modifier.height(10.dp))

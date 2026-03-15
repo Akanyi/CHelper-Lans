@@ -79,7 +79,7 @@
     <string name="layout_enumeration_icon_clear_content_description">清空</string>
 
     <!--    use in HistoryView    -->
-    <string name="layout_favorite_history">历史</string>
+    <string name="layout_favorite_history">复制历史</string>
 
     <!--    use in HomeView    -->
     <string name="layout_home_app_name">CHelper</string>
