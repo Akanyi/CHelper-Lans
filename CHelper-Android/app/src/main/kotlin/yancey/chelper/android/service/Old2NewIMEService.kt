@@ -51,6 +51,11 @@ class Old2NewIMEService : InputMethodService() {
         super.onCreate()
         isSystemDarkMode =
             (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        composeLifecycleOwner = ComposeLifecycleOwner().apply {
+            attachToDecorView(window.window?.decorView)
+            onCreate()
+            onStart()
+        }
         composeLifecycleOwner.lifecycleScope.launch {
             settingsDataStore.themeId().collect { themeId ->
                 theme = when (themeId) {
@@ -63,11 +68,6 @@ class Old2NewIMEService : InputMethodService() {
                 resources.configuration.uiMode =
                     (newNightMode or (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK.inv()))
             }
-        }
-        composeLifecycleOwner = ComposeLifecycleOwner().apply {
-            attachToDecorView(window.window?.decorView)
-            onCreate()
-            onStart()
         }
     }
 
