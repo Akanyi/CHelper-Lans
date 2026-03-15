@@ -61,7 +61,6 @@ class PolicyGrantManager private constructor(
     }
 
     companion object {
-        @JvmField
         var INSTANCE: PolicyGrantManager? = null
         fun init(privacyPolicy: String, lastReadContentFile: File) {
             INSTANCE = PolicyGrantManager(privacyPolicy, lastReadContentFile)

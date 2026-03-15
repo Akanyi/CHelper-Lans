@@ -45,17 +45,13 @@ object ServiceManager {
     var COMMAND_LAB_RETROFIT: Retrofit? = null
     var CHELPER_SERVICE: CHelperService? = null
 
-    @JvmField
     var COMMAND_LAB_PUBLIC_SERVICE: CommandLabPublicService? = null
     var COMMAND_LAB_USER_SERVICE: CommandLabUserService? = null
 
-    @JvmField
     var CAPTCHA_SERVICE: CaptchaService? = null
 
-    @JvmField
     var LAB_BASE_URL = "https://abyssous.site/"
 
-    @JvmStatic
     fun init(context: Context) {
         val json = Json {
             encodeDefaults = true
