@@ -580,25 +580,11 @@ fun CompletionScreen(
                             setTheme(if (theme == CHelperTheme.Theme.Light) Theme.THEME_DAY else Theme.THEME_NIGHT)
                             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
                             setListener({ str ->
-                                var selectionStart = selectionStart
-                                var selectionEnd = selectionEnd
-                                if (selectionStart > selectionEnd) {
-                                    val temp = selectionStart
-                                    selectionStart = selectionEnd
-                                    selectionEnd = temp
-                                }
                                 viewModel.command.edit {
                                     replace(0, length, str)
                                     selection = TextRange(selectionStart, selectionEnd)
                                 }
                             }, {
-                                var selectionStart = selectionStart
-                                var selectionEnd = selectionEnd
-                                if (selectionStart > selectionEnd) {
-                                    val temp = selectionStart
-                                    selectionStart = selectionEnd
-                                    selectionEnd = temp
-                                }
                                 viewModel.command.edit {
                                     selection = TextRange(selectionStart, selectionEnd)
                                 }
