@@ -34,7 +34,10 @@ import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.Lifecycle
@@ -73,7 +76,7 @@ class FloatingWindowManager(
     private var composeLifecycleOwner: ComposeLifecycleOwner? = null
     private var floatBackPressedOwner: FloatWindowBackPressedOwner? = null
     private var navController: NavController? = null
-    private var themeId = "MODE_NIGHT_FOLLOW_SYSTEM"
+    protected var theme by mutableStateOf(CHelperTheme.Theme.Light)
 
     val isUsingFloatingWindow: Boolean
         /**
@@ -128,13 +131,7 @@ class FloatingWindowManager(
             setContent {
                 val backgroundBitmap =
                     BackgroundStore.INSTANCE?.backgroundBitmapFlow?.collectAsState(initial = null)
-                CHelperTheme(
-                    when (themeId) {
-                        "MODE_NIGHT_NO" -> CHelperTheme.Theme.Light
-                        "MODE_NIGHT_YES" -> CHelperTheme.Theme.Dark
-                        else -> if ((application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) CHelperTheme.Theme.Dark else CHelperTheme.Theme.Light
-                    }, backgroundBitmap?.value
-                ) {
+                CHelperTheme(theme, backgroundBitmap?.value) {
                     val lifecycleOwner = rememberLifecycleOwner()
                     val navigationEventDispatcher = remember { NavigationEventDispatcher() }
                     val navigationEventOwner =
@@ -194,9 +191,15 @@ class FloatingWindowManager(
             attachToDecorView(mainViewWindow!!.rootLayout)
             onCreate()
             onStart()
+            val isSystemDarkMode =
+                (application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
             lifecycleScope.launch {
                 settingsDataStore.themeId().collect {
-                    themeId = it
+                    theme = when (it) {
+                        "MODE_NIGHT_NO" -> CHelperTheme.Theme.Light
+                        "MODE_NIGHT_YES" -> CHelperTheme.Theme.Dark
+                        else -> if (isSystemDarkMode) CHelperTheme.Theme.Dark else CHelperTheme.Theme.Light
+                    }
                 }
             }
         }
@@ -228,21 +231,25 @@ class FloatingWindowManager(
      * 关闭悬浮窗
      */
     fun stopFloatingWindow() {
-        if (mainViewWindow != null) {
-            composeLifecycleOwner?.apply {
-                onStop()
-                onDestroy()
-                detachFromDecorView(mainViewWindow!!.contentView)
+        mainViewWindow.let {
+            if (it != null) {
+                composeLifecycleOwner?.apply {
+                    onStop()
+                    onDestroy()
+                    detachFromDecorView(it.contentView)
+                }
+                composeLifecycleOwner = null
+                floatBackPressedOwner = null
+                navController = null
+                it.recycle()
+                mainViewWindow = null
             }
-            composeLifecycleOwner = null
-            floatBackPressedOwner = null
-            navController = null
-            mainViewWindow!!.recycle()
-            mainViewWindow = null
         }
-        if (iconViewWindow != null) {
-            iconViewWindow!!.recycle()
-            iconViewWindow = null
+        iconViewWindow.let {
+            if (it != null) {
+                it.recycle()
+                iconViewWindow = null
+            }
         }
     }
 }
