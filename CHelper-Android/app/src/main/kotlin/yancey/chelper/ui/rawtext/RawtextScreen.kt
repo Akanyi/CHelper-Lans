@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hjq.toast.Toaster
 import kotlinx.coroutines.launch
 import yancey.chelper.R
 import yancey.chelper.ui.common.CHelperTheme
@@ -223,6 +224,7 @@ fun RawtextScreenButton(viewModel: RawtextViewModel) {
                         )
                     )
                 )
+                Toaster.show("已复制")
             }
         }
     }

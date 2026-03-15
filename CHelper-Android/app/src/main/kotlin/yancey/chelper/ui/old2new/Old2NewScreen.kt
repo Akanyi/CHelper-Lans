@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hjq.toast.Toaster
 import kotlinx.coroutines.launch
 import yancey.chelper.R
 import yancey.chelper.ui.common.CHelperTheme
@@ -97,6 +98,7 @@ fun Old2NewScreen(viewModel: Old2NewViewModel = viewModel(), old2new: (String) -
                             )
                         )
                     )
+                    Toaster.show("已复制")
                 }
             }
         }

@@ -46,6 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.hjq.toast.Toaster
 import kotlinx.coroutines.launch
 import yancey.chelper.R
 import yancey.chelper.data.LocalCommandLabDataStore
@@ -116,6 +117,7 @@ fun LocalLibraryShowScreen(library: LibraryFunction?) {
                                                     )
                                                 )
                                             )
+                                            Toaster.show("已复制")
                                         }
                                     }
                                     .padding(start = 5.dp)

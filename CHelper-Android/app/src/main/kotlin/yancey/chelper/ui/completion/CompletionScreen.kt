@@ -59,6 +59,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.hjq.toast.Toaster
 import kotlinx.coroutines.launch
 import yancey.chelper.R
 import yancey.chelper.android.widget.CommandEditText
@@ -638,6 +639,7 @@ fun CompletionScreen(
                                         )
                                     )
                                 )
+                                Toaster.show("已复制")
                             }
                             if (isHideWindowWhenCopying) {
                                 hideView()

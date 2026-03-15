@@ -229,6 +229,7 @@ fun LocalLibraryListScreen(
                             )
                         )
                     )
+                    Toaster.show("已复制")
                 }
             }
         )
