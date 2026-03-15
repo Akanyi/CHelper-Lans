@@ -205,10 +205,12 @@
     <string name="layout_settings_restore_background_description">使用自带背景</string>
     <string name="layout_settings_choose_theme">选择主题</string>
     <string name="layout_settings_choose_theme_description">选择软件内置的主题</string>
-    <string name="layout_settings_floating_window_alpha">悬浮窗透明度</string>
-    <string name="layout_settings_floating_window_alpha_description">范围为10–100，重新打开悬浮窗才可以生效</string>
-    <string name="layout_settings_floating_window_size">悬浮窗大小</string>
-    <string name="layout_settings_floating_window_size_description">范围为10–100，重新打开悬浮窗才可以生效</string>
+    <string name="layout_settings_floating_window_icon_alpha">悬浮窗图标透明度</string>
+    <string name="layout_settings_floating_window_icon_alpha_description">范围为10–100，重新打开悬浮窗才可以生效。请注意透明度过低在部分系统会触发系统保护机制导致悬浮窗无法操作。</string>
+    <string name="layout_settings_floating_window_screen_alpha">悬浮窗界面透明度</string>
+    <string name="layout_settings_floating_window_screen_alpha_description">范围为10–100，重新打开悬浮窗才可以生效。请注意透明度过低在部分系统会触发系统保护机制导致悬浮窗无法操作。</string>
+    <string name="layout_settings_floating_window_icon_size">悬浮窗图标大小</string>
+    <string name="layout_settings_floating_window_icon_size_description">范围为10–100，重新打开悬浮窗才可以生效</string>
     <string name="layout_settings_completion_settings">命令补全</string>
     <string name="layout_settings_choose_cpack">命令分支</string>
     <string name="layout_settings_current_cpack">当前命令分支：%s</string>

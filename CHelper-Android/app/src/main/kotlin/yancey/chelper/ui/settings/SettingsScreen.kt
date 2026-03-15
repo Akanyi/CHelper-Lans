@@ -61,8 +61,9 @@ fun SettingsScreen(
     val settingsDataStore = remember(context) { SettingsDataStore(context) }
     var isShowResumeBackgroundDialog by remember { mutableStateOf(false) }
     var isShowChooseThemeDialog by remember { mutableStateOf(false) }
-    var isShowInputFloatingWindowAlphaDialog by remember { mutableStateOf(false) }
-    var isShowInputFloatingWindowSizeDialog by remember { mutableStateOf(false) }
+    var isShowInputFloatingWindowIconAlphaDialog by remember { mutableStateOf(false) }
+    var isShowInputFloatingWindowScreenAlphaDialog by remember { mutableStateOf(false) }
+    var isShowInputFloatingWindowIconSizeDialog by remember { mutableStateOf(false) }
     var isShowChooseCpackBranchDialog by remember { mutableStateOf(false) }
     val isEnableUpdateNotifications by settingsDataStore.isEnableUpdateNotifications()
         .collectAsState(initial = null)
@@ -80,9 +81,11 @@ fun SettingsScreen(
         .collectAsState(initial = null)
     val isSyntaxHighlight by settingsDataStore.isSyntaxHighlight()
         .collectAsState(initial = null)
-    val floatingWindowSize by settingsDataStore.floatingWindowSize()
+    val floatingWindowIconAlpha by settingsDataStore.floatingWindowIconAlpha()
         .collectAsState(initial = null)
-    val floatingWindowAlpha by settingsDataStore.floatingWindowAlpha()
+    val floatingWindowScreenAlpha by settingsDataStore.floatingWindowScreenAlpha()
+        .collectAsState(initial = null)
+    val floatingWindowIconSize by settingsDataStore.floatingWindowIconSize()
         .collectAsState(initial = null)
     var cpackBranchesWithTranslate by remember {
         mutableStateOf(
@@ -175,17 +178,24 @@ fun SettingsScreen(
                 }
                 Divider()
                 NameAndAction(
-                    name = stringResource(R.string.layout_settings_floating_window_alpha),
-                    description = stringResource(R.string.layout_settings_floating_window_alpha_description),
+                    name = stringResource(R.string.layout_settings_floating_window_icon_alpha),
+                    description = stringResource(R.string.layout_settings_floating_window_icon_alpha_description),
                 ) {
-                    isShowInputFloatingWindowAlphaDialog = true
+                    isShowInputFloatingWindowIconAlphaDialog = true
                 }
                 Divider()
                 NameAndAction(
-                    name = stringResource(R.string.layout_settings_floating_window_size),
-                    description = stringResource(R.string.layout_settings_floating_window_size_description),
+                    name = stringResource(R.string.layout_settings_floating_window_screen_alpha),
+                    description = stringResource(R.string.layout_settings_floating_window_screen_alpha_description),
                 ) {
-                    isShowInputFloatingWindowSizeDialog = true
+                    isShowInputFloatingWindowScreenAlphaDialog = true
+                }
+                Divider()
+                NameAndAction(
+                    name = stringResource(R.string.layout_settings_floating_window_icon_size),
+                    description = stringResource(R.string.layout_settings_floating_window_icon_size_description),
+                ) {
+                    isShowInputFloatingWindowIconSizeDialog = true
                 }
             }
             CollectionName(stringResource(R.string.layout_settings_completion_settings))
@@ -304,13 +314,13 @@ fun SettingsScreen(
             }
         )
     }
-    if (isShowInputFloatingWindowSizeDialog && floatingWindowSize != null) {
+    if (isShowInputFloatingWindowIconSizeDialog && floatingWindowIconSize != null) {
         val textFieldState = rememberTextFieldState(
-            initialText = floatingWindowSize!!.toString()
+            initialText = floatingWindowIconSize!!.toString()
         )
         InputStringDialog(
-            onDismissRequest = { isShowInputFloatingWindowSizeDialog = false },
-            title = "请输入透明度",
+            onDismissRequest = { isShowInputFloatingWindowIconSizeDialog = false },
+            title = "请输入悬浮窗图标大小",
             textFieldState = textFieldState,
             onConfirm = {
                 try {
@@ -321,19 +331,43 @@ fun SettingsScreen(
                         integer = 100
                     }
                     coroutineScope.launch {
-                        settingsDataStore.setFloatingWindowSize(integer)
+                        settingsDataStore.setFloatingWindowIconSize(integer)
                     }
                 } catch (_: NumberFormatException) {
                 }
             }
         )
     }
-    if (isShowInputFloatingWindowAlphaDialog && floatingWindowAlpha != null) {
+    if (isShowInputFloatingWindowIconAlphaDialog && floatingWindowIconAlpha != null) {
         val textFieldState = rememberTextFieldState(
-            initialText = (floatingWindowAlpha!! * 100).toInt().toString()
+            initialText = (floatingWindowIconAlpha!! * 100).toInt().toString()
         )
         InputStringDialog(
-            onDismissRequest = { isShowInputFloatingWindowAlphaDialog = false },
+            onDismissRequest = { isShowInputFloatingWindowIconAlphaDialog = false },
+            title = "请输入图标透明度",
+            textFieldState = textFieldState,
+            onConfirm = {
+                try {
+                    var integer = textFieldState.text.toString().toInt()
+                    if (integer < 10) {
+                        integer = 10
+                    } else if (integer > 100) {
+                        integer = 100
+                    }
+                    coroutineScope.launch {
+                        settingsDataStore.setFloatingWindowIconAlpha(integer / 100f)
+                    }
+                } catch (_: NumberFormatException) {
+                }
+            }
+        )
+    }
+    if (isShowInputFloatingWindowScreenAlphaDialog && floatingWindowScreenAlpha != null) {
+        val textFieldState = rememberTextFieldState(
+            initialText = (floatingWindowScreenAlpha!! * 100).toInt().toString()
+        )
+        InputStringDialog(
+            onDismissRequest = { isShowInputFloatingWindowScreenAlphaDialog = false },
             title = "请输入透明度",
             textFieldState = textFieldState,
             onConfirm = {
@@ -345,7 +379,7 @@ fun SettingsScreen(
                         integer = 100
                     }
                     coroutineScope.launch {
-                        settingsDataStore.setFloatingWindowAlpha(integer / 100f)
+                        settingsDataStore.setFloatingWindowScreenAlpha(integer / 100f)
                     }
                 } catch (_: NumberFormatException) {
                 }

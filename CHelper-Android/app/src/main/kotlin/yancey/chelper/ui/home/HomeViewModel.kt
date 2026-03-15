@@ -87,8 +87,9 @@ class HomeViewModel : ViewModel() {
     fun startFloatingWindow(
         context: Context,
         isSkipXiaomiClipboardPermissionTips: Boolean,
-        floatingWindowSize: Int,
-        floatingWindowAlpha: Float
+        floatingWindowIconSize: Int,
+        floatingWindowIconAlpha: Float,
+        floatingWindowScreenAlpha: Float,
     ) {
         if (!XXPermissions.isGrantedPermission(
                 context,
@@ -110,8 +111,9 @@ class HomeViewModel : ViewModel() {
         }
         floatingWindowManager?.startFloatingWindow(
             context,
-            floatingWindowSize,
-            floatingWindowAlpha
+            floatingWindowIconSize,
+            floatingWindowIconAlpha,
+            floatingWindowScreenAlpha,
         )
     }
 

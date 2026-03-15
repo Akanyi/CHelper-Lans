@@ -93,9 +93,11 @@ fun HomeScreen(
         .collectAsState(initial = false)
     val isEnableUpdateNotifications by settingsDataStore.isShowPublicLibrary()
         .collectAsState(initial = false)
-    val floatingWindowSize by settingsDataStore.floatingWindowSize()
+    val floatingWindowIconSize by settingsDataStore.floatingWindowIconSize()
         .collectAsState(initial = 40)
-    val floatingWindowAlpha by settingsDataStore.floatingWindowAlpha()
+    val floatingWindowIconAlpha by settingsDataStore.floatingWindowIconAlpha()
+        .collectAsState(initial = 1.0f)
+    val floatingWindowScreenAlpha by settingsDataStore.floatingWindowScreenAlpha()
         .collectAsState(initial = 1.0f)
     val publicLibraryMinVersion by settingsDataStore.publicLibraryMinVersion()
         .collectAsState(initial = 0)
@@ -159,8 +161,9 @@ fun HomeScreen(
                                 viewModel.startFloatingWindow(
                                     context,
                                     false,
-                                    floatingWindowSize,
-                                    floatingWindowAlpha
+                                    floatingWindowIconSize,
+                                    floatingWindowIconAlpha,
+                                    floatingWindowScreenAlpha,
                                 )
                             }
                         }
@@ -249,16 +252,18 @@ fun HomeScreen(
                 viewModel.startFloatingWindow(
                     context,
                     true,
-                    floatingWindowSize,
-                    floatingWindowAlpha
+                    floatingWindowIconSize,
+                    floatingWindowIconAlpha,
+                    floatingWindowScreenAlpha,
                 )
             },
             onConfirm = {
                 viewModel.startFloatingWindow(
                     context,
                     true,
-                    floatingWindowSize,
-                    floatingWindowAlpha
+                    floatingWindowIconSize,
+                    floatingWindowIconAlpha,
+                    floatingWindowScreenAlpha,
                 )
             }
         )

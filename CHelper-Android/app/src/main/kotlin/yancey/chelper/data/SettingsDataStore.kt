@@ -52,6 +52,7 @@ data class Settings(
     val isEnableUpdateNotifications: Boolean? = null,
     val themeId: String? = null,
     val floatingWindowAlpha: Float? = null,
+    val floatingWindowScreenAlpha: Float? = null,
     val floatingWindowSize: Int? = null,
     val isCheckingBySelection: Boolean? = null,
     val isHideWindowWhenCopying: Boolean? = null,
@@ -97,10 +98,13 @@ class SettingsDataStore(private val context: Context) {
     fun themeId(): Flow<String> =
         context.settingsDataStore.data.map { it.themeId ?: "MODE_NIGHT_FOLLOW_SYSTEM" }
 
-    fun floatingWindowAlpha(): Flow<Float> =
+    fun floatingWindowIconAlpha(): Flow<Float> =
         context.settingsDataStore.data.map { it.floatingWindowAlpha ?: 1.0f }
 
-    fun floatingWindowSize(): Flow<Int> =
+    fun floatingWindowScreenAlpha(): Flow<Float> =
+        context.settingsDataStore.data.map { it.floatingWindowScreenAlpha ?: 1.0f }
+
+    fun floatingWindowIconSize(): Flow<Int> =
         context.settingsDataStore.data.map { it.floatingWindowSize ?: 40 }
 
     fun isCheckingBySelection(): Flow<Boolean> =
@@ -138,11 +142,15 @@ class SettingsDataStore(private val context: Context) {
         context.settingsDataStore.updateData { it.copy(themeId = value) }
     }
 
-    suspend fun setFloatingWindowAlpha(value: Float) {
+    suspend fun setFloatingWindowIconAlpha(value: Float) {
         context.settingsDataStore.updateData { it.copy(floatingWindowAlpha = value) }
     }
 
-    suspend fun setFloatingWindowSize(value: Int) {
+    suspend fun setFloatingWindowScreenAlpha(value: Float) {
+        context.settingsDataStore.updateData { it.copy(floatingWindowScreenAlpha = value) }
+    }
+
+    suspend fun setFloatingWindowIconSize(value: Int) {
         context.settingsDataStore.updateData { it.copy(floatingWindowSize = value) }
     }
 

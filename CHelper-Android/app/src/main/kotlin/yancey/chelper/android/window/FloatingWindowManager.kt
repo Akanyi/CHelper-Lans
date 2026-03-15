@@ -94,12 +94,13 @@ class FloatingWindowManager(
     @Suppress("deprecation")
     fun startFloatingWindow(
         context: Context,
-        floatingWindowSize: Int,
-        floatingWindowAlpha: Float
+        floatingWindowIconSize: Int,
+        floatingWindowIconAlpha: Float,
+        floatingWindowScreenAlpha: Float,
     ) {
         val iconSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            floatingWindowSize.toFloat(),
+            floatingWindowIconSize.toFloat(),
             application.resources.displayMetrics
         ).toInt()
         val iconView = ImageView(context)
@@ -169,7 +170,7 @@ class FloatingWindowManager(
             .setOutsideTouchable(true)
             .setWindowLocation(Gravity.START or Gravity.TOP, 0, 0)
             .setWindowAnim(0)
-            .setWindowAlpha(floatingWindowAlpha)
+            .setWindowAlpha(floatingWindowIconAlpha)
         mainViewWindow = EasyWindow.with(application)
             .setContentView(mainView)
             .setWindowSize(
@@ -185,7 +186,7 @@ class FloatingWindowManager(
                         or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
             )
             .setWindowAnim(0)
-            .setWindowAlpha(floatingWindowAlpha)
+            .setWindowAlpha(floatingWindowScreenAlpha)
         val settingsDataStore = SettingsDataStore(context)
         composeLifecycleOwner = ComposeLifecycleOwner().apply {
             attachToDecorView(mainViewWindow!!.rootLayout)
