@@ -148,7 +148,7 @@ class CPLUserViewModel : ViewModel() {
                 }
                 val response = ServiceManager.COMMAND_LAB_USER_SERVICE!!.sendCode(request)
                 withContext(Dispatchers.Main) {
-                    if (response.isSuccess() == true) {
+                    if (response.isSuccess()) {
                         Toaster.show("验证码已发送")
                     } else {
                         Toaster.show("发送失败: ${response.message}")
@@ -192,7 +192,7 @@ class CPLUserViewModel : ViewModel() {
 
                 val response = ServiceManager.COMMAND_LAB_USER_SERVICE!!.register(request)
                 withContext(Dispatchers.Main) {
-                    if (response.isSuccess() == true) {
+                    if (response.isSuccess()) {
                         Toaster.show("注册成功，请登录")
                         currentTab = UserTab.LOGIN
                         loginAccount.setTextAndPlaceCursorAtEnd(registerAccount.text.toString())
