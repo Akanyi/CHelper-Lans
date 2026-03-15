@@ -574,7 +574,7 @@ fun CompletionScreen(
                             hint = hintStr
                             maxLines = 1
                             isSingleLine = true
-                            includeFontPadding = false// 修复：REDMI Turbo 4 Pro 输入框可以滚动导致文本显示不全
+                            setPadding(0, 0, 0, 0)// 修复：REDMI Turbo 4 Pro 输入框可以滚动导致文本显示不全
                             setTextColor(textMain.toArgb())
                             setHintTextColor(textSecondary.toArgb())
                             setTheme(if (theme == CHelperTheme.Theme.Light) Theme.THEME_DAY else Theme.THEME_NIGHT)
