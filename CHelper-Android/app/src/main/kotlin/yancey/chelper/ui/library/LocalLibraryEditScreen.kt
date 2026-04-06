@@ -18,6 +18,7 @@
 
 package yancey.chelper.ui.library
 
+import yancey.chelper.network.library.data.AuthorInfo
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -67,7 +68,7 @@ fun LocalLibraryEditScreen(viewModel: LocalLibraryEditViewModel = viewModel(), i
         localLibraryFunction?.let {
             viewModel.name.setTextAndPlaceCursorAtEnd(it.name ?: "")
             viewModel.version.setTextAndPlaceCursorAtEnd(it.version ?: "")
-            viewModel.author.setTextAndPlaceCursorAtEnd(it.author ?: "")
+            viewModel.author.setTextAndPlaceCursorAtEnd(it.authorName ?: "")
             viewModel.description.setTextAndPlaceCursorAtEnd(it.note ?: "")
             viewModel.tags.setTextAndPlaceCursorAtEnd(
                 it.tags?.joinToString(separator = ",") ?: ""
@@ -189,7 +190,7 @@ fun LocalLibraryEditScreen(viewModel: LocalLibraryEditViewModel = viewModel(), i
                     val libraryFunction = LibraryFunction()
                     libraryFunction.name = viewModel.name.text.toString()
                     libraryFunction.version = viewModel.version.text.toString()
-                    libraryFunction.author = viewModel.author.text.toString()
+                    libraryFunction.author = AuthorInfo(name = viewModel.author.text.toString())
                     libraryFunction.note = viewModel.description.text.toString()
                     libraryFunction.tags =
                         viewModel.tags.text.toString().split(",").map { it.trim() }

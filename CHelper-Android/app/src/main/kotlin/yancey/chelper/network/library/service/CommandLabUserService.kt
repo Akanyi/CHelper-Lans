@@ -24,7 +24,10 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Multipart
 import retrofit2.http.Query
 import yancey.chelper.network.library.data.BaseResult
 import yancey.chelper.network.library.data.LibraryFunction
@@ -157,6 +160,21 @@ interface CommandLabUserService {
 
 
     // -------------------------------------------------------------
+    // Avatar
+    // -------------------------------------------------------------
+
+    @Serializable
+    class UploadAvatarResponse(
+        @SerialName("avatar_url") var avatarUrl: String? = null
+    )
+
+    @Multipart
+    @POST("avatar")
+    suspend fun uploadAvatar(
+        @Part file: okhttp3.MultipartBody.Part
+    ): BaseResult<UploadAvatarResponse?>
+
+    // -------------------------------------------------------------
     // Library Management
     // -------------------------------------------------------------
 
@@ -174,6 +192,30 @@ interface CommandLabUserService {
 
     @POST("library/upload")
     suspend fun uploadLibrary(@Body request: UploadLibraryRequest): BaseResult<UploadLibraryResponse?>
+
+    @Serializable
+    class UpdateLibraryRequest(
+        var name: String? = null,
+        var content: String? = null,
+        var note: String? = null,
+        var tags: List<String>? = null,
+        var version: String? = null
+    )
+
+    /**
+     * 编辑更新命令库
+     */
+    @PUT("library/{id}")
+    suspend fun updateLibrary(
+        @Path("id") id: Int,
+        @Body request: UpdateLibraryRequest
+    ): BaseResult<Void?>
+
+    @PUT("users/{id}")
+    suspend fun updateProfile(
+        @Path("id") id: Int,
+        @Body request: yancey.chelper.network.library.data.UpdateProfileRequest
+    ): BaseResult<Void?>
 
     /**
      * Get user's own libraries (My Cloud)

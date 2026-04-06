@@ -62,6 +62,13 @@ import yancey.chelper.R
 import yancey.chelper.network.library.data.LibraryFunction
 import yancey.chelper.ui.CPLUploadScreenKey
 import yancey.chelper.ui.PublicLibraryShowScreenKey
+import yancey.chelper.ui.UserProfileScreenKey
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.PickVisualMediaRequest
 import yancey.chelper.ui.common.CHelperTheme
 import yancey.chelper.ui.common.dialog.CaptchaDialog
 import yancey.chelper.ui.common.dialog.ChoosingDialog
@@ -77,6 +84,7 @@ fun CPLUserScreen(
     viewModel: CPLUserViewModel = viewModel(),
     navController: NavHostController
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     // Captcha State
     var showCaptchaDialog by remember { mutableStateOf(false) }
     var captchaAction by remember { mutableStateOf("") }
@@ -101,6 +109,24 @@ fun CPLUserScreen(
         viewModel.refreshUserState()
     }
 
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            uri?.let {
+                try {
+                    val cr = context.contentResolver
+                    cr.openInputStream(it)?.use { inputStream ->
+                        val bytes = inputStream.readBytes()
+                        val mimeType = cr.getType(it) ?: "image/jpeg"
+                        viewModel.uploadAvatar(bytes, "avatar.jpg", mimeType)
+                    }
+                } catch (e: Exception) {
+                    com.hjq.toast.Toaster.show("读取图片失败: ${e.message}")
+                }
+            }
+        }
+    )
+
     RootViewWithHeaderAndCopyright(
         title = "用户中心",
     ) {
@@ -110,7 +136,13 @@ fun CPLUserScreen(
                 .background(CHelperTheme.colors.background)
         ) {
             if (viewModel.currentUser != null && !viewModel.isGuest) {
-                UserProfileView(viewModel, navController)
+                UserProfileView(viewModel, navController) {
+                    if (!viewModel.isUploadingAvatar) {
+                        photoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
+                }
             } else if (viewModel.isGuest) {
                 GuestUserProfileView(viewModel)
             } else {
@@ -123,7 +155,11 @@ fun CPLUserScreen(
 }
 
 @Composable
-fun UserProfileView(viewModel: CPLUserViewModel, navController: NavHostController) {
+fun UserProfileView(
+    viewModel: CPLUserViewModel,
+    navController: NavHostController,
+    onUploadAvatarClick: () -> Unit
+) {
     val user = viewModel.currentUser ?: return
 
     Column(
@@ -144,13 +180,39 @@ fun UserProfileView(viewModel: CPLUserViewModel, navController: NavHostControlle
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
-                    modifier = Modifier
-                        .size(70.dp)
-                        .clip(CircleShape)
-                        .background(CHelperTheme.colors.mainColor.copy(alpha = 0.1f)),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.size(60.dp),
+                    contentAlignment = Alignment.BottomEnd
                 ) {
-                    Icon(id = R.drawable.ic_user, modifier = Modifier.size(40.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .background(if(viewModel.isUploadingAvatar) CHelperTheme.colors.backgroundComponentNoTranslate else CHelperTheme.colors.backgroundComponent)
+                            .clickable { onUploadAvatarClick() }
+                    ) {
+                        AsyncImage(
+                            model = user.gravatarUrl ?: "https://abyssous.site/avatar/${user.id}",
+                            contentDescription = "Avatar",
+                            modifier = Modifier.fillMaxSize().alpha(if(viewModel.isUploadingAvatar) 0.5f else 1f),
+                            contentScale = ContentScale.Crop,
+                            placeholder = painterResource(id = R.drawable.ic_user),
+                            error = painterResource(id = R.drawable.ic_user)
+                        )
+                    }
+                    
+                    Box(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clip(CircleShape)
+                            .background(CHelperTheme.colors.backgroundComponentNoTranslate),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            id = R.drawable.pencil,
+                            modifier = Modifier.size(12.dp),
+                            contentDescription = "上传头像"
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.width(20.dp))
                 Column {
@@ -172,64 +234,37 @@ fun UserProfileView(viewModel: CPLUserViewModel, navController: NavHostControlle
 
         Spacer(Modifier.height(24.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(id = R.drawable.folder, modifier = Modifier.size(20.dp))
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "我的云端库",
-                style = TextStyle(
-                    color = CHelperTheme.colors.textMain,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-        }
-        Spacer(Modifier.height(12.dp))
-
-        LazyColumn(
+        Box(
             modifier = Modifier
-                .weight(1f)
                 .fillMaxWidth()
-                .background(CHelperTheme.colors.backgroundComponent, RoundedCornerShape(12.dp))
-                .clip(RoundedCornerShape(12.dp))
-        ) {
-            items(viewModel.myLibraries) { lib ->
-                MyLibraryItem(
-                    lib = lib,
-                    onClick = {
-                        navController.navigate(
-                            PublicLibraryShowScreenKey(
-                                lib.id!!,
-                                isPrivate = true
-                            )
-                        )
-                    },
-                    onDelete = {
-                        viewModel.deleteLibrary(lib.id!!)
+                .shadow(4.dp, RoundedCornerShape(16.dp))
+                .background(CHelperTheme.colors.backgroundComponentNoTranslate, RoundedCornerShape(16.dp))
+                .clickable {
+                    user.id?.let {
+                        navController.navigate(UserProfileScreenKey(id = it))
                     }
+                }
+                .padding(20.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(id = R.drawable.ic_user, modifier = Modifier.size(24.dp))
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = "进入创作者主页 (云库管理)",
+                    style = TextStyle(
+                        color = CHelperTheme.colors.textMain,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
-                Divider(0.5.dp)
             }
         }
 
-        Spacer(Modifier.height(10.dp))
-        if (!viewModel.myLibrariesHasMore && viewModel.myLibraries.isEmpty()) {
-            Text(
-                text = "没有更多了",
-                style = TextStyle(color = CHelperTheme.colors.textHint),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        } else if (viewModel.myLibraries.isEmpty()) {
-            Text(
-                text = "暂无上传",
-                style = TextStyle(color = CHelperTheme.colors.textHint),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
-
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.weight(1f))
+        
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Button(
@@ -237,7 +272,7 @@ fun UserProfileView(viewModel: CPLUserViewModel, navController: NavHostControlle
                 onClick = { viewModel.logout() },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
-                enabled = true // TODO: Add logout loading state?
+                enabled = true
             )
             Button(
                 text = "上传新指令",

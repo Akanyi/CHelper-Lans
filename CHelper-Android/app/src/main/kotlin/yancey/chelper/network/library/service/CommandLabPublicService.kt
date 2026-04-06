@@ -50,6 +50,7 @@ interface CommandLabPublicService {
         @Path("id") id: Int
     ): BaseResult<LibraryFunction?>
 
+    @Serializable
     class LibraryLikeResponse {
         var likeCount: Int? = null
         var isLiked: Boolean? = null
@@ -59,4 +60,12 @@ interface CommandLabPublicService {
     suspend fun like(
         @Path("id") id: Int
     ): BaseResult<LibraryLikeResponse?>
+
+    @GET("api/leaderboard")
+    suspend fun getLeaderboard(): BaseResult<yancey.chelper.network.library.data.LeaderboardData?>
+
+    @GET("users/public/{id}")
+    suspend fun getUserProfile(
+        @Path("id") id: Int
+    ): BaseResult<yancey.chelper.network.library.data.UserProfileData?>
 }

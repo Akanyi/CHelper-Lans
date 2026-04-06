@@ -19,11 +19,18 @@
 package yancey.chelper.ui.library
 
 import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -33,9 +40,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,11 +54,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,10 +69,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.serialization.json.Json
 import com.hjq.toast.Toaster
 import kotlinx.coroutines.launch
 import yancey.chelper.R
+import yancey.chelper.network.library.data.AuthorInfo
 import yancey.chelper.network.library.data.LibraryFunction
+import yancey.chelper.ui.CPLUploadScreenKey
 import yancey.chelper.ui.PublicLibraryShowScreenKey
 import yancey.chelper.ui.common.CHelperTheme
 import yancey.chelper.ui.common.dialog.CaptchaDialog
@@ -73,6 +87,7 @@ import yancey.chelper.ui.common.widget.Divider
 import yancey.chelper.ui.common.widget.DividerVertical
 import yancey.chelper.ui.common.widget.Icon
 import yancey.chelper.ui.common.widget.Text
+import yancey.chelper.ui.library.mcd.MCDContentView
 
 @Composable
 fun PublicLibraryShowScreen(
@@ -105,18 +120,13 @@ fun PublicLibraryShowScreen(
 
     // 主菜单对话框
     if (showMainMenu) {
-        val menuItems = if (isPrivate) {
-            arrayOf(
-                "管理 ▸" to "manage",
-                "逐行复制" to "line_copy",
-                "关闭" to "close"
-            )
-        } else {
-            arrayOf(
-                "逐行复制" to "line_copy",
-                "关闭" to "close"
-            )
-        }
+        val menuItems = buildList {
+            if (isPrivate) add("管理 ▸" to "manage")
+            add("逐行复制" to "line_copy")
+            add("复制全部 MCD 源码" to "copy_all")
+            add((if (viewModel.showRawSource) "查看可视化" else "查看源码") to "toggle_view")
+            add("关闭" to "close")
+        }.toTypedArray()
         ChoosingDialog(
             onDismissRequest = { showMainMenu = false },
             data = menuItems,
@@ -124,6 +134,14 @@ fun PublicLibraryShowScreen(
                 when (action) {
                     "manage" -> showManageMenu = true
                     "line_copy" -> showLineCopyDialog = true
+                    "copy_all" -> {
+                        viewModel.library.content?.let { mcd ->
+                            val clip = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            clip.setPrimaryClip(ClipData.newPlainText("MCD", mcd))
+                            Toast.makeText(context, "已复制全部 MCD 源码", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    "toggle_view" -> viewModel.showRawSource = !viewModel.showRawSource
                 }
             }
         )
@@ -157,7 +175,15 @@ fun PublicLibraryShowScreen(
                     )
 
                     "sync" -> viewModel.library.id?.let { viewModel.syncToPublic(it) }
-                    "edit" -> Toast.makeText(context, "编辑功能开发中", Toast.LENGTH_SHORT).show()
+                    "edit" -> {
+                        val libJson = Json.encodeToString(LibraryFunction.serializer(), viewModel.library)
+                        navController?.navigate(
+                            CPLUploadScreenKey(
+                                editLibraryId = id,
+                                editLibraryJson = libJson
+                            )
+                        )
+                    }
                     "delete" -> showDeleteConfirmDialog = true
                     "back" -> showMainMenu = true
                 }
@@ -196,16 +222,19 @@ fun PublicLibraryShowScreen(
     // 逐行复制对话框
     if (showLineCopyDialog) {
         val commands = remember(viewModel.library) {
-            viewModel.library.content
+            val lines = viewModel.library.content
                 ?.split("\n")
                 ?.map { it.trim() }
-                ?.filter {
-                    it.isNotEmpty() &&
-                            !it.startsWith("#") &&
-                            !it.equals("###Function###", ignoreCase = true) &&
-                            !it.equals("###End###", ignoreCase = true)
-                }
                 ?: emptyList()
+            // 跳过元数据区：以 @ 开头的行和空行，直到遇到第一行实际命令内容
+            val startIndex = lines.indexOfFirst { it.isNotEmpty() && !it.startsWith("@") }
+            val body = if (startIndex >= 0) lines.subList(startIndex, lines.size) else emptyList()
+            body.filter {
+                it.isNotEmpty() &&
+                        !it.startsWith("#") &&
+                        !it.equals("###Function###", ignoreCase = true) &&
+                        !it.equals("###End###", ignoreCase = true)
+            }
         }
         if (commands.isEmpty()) {
             LaunchedEffect(Unit) {
@@ -273,30 +302,13 @@ fun PublicLibraryShowScreen(
                 }
 
                 else -> {
-                    // 分类行：COMMENT(#开头), COMMAND(普通指令), META(@开头，不显示)
-                    val contents: List<Pair<String, String>> = remember(viewModel.library) {
-                        viewModel.library.content
-                            ?.split("\n")
-                            ?.map { it.trim() }
-                            ?.filter { it.isNotEmpty() }
-                            ?.mapNotNull {
-                                when {
-                                    it.equals(
-                                        "###Function###",
-                                        ignoreCase = true
-                                    ) || it.equals("###End###", ignoreCase = true) -> null
-
-                                    it.startsWith("@") -> null // @元数据行不在指令区显示
-                                    it.startsWith("#") -> "comment" to it.substring(1).trim()
-                                    else -> "command" to it
-                                }
-                            }
-                            ?.filter { it.second.isNotEmpty() }
-                            ?: listOf()
-                    }
-
-                    Column(modifier = Modifier.padding(vertical = 10.dp)) {
-                        // 元信息卡片
+                    Column(
+                        modifier = Modifier
+                            .padding(vertical = 10.dp)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        // ━━━ 元信息卡片 ━━━
+                        @OptIn(ExperimentalLayoutApi::class)
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -306,8 +318,11 @@ fun PublicLibraryShowScreen(
                                 .padding(15.dp)
                         ) {
                             // 作者
-                            viewModel.library.author?.let { author ->
-                                Row(modifier = Modifier.padding(bottom = 4.dp)) {
+                            viewModel.library.authorName?.let { author ->
+                                Row(
+                                    modifier = Modifier.padding(bottom = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
                                     Text(
                                         text = "作者  ",
                                         style = TextStyle(
@@ -319,7 +334,8 @@ fun PublicLibraryShowScreen(
                                         text = author,
                                         style = TextStyle(
                                             color = CHelperTheme.colors.textMain,
-                                            fontSize = 13.sp
+                                            fontSize = 13.sp,
+                                            fontWeight = FontWeight.Medium
                                         )
                                     )
                                 }
@@ -345,7 +361,6 @@ fun PublicLibraryShowScreen(
                             }
                             // 标签
                             viewModel.library.tags?.takeIf { it.isNotEmpty() }?.let { tags ->
-                                @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
                                 Row(modifier = Modifier.padding(bottom = 4.dp)) {
                                     Text(
                                         text = "标签  ",
@@ -355,18 +370,18 @@ fun PublicLibraryShowScreen(
                                         ),
                                         modifier = Modifier.padding(top = 2.dp)
                                     )
-                                    androidx.compose.foundation.layout.FlowRow {
+                                    FlowRow(
+                                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                                    ) {
                                         tags.forEach { tag ->
                                             Box(
                                                 modifier = Modifier
-                                                    .padding(end = 6.dp, bottom = 4.dp)
                                                     .clip(RoundedCornerShape(4.dp))
                                                     .background(CHelperTheme.colors.background)
                                                     .clickable {
                                                         navController?.navigate(
-                                                            yancey.chelper.ui.LibrarySearchScreenKey(
-                                                                tag
-                                                            )
+                                                            yancey.chelper.ui.LibrarySearchScreenKey(tag)
                                                         )
                                                     }
                                                     .padding(horizontal = 6.dp, vertical = 2.dp)
@@ -383,42 +398,48 @@ fun PublicLibraryShowScreen(
                                     }
                                 }
                             }
-                            // 创建时间
-                            viewModel.library.createdAt?.takeIf { it.isNotBlank() }?.let { time ->
-                                Row(modifier = Modifier.padding(bottom = 4.dp)) {
-                                    Text(
-                                        text = "时间  ",
-                                        style = TextStyle(
-                                            color = CHelperTheme.colors.textSecondary,
-                                            fontSize = 13.sp
-                                        )
+                            // 点赞按钮 — 可交互
+                            Row(
+                                modifier = Modifier
+                                    .padding(top = 4.dp)
+                                    .clip(RoundedCornerShape(6.dp))
+                                    .clickable {
+                                        viewModel.library.id?.let { viewModel.toggleLike(it) }
+                                    }
+                                    .padding(vertical = 4.dp, horizontal = 2.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                val isLiked = viewModel.library.isLiked == true
+                                Image(
+                                    painter = painterResource(
+                                        if (isLiked) R.drawable.heart_filled else R.drawable.heart
+                                    ),
+                                    contentDescription = "点赞",
+                                    modifier = Modifier.size(16.dp),
+                                    colorFilter = ColorFilter.tint(
+                                        if (isLiked) CHelperTheme.colors.mainColor
+                                        else CHelperTheme.colors.textSecondary
                                     )
-                                    Text(
-                                        text = time,
-                                        style = TextStyle(
-                                            color = CHelperTheme.colors.textMain,
-                                            fontSize = 13.sp
-                                        )
+                                )
+                                Spacer(Modifier.width(4.dp))
+                                Text(
+                                    text = "${viewModel.library.likeCount ?: 0}",
+                                    style = TextStyle(
+                                        color = if (isLiked) CHelperTheme.colors.mainColor
+                                        else CHelperTheme.colors.textSecondary,
+                                        fontSize = 13.sp,
+                                        fontWeight = FontWeight.Medium
                                     )
-                                }
-                            }
-                            // 点赞
-                            Row(modifier = Modifier.padding(bottom = 4.dp)) {
-                                viewModel.library.likeCount?.let { likes ->
-                                    Icon(
-                                        id = R.drawable.ic_heart,
-                                        modifier = Modifier.size(14.dp),
-                                        contentDescription = "likes"
+                                )
+                                Spacer(Modifier.width(4.dp))
+                                Text(
+                                    text = if (isLiked) "已赞" else "点赞",
+                                    style = TextStyle(
+                                        color = if (isLiked) CHelperTheme.colors.mainColor
+                                        else CHelperTheme.colors.textSecondary,
+                                        fontSize = 12.sp
                                     )
-                                    Spacer(Modifier.defaultMinSize(minWidth = 4.dp))
-                                    Text(
-                                        text = "$likes",
-                                        style = TextStyle(
-                                            color = CHelperTheme.colors.mainColor,
-                                            fontSize = 13.sp
-                                        )
-                                    )
-                                }
+                                )
                             }
                             // 备注
                             viewModel.library.note?.takeIf { it.isNotBlank() }?.let { note ->
@@ -435,60 +456,69 @@ fun PublicLibraryShowScreen(
 
                         Spacer(Modifier.height(10.dp))
 
-                        // 指令内容列表
-                        LazyColumn(
+                        // ━━━ 视图切换指示条 ━━━
+                        Row(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 15.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(color = CHelperTheme.colors.backgroundComponent)
+                                .fillMaxWidth()
+                                .padding(horizontal = 15.dp, vertical = 2.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            items(contents) { content ->
-                                val isCommand = content.first == "command"
-                                Row(
-                                    modifier = Modifier
-                                        .padding(20.dp, 10.dp)
-                                        .defaultMinSize(minHeight = 24.dp)
-                                ) {
-                                    Text(
-                                        text = content.second,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .align(Alignment.CenterVertically)
-                                            .weight(1f),
-                                        style = TextStyle(
-                                            // 指令行用主题色，注释行用普通文字色
-                                            color = if (isCommand) CHelperTheme.colors.mainColor else CHelperTheme.colors.textMain,
-                                        )
-                                    )
-                                    // 只有指令行显示复制按钮
-                                    if (isCommand) {
-                                        Icon(
-                                            id = R.drawable.copy,
-                                            contentDescription = stringResource(R.string.common_icon_copy_content_description),
-                                            modifier = Modifier
-                                                .align(Alignment.CenterVertically)
-                                                .clickable {
-                                                    viewModel.viewModelScope.launch {
-                                                        clipboard.setClipEntry(
-                                                            ClipEntry(
-                                                                ClipData.newPlainText(
-                                                                    null,
-                                                                    content.second
-                                                                )
-                                                            )
-                                                        )
-                                                        Toaster.show("已复制")
-                                                    }
-                                                }
-                                                .padding(start = 5.dp)
-                                                .size(24.dp)
-                                        )
-                                    }
-                                }
-                                Divider(padding = 0.dp)
-                            }
+                            Text(
+                                text = if (viewModel.showRawSource) "MCD 源码" else "可视化预览",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    color = CHelperTheme.colors.textSecondary
+                                )
+                            )
+                            Spacer(Modifier.weight(1f))
+                            Text(
+                                text = if (viewModel.showRawSource) "切换到可视化" else "切换到源码",
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .clickable { viewModel.showRawSource = !viewModel.showRawSource }
+                                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color = CHelperTheme.colors.mainColor
+                                )
+                            )
                         }
+
+                        Spacer(Modifier.height(4.dp))
+
+                        // ━━━ 内容区：可视化 / 原始源码 ━━━
+                        if (viewModel.showRawSource) {
+                            // 原始源码视图
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 15.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(CHelperTheme.colors.backgroundComponent)
+                                    .padding(12.dp)
+                                    .horizontalScroll(rememberScrollState())
+                            ) {
+                                Text(
+                                    text = viewModel.library.content ?: "",
+                                    style = TextStyle(
+                                        fontSize = 12.sp,
+                                        fontFamily = FontFamily.Monospace,
+                                        color = CHelperTheme.colors.textMain
+                                    )
+                                )
+                            }
+                        } else {
+                            // MCD 可视化视图
+                            MCDContentView(
+                                content = viewModel.library.content,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 15.dp)
+                            )
+                        }
+
+                        Spacer(Modifier.height(20.dp))
                     }
                 }
             }
@@ -623,7 +653,7 @@ fun PublicLibraryShowScreenLightThemePreview() {
     val viewModel: PublicLibraryShowViewModel = viewModel()
     viewModel.library = LibraryFunction().apply {
         name = "Test Library"
-        author = "Test Author"
+        author = AuthorInfo(name = "Test Author")
         note = "This is a test description"
         likeCount = 42
         content = buildString {
@@ -644,7 +674,7 @@ fun PublicLibraryShowScreenDarkThemePreview() {
     val viewModel: PublicLibraryShowViewModel = viewModel()
     viewModel.library = LibraryFunction().apply {
         name = "Test Library"
-        author = "Test Author"
+        author = AuthorInfo(name = "Test Author")
         note = "This is a test description"
         likeCount = 42
         content = buildString {

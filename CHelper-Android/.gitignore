@@ -21,3 +21,5 @@ keystore.properties
 /app/mapping.txt
 /app/seeds.txt
 /app/usage.txt
+/.kotlin/*
+*.txt

@@ -21,7 +21,7 @@ package yancey.chelper.network.library.util
 import yancey.chelper.network.library.data.LibraryFunction
 
 fun libraryToStr(library: LibraryFunction): String {
-    return "@author = " + library.author!! + '\n' +
+    return "@author = " + (library.authorName ?: "") + '\n' +
             "@name = " + library.name!! + '\n' +
             "@note = " + library.note!! + '\n' +
             "@version = " + library.version!! + '\n' +

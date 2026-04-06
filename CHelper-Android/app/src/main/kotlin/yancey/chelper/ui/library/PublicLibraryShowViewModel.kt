@@ -37,6 +37,9 @@ class PublicLibraryShowViewModel : ViewModel() {
     var actionMessage by mutableStateOf<String?>(null)
     var isPrivate by mutableStateOf(false)
 
+    /** 当前是否展示原始源码视图（false = 可视化 UI） */
+    var showRawSource by mutableStateOf(false)
+
     fun loadFunction(id: Int, isPrivate: Boolean) {
         this.isPrivate = isPrivate
         viewModelScope.launch {
@@ -61,6 +64,47 @@ class PublicLibraryShowViewModel : ViewModel() {
                 errorMessage = "网络错误: ${e.message}"
             } finally {
                 isLoading = false
+            }
+        }
+    }
+
+    /**
+     * 切换点赞状态。调 like API 后刷新本地计数。
+     * like 接口是 toggle 行为：已赞则取消、未赞则点赞。
+     */
+    fun toggleLike(id: Int) {
+        viewModelScope.launch {
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    ServiceManager.COMMAND_LAB_PUBLIC_SERVICE?.like(id)
+                }
+                if (result?.isSuccess() == true && result.data != null) {
+                    val likeData = result.data!!
+                    // 用后端返回的真实数据刷新 UI
+                    val updated = library
+                    updated.isLiked = likeData.isLiked
+                    updated.likeCount = likeData.likeCount
+                    library = LibraryFunction(
+                        id = updated.id,
+                        uuid = updated.uuid,
+                        name = updated.name,
+                        content = updated.content,
+                        author = updated.author,
+                        note = updated.note,
+                        tags = updated.tags,
+                        version = updated.version,
+                        createdAt = updated.createdAt,
+                        likeCount = updated.likeCount,
+                        isLiked = updated.isLiked,
+                        hasPublicVersion = updated.hasPublicVersion,
+                        isPublish = updated.isPublish
+                    )
+                    actionMessage = if (likeData.isLiked == true) "已点赞" else "已取消点赞"
+                } else {
+                    actionMessage = result?.message ?: "操作失败"
+                }
+            } catch (e: Exception) {
+                actionMessage = "网络错误: ${e.message}"
             }
         }
     }
