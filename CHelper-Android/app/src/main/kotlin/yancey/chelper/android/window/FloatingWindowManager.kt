@@ -52,11 +52,11 @@ import com.hjq.window.EasyWindow
 import com.hjq.window.draggable.MovingWindowDraggableRule
 import kotlinx.coroutines.launch
 import yancey.chelper.R
+import yancey.chelper.android.service.FloatingWindowService
 import yancey.chelper.data.BackgroundStore
 import yancey.chelper.data.SettingsDataStore
 import yancey.chelper.ui.FloatingWindowNavHost
 import yancey.chelper.ui.common.CHelperTheme
-import yancey.chelper.android.service.FloatingWindowService
 
 class FloatWindowBackPressedOwner(override val lifecycle: Lifecycle) :
     OnBackPressedDispatcherOwner {

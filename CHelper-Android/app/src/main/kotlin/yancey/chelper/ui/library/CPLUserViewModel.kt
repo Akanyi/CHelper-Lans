@@ -226,7 +226,8 @@ class CPLUserViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = ServiceManager.COMMAND_LAB_USER_SERVICE.getMyLibraries(pageNum = myLibrariesPage)
+                val response =
+                    ServiceManager.COMMAND_LAB_USER_SERVICE.getMyLibraries(pageNum = myLibrariesPage)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccess()) {
                         val data = response.data
@@ -291,7 +292,8 @@ class CPLUserViewModel : ViewModel() {
                     "image/gif" -> "gif"
                     else -> "jpg"
                 }
-                val part = okhttp3.MultipartBody.Part.createFormData("file", "avatar.$ext", requestBody)
+                val part =
+                    okhttp3.MultipartBody.Part.createFormData("file", "avatar.$ext", requestBody)
                 val result = ServiceManager.COMMAND_LAB_USER_SERVICE?.uploadAvatar(part)
                 withContext(Dispatchers.Main) {
                     if (result?.isSuccess() == true) {
