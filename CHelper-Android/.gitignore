@@ -23,3 +23,5 @@ keystore.properties
 /app/usage.txt
 /.kotlin/*
 *.txt
+.vscode/
+.vscode/*

@@ -152,6 +152,7 @@ object LenientStringSerializer : KSerializer<String?> {
         }
     }
 
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
     override fun serialize(encoder: Encoder, value: String?) {
         if (value != null) {
             encoder.encodeString(value)
