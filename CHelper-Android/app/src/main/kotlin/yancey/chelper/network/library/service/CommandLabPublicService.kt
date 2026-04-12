@@ -18,9 +18,12 @@
 
 package yancey.chelper.network.library.service
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonNames
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -41,11 +44,12 @@ interface CommandLabPublicService {
      * @property perPage 每页返回的条目数
      * @property totalCount 符合条件的总条目数
      */
+    @OptIn(ExperimentalSerializationApi::class)
     @Serializable
     class GetFunctionsResponse(
         @SerialName("list") var functions: MutableList<LibraryFunction?>? = null,
-        @SerialName("page_num") var currentPage: Int? = null,
-        @SerialName("page_size") var perPage: Int? = null,
+        @JsonNames("page_num", "pageNum") var currentPage: Int? = null,
+        @JsonNames("page_size", "pageSize") var perPage: Int? = null,
         @SerialName("total") var totalCount: Int? = null,
     )
 
@@ -58,6 +62,7 @@ interface CommandLabPublicService {
      * @param type 列表类型（默认0表示全部公开库，1表示用户的私有库）
      * @return 包含命令库分页数据的响应结果
      */
+    @Headers("Cache-Control: no-cache")
     @GET("library")
     suspend fun getFunctions(
         @Query("page_num") pageNum: Int,
@@ -72,6 +77,7 @@ interface CommandLabPublicService {
      * @param id 命令库函数的唯一标识 ID
      * @return 包含该命令库函数详情的响应结果
      */
+    @Headers("Cache-Control: no-cache")
     @GET("library/detail/{id}")
     suspend fun getFunction(
         @Path("id") id: Int
@@ -83,10 +89,11 @@ interface CommandLabPublicService {
      * @property likeCount 点赞后的最新总点赞数
      * @property isLiked 当前用户是否已点赞
      */
+    @OptIn(ExperimentalSerializationApi::class)
     @Serializable
     class LibraryLikeResponse {
-        @SerialName("like_count") var likeCount: Int? = null
-        @SerialName("is_liked") var isLiked: Boolean? = null
+        @JsonNames("like_count", "likeCount") var likeCount: Int? = null
+        @JsonNames("is_liked", "isLiked") var isLiked: Boolean? = null
     }
 
     /**
