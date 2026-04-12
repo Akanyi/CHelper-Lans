@@ -51,6 +51,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -98,6 +99,11 @@ fun PublicLibraryShowScreen(
     val clipboard = LocalClipboard.current
     val context = LocalContext.current
 
+    // 读取设置：无法推断行的默认处理方式
+    val settingsDataStore = remember(context) { yancey.chelper.data.SettingsDataStore(context) }
+    val ambiguousLineDefault = settingsDataStore.ambiguousLineDefault()
+        .collectAsState(initial = "comment")
+
     // 对话框状态
     var showMainMenu by remember { mutableStateOf(false) }
     var showManageMenu by remember { mutableStateOf(false) }
@@ -122,6 +128,17 @@ fun PublicLibraryShowScreen(
         if (viewModel.deleteSuccess) {
             viewModel.deleteSuccess = false
             navController?.popBackStack()
+        }
+    }
+
+    // Release 成功后跳转到新公有版详情页
+    LaunchedEffect(viewModel.releasedPublicId) {
+        viewModel.releasedPublicId?.let { publicId ->
+            viewModel.releasedPublicId = null
+            navController?.navigate(PublicLibraryShowScreenKey(id = publicId)) {
+                // 把当前私有版详情页从栈里弹掉，防止 back 回去看到旧数据
+                popUpTo(navController.currentDestination?.id ?: return@navigate) { inclusive = true }
+            }
         }
     }
 
@@ -414,7 +431,7 @@ fun PublicLibraryShowScreen(
                                     .padding(vertical = 4.dp, horizontal = 2.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                val isLiked = viewModel.library.isLiked == true
+                                val isLiked = viewModel.isLiked
                                 Image(
                                     painter = painterResource(
                                         if (isLiked) R.drawable.heart_filled else R.drawable.heart
@@ -428,7 +445,7 @@ fun PublicLibraryShowScreen(
                                 )
                                 Spacer(Modifier.width(4.dp))
                                 Text(
-                                    text = "${viewModel.library.likeCount ?: 0}",
+                                    text = "${viewModel.likeCount}",
                                     style = TextStyle(
                                         color = if (isLiked) CHelperTheme.colors.mainColor
                                         else CHelperTheme.colors.textSecondary,
@@ -519,7 +536,8 @@ fun PublicLibraryShowScreen(
                                 content = viewModel.library.content,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = 15.dp)
+                                    .padding(horizontal = 15.dp),
+                                ambiguousDefault = ambiguousLineDefault.value
                             )
                         }
 

@@ -82,12 +82,14 @@ class LibraryFunction(
     var note: String? = null,
     var tags: List<String>? = null,
     var version: String? = null,
-    @Serializable(with = LenientStringSerializer::class) @SerialName("createTime") var createdAt: String? = null,
+    @Serializable(with = LenientStringSerializer::class) @SerialName("create_time") var createdAt: String? = null,
     var preview: String? = null,
-    var likeCount: Int? = null,
-    var isLiked: Boolean? = null,
-    var hasPublicVersion: Boolean? = null,
-    var isPublish: Boolean? = null
+    @SerialName("like_count") var likeCount: Int? = null,
+    @SerialName("is_liked") var isLiked: Boolean? = null,
+    @SerialName("has_public_version") var hasPublicVersion: Boolean? = null,
+    @SerialName("is_publish") var isPublish: Boolean? = null,
+    @SerialName("is_owner") var isOwner: Boolean? = null,
+    @SerialName("chain_data") var chainData: kotlinx.serialization.json.JsonElement? = null
 ) {
     /**
      * 获取作者的展示名称，主要用于向后兼容。

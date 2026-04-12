@@ -99,10 +99,10 @@ data class ParsedMCD(
 // 解析器
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-fun parseMCD(content: String?): ParsedMCD {
+fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD {
     if (content.isNullOrBlank()) return ParsedMCD()
 
-    val lines = content.split(Regex("\\r?\\n"))
+    val lines = content.split(Regex("\\r?\n"))
     val metaInfo = mutableListOf<MCDMeta>()
     val rootComments = mutableListOf<String>()
     val chains = mutableListOf<MCDChain>()
@@ -146,7 +146,7 @@ fun parseMCD(content: String?): ParsedMCD {
             continue
         }
 
-        // 注释行
+        // 注释行（# 和 // 两种格式）
         if (tline.startsWith("#")) {
             val commentText = tline.substring(1).trim()
             if (currentChain != null) {
@@ -156,22 +156,40 @@ fun parseMCD(content: String?): ParsedMCD {
             }
             continue
         }
+        if (tline.startsWith("//")) continue
 
-        // v2 状态行 > 开头
+        // v2 状态行 > 开头，正则精确匹配，支持 _ 占位符
+        // 格式: > [ICR_][?_][!_][tN|t_]
         if (isV2 && tline.startsWith(">")) {
-            val stateStr = tline.substring(1).trim()
-            val stateUpper = stateStr.uppercase()
-            pendingBlockType = when {
-                stateUpper.contains("I") -> BlockType.IMPULSE
-                stateUpper.contains("R") -> BlockType.REPEAT
-                else -> BlockType.CHAIN
+            val stateRegex = Regex(
+                """^>\s*(?<type>[ICR_])?(?<cond>[?_])?(?<rs>[!_])?(?:t(?<tick>\d+|_))?\s*$""",
+                RegexOption.IGNORE_CASE
+            )
+            val match = stateRegex.matchEntire(tline)
+            if (match != null) {
+                val rawType = (match.groups["type"]?.value ?: "C").uppercase()
+                // _ 占位符视为缺省值 C
+                val effectiveType = if (rawType == "_") "C" else rawType
+                pendingBlockType = when (effectiveType) {
+                    "I" -> BlockType.IMPULSE
+                    "R" -> BlockType.REPEAT
+                    else -> BlockType.CHAIN
+                }
+                val cond = match.groups["cond"]?.value
+                val rs = match.groups["rs"]?.value
+                val tick = match.groups["tick"]?.value
+                pendingConditional = cond == "?"          // _ 或 null 都是无条件
+                pendingAlwaysActive = rs != "!"           // 只有显式 ! 才需要红石
+                pendingNeedsRedstone = rs == "!"
+                pendingTickDelay = if (tick != null && tick != "_") tick.toIntOrNull() ?: 0 else 0
+            } else {
+                // 正则不匹配时的兜底：全缺省
+                pendingBlockType = BlockType.CHAIN
+                pendingConditional = false
+                pendingAlwaysActive = true
+                pendingNeedsRedstone = false
+                pendingTickDelay = 0
             }
-            pendingConditional = stateStr.contains("?")
-            pendingAlwaysActive = !stateStr.contains("!")
-            pendingNeedsRedstone = stateStr.contains("!")
-            // 延时标记为小写 t，兼容大写 T
-            val tickMatch = Regex("[tT](\\d+)").find(stateStr)
-            pendingTickDelay = tickMatch?.groupValues?.get(1)?.toIntOrNull() ?: 0
             hasPendingState = true
             continue
         }
@@ -200,12 +218,17 @@ fun parseMCD(content: String?): ParsedMCD {
             currentChain.items.add(ChainItem.Block(block))
             hasPendingState = false
         } else {
-            // v1: 行首是英文字母或斜杠才视为指令，否则当隐式注释处理
+            // v1: 行首是英文字母或斜杠才视为指令
             val firstChar = tline.firstOrNull()
             if (firstChar != null && (firstChar.isLetter() && firstChar.code < 128 || firstChar == '/')) {
                 currentChain.items.add(ChainItem.RawCommand(tline))
             } else {
-                currentChain.items.add(ChainItem.Comment(tline))
+                // 无法推断的行：根据用户设置决定 fallback
+                if (ambiguousDefault == "command") {
+                    currentChain.items.add(ChainItem.RawCommand(tline))
+                } else {
+                    currentChain.items.add(ChainItem.Comment(tline))
+                }
             }
         }
     }
@@ -229,8 +252,8 @@ private fun copyToClipboard(context: Context, text: String) {
 }
 
 @Composable
-fun MCDContentView(content: String?, modifier: Modifier = Modifier) {
-    val parsed = remember(content) { parseMCD(content) }
+fun MCDContentView(content: String?, modifier: Modifier = Modifier, ambiguousDefault: String = "comment") {
+    val parsed = remember(content, ambiguousDefault) { parseMCD(content, ambiguousDefault) }
 
     Column(modifier = modifier) {
         // 元数据区

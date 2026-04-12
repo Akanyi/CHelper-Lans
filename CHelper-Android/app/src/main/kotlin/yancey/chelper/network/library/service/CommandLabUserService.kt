@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2026  Yancey
+ * Copyright (C) 2026  Akanyi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -328,8 +328,8 @@ interface CommandLabUserService {
     @GET("library")
     suspend fun getMyLibraries(
         @Query("type") type: Int = 1,
-        @Query("pageNum") pageNum: Int = 1,
-        @Query("pageSize") pageSize: Int = 100
+        @Query("page_num") pageNum: Int = 1,
+        @Query("page_size") pageSize: Int = 100
     ): BaseResult<CommandLabPublicService.GetFunctionsResponse?>
 
     /**

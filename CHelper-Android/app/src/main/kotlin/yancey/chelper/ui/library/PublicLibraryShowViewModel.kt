@@ -37,6 +37,10 @@ class PublicLibraryShowViewModel : ViewModel() {
     var actionMessage by mutableStateOf<String?>(null)
     var isPrivate by mutableStateOf(false)
 
+    // 点赞状态独立于 library 对象，防止点赞触发命令可视化的完整重绘
+    var likeCount by mutableStateOf(0)
+    var isLiked by mutableStateOf(false)
+
     /** 删除成功后置 true，由 Screen 层观察此状态来安全执行 popBackStack */
     var deleteSuccess by mutableStateOf(false)
 
@@ -60,6 +64,8 @@ class PublicLibraryShowViewModel : ViewModel() {
 
                 if (response?.isSuccess() == true && response.data != null) {
                     library = response.data!!
+                    likeCount = library.likeCount ?: 0
+                    isLiked = library.isLiked == true
                 } else {
                     errorMessage = response?.message ?: "加载失败"
                 }
@@ -83,26 +89,9 @@ class PublicLibraryShowViewModel : ViewModel() {
                 }
                 if (result?.isSuccess() == true && result.data != null) {
                     val likeData = result.data!!
-                    // 用后端返回的真实数据刷新 UI
-                    val updated = library
-                    updated.isLiked = likeData.isLiked
-                    updated.likeCount = likeData.likeCount
-                    library = LibraryFunction(
-                        id = updated.id,
-                        uuid = updated.uuid,
-                        name = updated.name,
-                        content = updated.content,
-                        author = updated.author,
-                        note = updated.note,
-                        tags = updated.tags,
-                        version = updated.version,
-                        createdAt = updated.createdAt,
-                        likeCount = updated.likeCount,
-                        isLiked = updated.isLiked,
-                        hasPublicVersion = updated.hasPublicVersion,
-                        isPublish = updated.isPublish
-                    )
-                    actionMessage = if (likeData.isLiked == true) "已点赞" else "已取消点赞"
+                    likeCount = likeData.likeCount ?: likeCount
+                    isLiked = likeData.isLiked == true
+                    actionMessage = if (isLiked) "已点赞" else "已取消点赞"
                 } else {
                     actionMessage = result?.message ?: "操作失败"
                 }
@@ -111,6 +100,9 @@ class PublicLibraryShowViewModel : ViewModel() {
             }
         }
     }
+
+    /** Release 成功后后端返回的公有版 ID，Screen 层观察此值来决定是否导航 */
+    var releasedPublicId by mutableStateOf<Int?>(null)
 
     fun releaseToPublic(id: Int, specialCode: String = "") {
         viewModelScope.launch {
@@ -121,10 +113,15 @@ class PublicLibraryShowViewModel : ViewModel() {
                         mapOf("special_code" to specialCode)
                     )
                 }
-                actionMessage = if (result?.isSuccess() == true) {
-                    "已提交发布申请"
+                if (result?.isSuccess() == true) {
+                    // 后端自动审核通过时返回 {"public_id": <int>}
+                    val publicId = (result.data as? kotlinx.serialization.json.JsonObject)
+                        ?.get("public_id")
+                        ?.let { (it as? kotlinx.serialization.json.JsonPrimitive)?.content?.toIntOrNull() }
+                    releasedPublicId = publicId
+                    actionMessage = result.message ?: "已提交发布申请"
                 } else {
-                    result?.message ?: "操作失败"
+                    actionMessage = result?.message ?: "操作失败"
                 }
             } catch (e: Exception) {
                 actionMessage = "网络错误: ${e.message}"

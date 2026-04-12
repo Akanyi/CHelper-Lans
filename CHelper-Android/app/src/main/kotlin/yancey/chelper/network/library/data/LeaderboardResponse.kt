@@ -19,6 +19,7 @@ data class LeaderboardUser(
     @SerialName("avatar_url") var avatarUrl: String? = null,
     var nickname: String? = null,
     var tier: Int? = null,
+    @SerialName("user_title") var userTitle: String? = null,
     @SerialName("total_likes") var totalLikes: Int? = null,
     @SerialName("total_functions") var totalFunctions: Int? = null
 )

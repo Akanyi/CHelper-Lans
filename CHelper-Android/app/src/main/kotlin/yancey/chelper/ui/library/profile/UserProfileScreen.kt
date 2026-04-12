@@ -306,6 +306,26 @@ private fun ProfileHeader(user: UserProfileData) {
                 )
             }
         }
+
+        // 用户专属头衔
+        if (!user.userTitle.isNullOrBlank()) {
+            Spacer(modifier = Modifier.height(6.dp))
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(CHelperTheme.colors.mainColor.copy(alpha = 0.1f))
+                    .padding(horizontal = 10.dp, vertical = 3.dp)
+            ) {
+                Text(
+                    text = user.userTitle!!,
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        color = CHelperTheme.colors.mainColor,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+            }
+        }
         
         if (!user.signature.isNullOrBlank()) {
             Spacer(modifier = Modifier.height(16.dp))

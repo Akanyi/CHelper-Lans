@@ -30,6 +30,7 @@ data class UserProfileData(
     @SerialName("total_public_functions") var totalPublicFunctions: Int? = null,
     @SerialName("total_likes") var totalLikes: Int? = null,
     @SerialName("recent_functions") var recentFunctions: List<LibraryFunction>? = null,
+    @SerialName("user_title") var userTitle: String? = null,
     var email: String? = null,
     @SerialName("created_at") var createdAt: String? = null,
     @SerialName("tier_expires_at") var tierExpiresAt: String? = null

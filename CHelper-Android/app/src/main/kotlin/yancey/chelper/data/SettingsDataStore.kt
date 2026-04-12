@@ -63,6 +63,8 @@ data class Settings(
     val cpackBranch: String? = null,
     val isShowPublicLibrary: Boolean? = null,
     val publicLibraryMinVersion: Int? = null,
+    val tagClickBehavior: String? = null,
+    val ambiguousLineDefault: String? = null,
 )
 
 object SettingsSerializer : Serializer<Settings> {
@@ -188,6 +190,20 @@ class SettingsDataStore(private val context: Context) {
 
     suspend fun setPublicLibraryMinVersion(value: Int) {
         context.settingsDataStore.updateData { it.copy(publicLibraryMinVersion = value) }
+    }
+
+    fun tagClickBehavior(): Flow<String> =
+        context.settingsDataStore.data.map { it.tagClickBehavior ?: "search" }
+
+    suspend fun setTagClickBehavior(value: String) {
+        context.settingsDataStore.updateData { it.copy(tagClickBehavior = value) }
+    }
+
+    fun ambiguousLineDefault(): Flow<String> =
+        context.settingsDataStore.data.map { it.ambiguousLineDefault ?: "comment" }
+
+    suspend fun setAmbiguousLineDefault(value: String) {
+        context.settingsDataStore.updateData { it.copy(ambiguousLineDefault = value) }
     }
 }
 

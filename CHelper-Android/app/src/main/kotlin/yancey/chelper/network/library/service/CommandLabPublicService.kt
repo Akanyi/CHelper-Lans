@@ -44,8 +44,8 @@ interface CommandLabPublicService {
     @Serializable
     class GetFunctionsResponse(
         @SerialName("list") var functions: MutableList<LibraryFunction?>? = null,
-        @SerialName("pageNum") var currentPage: Int? = null,
-        @SerialName("pageSize") var perPage: Int? = null,
+        @SerialName("page_num") var currentPage: Int? = null,
+        @SerialName("page_size") var perPage: Int? = null,
         @SerialName("total") var totalCount: Int? = null,
     )
 
@@ -60,8 +60,8 @@ interface CommandLabPublicService {
      */
     @GET("library")
     suspend fun getFunctions(
-        @Query("pageNum") pageNum: Int,
-        @Query("pageSize") pageSize: Int,
+        @Query("page_num") pageNum: Int,
+        @Query("page_size") pageSize: Int,
         @Query("keyword") keyword: String?,
         @Query("type") type: Int = 0
     ): BaseResult<GetFunctionsResponse?>
@@ -85,8 +85,8 @@ interface CommandLabPublicService {
      */
     @Serializable
     class LibraryLikeResponse {
-        var likeCount: Int? = null
-        var isLiked: Boolean? = null
+        @SerialName("like_count") var likeCount: Int? = null
+        @SerialName("is_liked") var isLiked: Boolean? = null
     }
 
     /**

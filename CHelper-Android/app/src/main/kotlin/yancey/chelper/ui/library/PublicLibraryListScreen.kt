@@ -41,6 +41,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -76,6 +77,10 @@ fun PublicLibraryListScreen(
     navController: NavHostController = rememberNavController(),
     isFloatingWindow: Boolean = false,
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val settingsDataStore = remember(context) { yancey.chelper.data.SettingsDataStore(context) }
+    val tagClickBehavior = settingsDataStore.tagClickBehavior()
+        .collectAsState(initial = "search")
     val listState = rememberLazyListState()
 
     // 初始加载
@@ -218,9 +223,18 @@ fun PublicLibraryListScreen(
                                     }
                                 },
                                 onTagClick = { tag ->
-                                    navController.navigate(
-                                        yancey.chelper.ui.LibrarySearchScreenKey(tag)
-                                    )
+                                    if (tagClickBehavior.value == "detail") {
+                                        // 按设置：点 tag 相当于点击卡片，进入详情
+                                        library.id?.let { id ->
+                                            navController.navigate(
+                                                PublicLibraryShowScreenKey(id = id)
+                                            )
+                                        }
+                                    } else {
+                                        navController.navigate(
+                                            yancey.chelper.ui.LibrarySearchScreenKey(tag)
+                                        )
+                                    }
                                 }
                             )
                         }

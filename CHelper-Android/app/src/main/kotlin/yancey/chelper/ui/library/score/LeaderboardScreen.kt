@@ -207,7 +207,7 @@ private fun LeaderboardItem(rank: Int, user: LeaderboardUser, onClick: () -> Uni
                 }
             }
             Text(
-                text = "Tier ${user.tier ?: 0}",
+                text = user.userTitle ?: "Tier ${user.tier ?: 0}",
                 style = TextStyle(
                     fontSize = 12.sp,
                     color = CHelperTheme.colors.mainColor
