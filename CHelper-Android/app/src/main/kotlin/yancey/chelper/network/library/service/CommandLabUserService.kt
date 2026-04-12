@@ -23,6 +23,7 @@ import kotlinx.serialization.Serializable
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
@@ -325,6 +326,7 @@ interface CommandLabUserService {
      * @param pageSize 每页条数上限
      * @return 包含命令库分页数据的响应结果
      */
+    @Headers("Cache-Control: no-cache")
     @GET("library")
     suspend fun getMyLibraries(
         @Query("type") type: Int = 1,
@@ -338,6 +340,7 @@ interface CommandLabUserService {
      * @param id 私有命令库的 ID
      * @return 包含库详情数据的响应结果
      */
+    @Headers("Cache-Control: no-cache")
     @GET("library/detail/{id}")
     suspend fun getPrivateFunction(
         @Path("id") id: Int

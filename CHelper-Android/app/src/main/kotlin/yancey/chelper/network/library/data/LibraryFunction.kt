@@ -31,6 +31,7 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
 
 /**
@@ -50,7 +51,8 @@ import kotlinx.serialization.json.jsonPrimitive
 data class AuthorInfo(
     var id: Int? = null,
     var name: String? = null,
-    var tier: Int? = null
+    var tier: Int? = null,
+    @kotlinx.serialization.SerialName("user_title") var userTitle: String? = null
 )
 
 /**
@@ -111,6 +113,7 @@ object AuthorSerializer : KSerializer<AuthorInfo?> {
         element<Int?>("id")
         element<String?>("name")
         element<Int?>("tier")
+        element<String?>("user_title")
     }
 
     override fun deserialize(decoder: Decoder): AuthorInfo? {
@@ -122,7 +125,8 @@ object AuthorSerializer : KSerializer<AuthorInfo?> {
                 AuthorInfo(
                     id = jsonElement["id"]?.jsonPrimitive?.intOrNull,
                     name = jsonElement["name"]?.jsonPrimitive?.content,
-                    tier = jsonElement["tier"]?.jsonPrimitive?.intOrNull
+                    tier = jsonElement["tier"]?.jsonPrimitive?.intOrNull,
+                    userTitle = jsonElement["user_title"]?.jsonPrimitive?.contentOrNull
                 )
             }
             // 旧版 API 直接返回字符串作者名
