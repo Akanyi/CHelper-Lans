@@ -161,13 +161,14 @@ fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD 
         // v2 状态行 > 开头，正则精确匹配，支持 _ 占位符
         // 格式: > [ICR_][?_][!_][tN|t_]
         if (isV2 && tline.startsWith(">")) {
+            // 捕获组: (1)type (2)cond (3)rs (4)tick
             val stateRegex = Regex(
-                """^>\s*(?<type>[ICR_])?(?<cond>[?_])?(?<rs>[!_])?(?:t(?<tick>\d+|_))?\s*$""",
+                """^>\s*([ICR_])?([?_])?([!_])?(?:t(\d+|_))?\s*$""",
                 RegexOption.IGNORE_CASE
             )
             val match = stateRegex.matchEntire(tline)
             if (match != null) {
-                val rawType = (match.groups["type"]?.value ?: "C").uppercase()
+                val rawType = (match.groupValues[1].ifEmpty { "C" }).uppercase()
                 // _ 占位符视为缺省值 C
                 val effectiveType = if (rawType == "_") "C" else rawType
                 pendingBlockType = when (effectiveType) {
@@ -175,13 +176,13 @@ fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD 
                     "R" -> BlockType.REPEAT
                     else -> BlockType.CHAIN
                 }
-                val cond = match.groups["cond"]?.value
-                val rs = match.groups["rs"]?.value
-                val tick = match.groups["tick"]?.value
-                pendingConditional = cond == "?"          // _ 或 null 都是无条件
+                val cond = match.groupValues[2]
+                val rs = match.groupValues[3]
+                val tick = match.groupValues[4]
+                pendingConditional = cond == "?"          // _ 或空都是无条件
                 pendingAlwaysActive = rs != "!"           // 只有显式 ! 才需要红石
                 pendingNeedsRedstone = rs == "!"
-                pendingTickDelay = if (tick != null && tick != "_") tick.toIntOrNull() ?: 0 else 0
+                pendingTickDelay = if (tick.isNotEmpty() && tick != "_") tick.toIntOrNull() ?: 0 else 0
             } else {
                 // 正则不匹配时的兜底：全缺省
                 pendingBlockType = BlockType.CHAIN
