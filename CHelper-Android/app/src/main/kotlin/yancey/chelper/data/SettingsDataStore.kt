@@ -69,6 +69,7 @@ data class Settings(
     val ambiguousLineDefault: String? = null,
     val isHideMetadataPreview: Boolean? = null,
     val isFloatingWindowFontAlphaSync: Boolean? = null,
+    val syntaxHighlightMaxLength: Int? = null,
 )
 
 object SettingsSerializer : Serializer<Settings> {
@@ -138,6 +139,9 @@ class SettingsDataStore(private val context: Context) {
     fun isSyntaxHighlight(): Flow<Boolean> =
         context.settingsDataStore.data.map { it.isSyntaxHighlight ?: true }
 
+    fun syntaxHighlightMaxLength(): Flow<Int> =
+        context.settingsDataStore.data.map { it.syntaxHighlightMaxLength ?: 4000 }
+
     fun cpackBranch(): Flow<String> =
         context.settingsDataStore.data.map { it.cpackBranch ?: "release-experiment" }
 
@@ -193,6 +197,10 @@ class SettingsDataStore(private val context: Context) {
 
     suspend fun setIsSyntaxHighlight(value: Boolean) {
         context.settingsDataStore.updateData { it.copy(isSyntaxHighlight = value) }
+    }
+
+    suspend fun setSyntaxHighlightMaxLength(value: Int) {
+        context.settingsDataStore.updateData { it.copy(syntaxHighlightMaxLength = value) }
     }
 
     suspend fun setCpackBranch(value: String) {
@@ -267,6 +275,7 @@ class SettingsMigrationToV74(private val context: Context) : DataMigration<Setti
                 isSyntaxHighlight = (oldSettings["isSyntaxHighlight"] as? JsonPrimitive)?.booleanOrNull,
                 cpackBranch = cpackBranch,
                 isFloatingWindowFontAlphaSync = (oldSettings["isFloatingWindowFontAlphaSync"] as? JsonPrimitive)?.booleanOrNull,
+                syntaxHighlightMaxLength = (oldSettings["syntaxHighlightMaxLength"] as? JsonPrimitive)?.intOrNull,
             )
         } catch (_: Throwable) {
             currentData
