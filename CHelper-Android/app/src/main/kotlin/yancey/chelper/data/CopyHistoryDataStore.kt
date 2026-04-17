@@ -94,10 +94,6 @@ class CopyHistoryDataStore(private val context: Context) {
             it.copy(history = newHistory)
         }
     }
-
-    suspend fun size(): Int {
-        return context.copyHistoryDataStore.data.map { it.history.size }.first()
-    }
 }
 
 /**

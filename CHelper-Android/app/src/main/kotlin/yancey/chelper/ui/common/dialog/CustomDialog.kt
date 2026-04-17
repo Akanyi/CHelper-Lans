@@ -18,6 +18,7 @@
 
 package yancey.chelper.ui.common.dialog
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -40,8 +41,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
 import yancey.chelper.ui.common.CHelperTheme
 
 /**
@@ -75,43 +74,48 @@ fun CustomDialog(
         visible = true
     }
 
-    Popup(
-        alignment = Alignment.Center,
-        properties = PopupProperties(
-            focusable = properties.focusable,
-            dismissOnBackPress = properties.dismissOnBackPress,
-            dismissOnClickOutside = false
-        ),
-        onDismissRequest = onDismissRequest
-    ) {
-        if (properties.dimBackground) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = backgroundAlpha))
-                    .clickable(
-                        enabled = dismissOnClickOutside,
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
-                        if (dismissOnClickOutside) {
-                            onDismissRequest()
-                        }
-                    }
+    BackHandler(enabled = true) {
+        onDismissRequest()
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .then(
+                if (properties.dimBackground)
+                    Modifier.background(Color.Black.copy(alpha = backgroundAlpha))
+                else
+                    Modifier
             )
-        }
+            .clickable(
+                enabled = dismissOnClickOutside,
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                if (dismissOnClickOutside) {
+                    onDismissRequest()
+                }
+            },
+        contentAlignment = Alignment.Center
+    ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .then(
+                    if (properties.usePlatformDefaultWidth)
+                        Modifier.fillMaxSize(0.8f)
+                    else
+                        Modifier
+                )
+                .scale(dialogScale)
+                .alpha(dialogAlpha),
             contentAlignment = Alignment.Center
         ) {
             Box(
-                modifier = Modifier
-                    .then(
-                        if (properties.usePlatformDefaultWidth) Modifier.fillMaxSize(0.8f) else Modifier
-                    )
-                    .scale(dialogScale)
-                    .alpha(dialogAlpha),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.clickable(
+                    enabled = dismissOnClickOutside,
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {}
             ) {
                 content()
             }

@@ -28,7 +28,9 @@ import com.hjq.device.compat.DeviceOs
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import yancey.chelper.BuildConfig
 import yancey.chelper.android.util.PolicyGrantManager
@@ -151,14 +153,18 @@ class HomeViewModel : ViewModel() {
                     if (!isForce) {
                         isShow = it.isEnable ?: false
                         if (isShow) {
-                            val ignoreAnnouncement = withContext(Dispatchers.IO) {
-                                return@withContext skipAnnouncementFile.inputStream()
-                                    .bufferedReader()
-                                    .use { it.readText() }
-                            }
-                            val announcementHashCode = announcement.hashCode().toString()
-                            if (announcementHashCode == ignoreAnnouncement) {
-                                isShow = false
+                            try {
+                                val ignoreAnnouncement = withContext(Dispatchers.IO) {
+                                    return@withContext skipAnnouncementFile.inputStream()
+                                        .bufferedReader()
+                                        .use { it.readText() }
+                                }
+                                val announcementHashCode = announcement.hashCode().toString()
+                                if (announcementHashCode == ignoreAnnouncement) {
+                                    isShow = false
+                                }
+                            } catch (_: Exception) {
+
                             }
                         }
                     }
@@ -188,18 +194,29 @@ class HomeViewModel : ViewModel() {
     }
 
     fun checkUpdate() {
+        if (!runBlocking { settingsDataStore.isEnableUpdateNotifications().first() }) {
+            return
+        }
         viewModelScope.launch {
             try {
                 ServiceManager.CHELPER_SERVICE.getLatestVersionInfo().let { it ->
                     latestVersionInfo = it
-                    if (it.versionName != BuildConfig.VERSION_NAME) {
-                        val ignoreVersion = withContext(Dispatchers.IO) {
-                            skipVersionFile.bufferedReader()
-                                .use { it.readText() }
+                    var isShow = it.versionName != BuildConfig.VERSION_NAME
+                    if (isShow) {
+                        try {
+                            val ignoreVersion = withContext(Dispatchers.IO) {
+                                skipVersionFile.bufferedReader()
+                                    .use { it.readText() }
+                            }
+                            if (it.versionName == ignoreVersion) {
+                                isShow = false
+                            }
+                        } catch (_: Exception) {
+
                         }
-                        if (it.versionName != ignoreVersion) {
-                            isShowUpdateNotificationsDialog = true
-                        }
+                    }
+                    if (isShow) {
+                        isShowUpdateNotificationsDialog = true
                     }
                 }
             } catch (_: Exception) {

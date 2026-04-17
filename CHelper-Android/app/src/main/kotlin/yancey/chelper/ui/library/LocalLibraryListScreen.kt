@@ -215,7 +215,6 @@ fun LocalLibraryListScreen(
         }
         IsConfirmDialog(
             onDismissRequest = { viewModel.isShowExportDialog = false },
-            isBig = true,
             title = "导出",
             content = output,
             confirmText = "复制",
