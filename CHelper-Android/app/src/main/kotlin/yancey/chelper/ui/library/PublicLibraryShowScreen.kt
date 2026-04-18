@@ -152,6 +152,7 @@ fun PublicLibraryShowScreen(
             add("逐行复制" to "line_copy")
             add("复制全部 MCD 源码" to "copy_all")
             add((if (viewModel.showRawSource) "查看可视化" else "查看源码") to "toggle_view")
+            add("游龙导入" to "loongflow_import")
             add("关闭" to "close")
         }.toTypedArray()
         ChoosingDialog(
@@ -172,6 +173,10 @@ fun PublicLibraryShowScreen(
                     }
 
                     "toggle_view" -> viewModel.showRawSource = !viewModel.showRawSource
+                    "loongflow_import" -> {
+                        yancey.chelper.android.window.LoongFlowWindowManager.INSTANCE
+                            .showImport(context, viewModel.library)
+                    }
                 }
             }
         )
@@ -338,6 +343,7 @@ fun PublicLibraryShowScreen(
                 else -> {
                     Column(
                         modifier = Modifier
+                            .fillMaxSize()
                             .padding(vertical = 10.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
