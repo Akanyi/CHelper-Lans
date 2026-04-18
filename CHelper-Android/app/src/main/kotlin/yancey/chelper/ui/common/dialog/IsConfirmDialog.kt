@@ -22,7 +22,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,7 +36,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import yancey.chelper.R
@@ -49,7 +47,6 @@ import yancey.chelper.ui.common.widget.Text
 @Composable
 fun IsConfirmDialog(
     onDismissRequest: () -> Unit,
-    isBig: Boolean = false,
     title: String = stringResource(R.string.dialog_is_confirm_title),
     content: String,
     cancelText: String = stringResource(R.string.dialog_is_confirm_cancel),
@@ -58,43 +55,34 @@ fun IsConfirmDialog(
     onConfirm: () -> Unit = {},
 ) {
     CustomDialog(onDismissRequest = onDismissRequest) {
-        DialogContainer(
-            backgroundNoTranslate = true
-        ) {
-            Column(
-                modifier = if (isBig) {
-                    Modifier.fillMaxHeight()
-                } else {
-                    Modifier
-                }
-            ) {
-                Text(
+        DialogContainer(backgroundNoTranslate = true) {
+            Column {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(0.dp, 10.dp),
-                    text = title,
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold
+                        .weight(1f, fill = false)
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 10.dp),
+                        text = title,
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold
+                        )
                     )
-                )
-                Text(
-                    modifier = if (isBig) {
-                        Modifier
+                    Text(
+                        modifier = Modifier
                             .padding(20.dp, 10.dp)
                             .fillMaxWidth()
-                            .weight(1f)
-                            .verticalScroll(rememberScrollState())
-                    } else {
-                        Modifier
-                            .padding(20.dp, 10.dp)
-                            .fillMaxWidth()
-                            .defaultMinSize(Dp.Infinity, 40.dp)
-                    },
-                    text = content,
-                    style = TextStyle(fontSize = 20.sp, textAlign = TextAlign.Center)
-                )
+                            .weight(1f, fill = false)
+                            .verticalScroll(rememberScrollState()),
+                        text = content,
+                        style = TextStyle(fontSize = 20.sp, textAlign = TextAlign.Center)
+                    )
+                }
                 Divider(0.dp)
                 Row(Modifier.height(45.dp)) {
                     Box(

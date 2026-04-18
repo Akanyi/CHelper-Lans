@@ -33,7 +33,7 @@
 -keep class yancey.chelper.core.ErrorReason{ *; }
 -keep class yancey.chelper.core.ClickSuggestionResult{ *; }
 
-# ===== CHelper Server -----
+# ----- CHelper Server -----
 
 -keep class yancey.chelper.network.chelper.service.**{ *; }
 

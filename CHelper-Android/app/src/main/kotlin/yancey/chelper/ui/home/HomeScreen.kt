@@ -91,8 +91,6 @@ fun HomeScreen(
     }
     val isShowPublicLibrary by settingsDataStore.isShowPublicLibrary()
         .collectAsState(initial = false)
-    val isEnableUpdateNotifications by settingsDataStore.isShowPublicLibrary()
-        .collectAsState(initial = false)
     val floatingWindowIconSize by settingsDataStore.floatingWindowIconSize()
         .collectAsState(initial = 40)
     val floatingWindowIconAlpha by settingsDataStore.floatingWindowIconAlpha()
@@ -309,11 +307,8 @@ fun HomeScreen(
         IsConfirmDialog(
             onDismissRequest = {
                 viewModel.isShowAnnouncementDialog = false
-                if (isEnableUpdateNotifications) {
-                    viewModel.checkUpdate()
-                }
+                viewModel.checkUpdate()
             },
-            isBig = viewModel.announcement!!.isBigDialog!!,
             title = viewModel.announcement!!.title!!,
             content = viewModel.announcement!!.message!!,
             cancelText = if (viewModel.announcement!!.isForce!!) "取消" else "不再提醒",

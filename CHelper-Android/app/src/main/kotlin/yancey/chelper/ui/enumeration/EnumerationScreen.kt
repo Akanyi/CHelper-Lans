@@ -231,7 +231,6 @@ fun EnumerationScreen(viewModel: EnumerationViewModel = viewModel()) {
     if (viewModel.isShowPreviewDialog) {
         IsConfirmDialog(
             onDismissRequest = { viewModel.isShowPreviewDialog = false },
-            isBig = true,
             title = "输出预览",
             content = viewModel.output,
             onConfirm = {

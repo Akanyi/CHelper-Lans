@@ -20,9 +20,11 @@ if __name__ == "__main__":
     if sys.platform == "win32":
         gradlew = "gradlew.bat"
         pnpm = "pnpm.cmd"
+        corepack = "corepack.cmd"
     else:
         gradlew = "gradlew"
         pnpm = "pnpm"
+        corepack = "corepack"
     if subprocess.run([pnpm, "-v"], capture_output=True).returncode != 0:
         print("please download pnpm")
         exit(-1)
@@ -137,11 +139,15 @@ if __name__ == "__main__":
     # build web
     print("building web...")
     os.chdir("CHelper-Web")
+    subprocess.run([corepack, "up"], check=True)
+    subprocess.run([pnpm, "up", "--latest"], check=True)
     subprocess.run([pnpm, "build"], check=True)
     os.chdir("..")
 
     # build doc
     print("building doc...")
     os.chdir("CHelper-Doc")
+    subprocess.run([corepack, "up"], check=True)
+    subprocess.run([pnpm, "up", "--latest"], check=True)
     subprocess.run([pnpm, "docs:build"], check=True)
     os.chdir("..")
