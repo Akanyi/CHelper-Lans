@@ -55,7 +55,7 @@ fun LowCodeV2HelperDialog(
     val lines = rawContent.split(Regex("\\r?\\n"))
     val results = yancey.chelper.ui.library.mcd.validateMCDContent(rawContent).lines.associateBy { it.lineNumber }
 
-    // 状态记录: map of lineNumber -> stateString (例如 "> C", "> I!")
+    // 状态记录: map of lineNumber -> stateString (例如 ">C", ">I!")
     val lineStates = remember { mutableStateOf(mutableMapOf<Int, String>()) }
 
     var lastEffectiveType: LineType? = null
@@ -70,7 +70,7 @@ fun LowCodeV2HelperDialog(
             if (lastEffectiveType != LineType.STATE_LINE) {
                 targetLines.add(lineNum to line)
                 if (!lineStates.value.containsKey(lineNum)) {
-                    lineStates.value[lineNum] = "> C" // 默认连锁
+                    lineStates.value[lineNum] = ">C" // 默认连锁
                 }
             }
             lastEffectiveType = LineType.COMMAND
@@ -119,7 +119,7 @@ fun LowCodeV2HelperDialog(
                             .verticalScroll(rememberScrollState())
                     ) {
                         for ((lineNum, text) in targetLines) {
-                            val currentState = lineStates.value[lineNum] ?: "> C"
+                            val currentState = lineStates.value[lineNum] ?: ">C"
                             LowCodeLineItem(
                                 lineNumber = lineNum,
                                 code = text,
@@ -188,7 +188,7 @@ private fun DialogActionBar(
                             val res = results[ln]
                             if (res?.type == LineType.COMMAND) {
                                 if (lastType != LineType.STATE_LINE) {
-                                    output.add(lineStates.value[ln] ?: "> C")
+                                    output.add(lineStates.value[ln] ?: ">C")
                                 }
                                 lastType = LineType.COMMAND
                             } else if (res != null) {

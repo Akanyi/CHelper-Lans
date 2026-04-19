@@ -87,15 +87,7 @@ fun CPLUserScreen(
     var captchaAction by remember { mutableStateOf("") }
     var captchaCallback by remember { mutableStateOf<(String) -> Unit>({}) }
 
-    if (showCaptchaDialog) {
-        CaptchaDialog(
-            action = captchaAction,
-            onDismissRequest = { showCaptchaDialog = false },
-            onSuccess = { code -> captchaCallback(code) }
-        )
-    }
-
-    // Helper for Captcha
+    // Moved CaptchaDialog to end    // Helper for Captcha
     fun showCaptcha(action: String, onSuccess: (String) -> Unit) {
         captchaAction = action
         captchaCallback = onSuccess
@@ -148,6 +140,14 @@ fun CPLUserScreen(
                 })
             }
         }
+    }
+
+    if (showCaptchaDialog) {
+        CaptchaDialog(
+            action = captchaAction,
+            onDismissRequest = { showCaptchaDialog = false },
+            onSuccess = { code -> captchaCallback(code) }
+        )
     }
 }
 
