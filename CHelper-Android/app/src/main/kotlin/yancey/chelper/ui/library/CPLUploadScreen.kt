@@ -82,6 +82,7 @@ fun CPLUploadScreen(
     var showImportDialog by remember { mutableStateOf(false) }
     var showCaptchaDialog by remember { mutableStateOf(false) }
     var showPreviewScreen by remember { mutableStateOf(false) }
+    var showLowCodeHelper by remember { mutableStateOf(false) }
     var captchaCallback by remember { mutableStateOf<(String) -> Unit>({}) }
     var validationResult by remember { mutableStateOf<MCDValidationResult?>(null) }
 
@@ -90,6 +91,18 @@ fun CPLUploadScreen(
             action = "publish",
             onDismissRequest = { showCaptchaDialog = false },
             onSuccess = { code -> captchaCallback(code) }
+        )
+    }
+
+    if (showLowCodeHelper) {
+        LowCodeV2HelperDialog(
+            rawContent = viewModel.commands.text.toString(),
+            onDismiss = { showLowCodeHelper = false },
+            onApply = { newContent ->
+                viewModel.commands.setTextAndPlaceCursorAtEnd(newContent)
+                showLowCodeHelper = false
+                com.hjq.toast.Toaster.show("已应用标记！")
+            }
         )
     }
 
@@ -213,20 +226,6 @@ fun CPLUploadScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         if (viewModel.useV2) {
-                            var showLowCodeHelper by remember { mutableStateOf(false) }
-
-                            if (showLowCodeHelper) {
-                                LowCodeV2HelperDialog(
-                                    rawContent = viewModel.commands.text.toString(),
-                                    onDismiss = { showLowCodeHelper = false },
-                                    onApply = { newContent ->
-                                        viewModel.commands.setTextAndPlaceCursorAtEnd(newContent)
-                                        showLowCodeHelper = false
-                                        com.hjq.toast.Toaster.show("已应用标记！")
-                                    }
-                                )
-                            }
-
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
