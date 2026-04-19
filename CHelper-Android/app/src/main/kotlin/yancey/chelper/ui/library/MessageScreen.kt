@@ -70,8 +70,12 @@ fun MessageScreen(
     val listState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadMessages()
+        if (viewModel.messages.isEmpty() && !viewModel.isLoading) {
+            viewModel.loadMessages()
+        }
     }
+
+    var selectedMessageForAction by remember { mutableStateOf<SiteMessage?>(null) }
 
     // 滚动到底部自动加载下一页
     val shouldLoadMore = remember {
@@ -113,7 +117,7 @@ fun MessageScreen(
             }
         }
     ) {
-        Column {
+        Column(modifier = Modifier.fillMaxSize()) {
             // 未读过滤指示条
             if (viewModel.showUnreadOnly) {
                 Box(
@@ -132,7 +136,7 @@ fun MessageScreen(
                 }
             }
 
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
                 if (viewModel.errorMessage != null && viewModel.messages.isEmpty()) {
                     // 错误状态
                     Box(
@@ -189,7 +193,7 @@ fun MessageScreen(
                             MessageItem(
                                 message = message,
                                 onRead = { message.id?.let { viewModel.markAsRead(it) } },
-                                onDelete = { message.id?.let { viewModel.deleteMessage(it) } }
+                                onClickAction = { selectedMessageForAction = message }
                             )
                         }
                         if (viewModel.isLoading) {
@@ -212,36 +216,39 @@ fun MessageScreen(
             }
         }
     }
+
+    if (selectedMessageForAction != null) {
+        val msg = selectedMessageForAction!!
+        val isUnreadMsg = msg.isRead != true
+        val options = mutableListOf<Pair<String, String>>()
+        if (isUnreadMsg) options.add("标记已读" to "read")
+        options.add("删除" to "delete")
+        options.add("取消" to "cancel")
+
+        ChoosingDialog(
+            onDismissRequest = { selectedMessageForAction = null },
+            data = options.toTypedArray(),
+            onChoose = { action ->
+                val id = msg.id
+                selectedMessageForAction = null
+                if (id != null) {
+                    when (action) {
+                        "read" -> viewModel.markAsRead(id)
+                        "delete" -> viewModel.deleteMessage(id)
+                    }
+                }
+            }
+        )
+    }
 }
 
 @Composable
 private fun MessageItem(
     message: SiteMessage,
     onRead: () -> Unit,
-    onDelete: () -> Unit
+    onClickAction: () -> Unit
 ) {
     val isUnread = message.isRead != true
-    var showActions by remember { mutableStateOf(false) }
-
-    if (showActions) {
-        val options = mutableListOf<Pair<String, String>>()
-        if (isUnread) options.add("标记已读" to "read")
-        options.add("删除" to "delete")
-        options.add("取消" to "cancel")
-
-        ChoosingDialog(
-            onDismissRequest = { showActions = false },
-            data = options.toTypedArray(),
-            onChoose = { action ->
-                showActions = false
-                when (action) {
-                    "read" -> onRead()
-                    "delete" -> onDelete()
-                }
-            }
-        )
-    }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -254,7 +261,7 @@ private fun MessageItem(
             .clickable {
                 // 点击自动标记已读并展开操作
                 if (isUnread) onRead()
-                showActions = true
+                onClickAction()
             }
             .padding(14.dp, 12.dp)
     ) {

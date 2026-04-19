@@ -73,11 +73,11 @@ class UserProfileViewModel : ViewModel() {
         errorMessage = null
         viewModelScope.launch {
             try {
-                val res = ServiceManager.COMMAND_LAB_PUBLIC_SERVICE?.getUserProfile(id)
-                if (res?.status == 0 && res.data != null) {
+                val res = ServiceManager.COMMAND_LAB_PUBLIC_SERVICE.getUserProfile(id)
+                if (res.status == 0 && res.data != null) {
                     userProfile = res.data
                 } else {
-                    errorMessage = res?.message ?: "拉取主页失败"
+                    errorMessage = res.message ?: "拉取主页失败"
                 }
             } catch (e: Exception) {
                 errorMessage = e.message ?: "网络错误"
@@ -110,15 +110,15 @@ class UserProfileViewModel : ViewModel() {
         isLoadingPublic = true
         viewModelScope.launch {
             try {
-                val res = ServiceManager.COMMAND_LAB_PUBLIC_SERVICE?.getFunctions(
+                val res = ServiceManager.COMMAND_LAB_PUBLIC_SERVICE.getFunctions(
                     pageNum = publicPageNum,
                     pageSize = 20,
                     keyword = null,
                     type = 0,
                     authorId = viewUserId
                 )
-                val responseData = res?.data
-                if (res?.status == 0 && responseData != null) {
+                val responseData = res.data
+                if (res.status == 0 && responseData != null) {
                     val newLibs = responseData.functions?.filterNotNull() ?: emptyList()
                     publicLibraries = if (publicPageNum == 1) {
                         newLibs
@@ -144,13 +144,13 @@ class UserProfileViewModel : ViewModel() {
         isLoadingPrivate = true
         viewModelScope.launch {
             try {
-                val res = ServiceManager.COMMAND_LAB_USER_SERVICE?.getMyLibraries(
+                val res = ServiceManager.COMMAND_LAB_USER_SERVICE.getMyLibraries(
                     type = 1,
                     pageNum = privatePageNum,
                     pageSize = 20
                 )
-                val responseData = res?.data
-                if (res?.status == 0 && responseData != null) {
+                val responseData = res.data
+                if (res.status == 0 && responseData != null) {
                     val newLibs = responseData.functions?.filterNotNull() ?: emptyList()
                     privateLibraries = if (privatePageNum == 1) {
                         newLibs
@@ -163,7 +163,7 @@ class UserProfileViewModel : ViewModel() {
                         privatePageNum++
                     }
                 } else {
-                    updateErrorMessage = res?.message ?: "拉取私有云库失败"
+                    updateErrorMessage = res.message ?: "拉取私有云库失败"
                 }
             } catch (e: Exception) {
                 updateErrorMessage = e.message ?: "网络错误"
@@ -176,8 +176,8 @@ class UserProfileViewModel : ViewModel() {
     fun deleteOrUnpublishLibrary(libraryId: Int, isPublic: Boolean) {
         viewModelScope.launch {
             try {
-                val res = ServiceManager.COMMAND_LAB_USER_SERVICE?.deleteLibrary(libraryId)
-                if (res?.status == 0) {
+                val res = ServiceManager.COMMAND_LAB_USER_SERVICE.deleteLibrary(libraryId)
+                if (res.status == 0) {
                     updateSuccessMessage = if (isPublic) "下架成功" else "删除成功"
                     if (isPublic) {
                         publicLibraries = publicLibraries.filter { it.id != libraryId }
@@ -185,7 +185,7 @@ class UserProfileViewModel : ViewModel() {
                         privateLibraries = privateLibraries.filter { it.id != libraryId }
                     }
                 } else {
-                    updateErrorMessage = res?.message ?: "操作失败"
+                    updateErrorMessage = res.message ?: "操作失败"
                 }
             } catch (e: Exception) {
                 updateErrorMessage = e.message ?: "网络错误"
@@ -212,13 +212,13 @@ class UserProfileViewModel : ViewModel() {
                     homepage = homepage?.ifBlank { null },
                     signature = signature?.ifBlank { null }
                 )
-                val res = ServiceManager.COMMAND_LAB_USER_SERVICE?.updateProfile(viewUserId, req)
-                if (res?.status == 0) {
+                val res = ServiceManager.COMMAND_LAB_USER_SERVICE.updateProfile(viewUserId, req)
+                if (res.status == 0) {
                     updateSuccessMessage = "资料已更新"
                     loadProfile(viewUserId) // reload
                     onComplete()
                 } else {
-                    updateErrorMessage = res?.message ?: "更新失败"
+                    updateErrorMessage = res.message ?: "更新失败"
                 }
             } catch (e: Exception) {
                 updateErrorMessage = e.message ?: "网络错误"

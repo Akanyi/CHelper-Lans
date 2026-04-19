@@ -133,14 +133,14 @@ class CPLUploadViewModel : ViewModel() {
                         this.content = finalContent
                     }
                     val result =
-                        ServiceManager.COMMAND_LAB_USER_SERVICE?.updateLibrary(editId, request)
+                        ServiceManager.COMMAND_LAB_USER_SERVICE.updateLibrary(editId, request)
                     withContext(Dispatchers.Main) {
                         isLoading = false
-                        if (result?.isSuccess() == true) {
+                        if (result.isSuccess()) {
                             Toaster.show("更新成功")
                             onSuccess()
                         } else {
-                            Toaster.show(result?.message ?: "更新失败")
+                            Toaster.show(result.message ?: "更新失败")
                         }
                     }
                 } else {
@@ -149,14 +149,14 @@ class CPLUploadViewModel : ViewModel() {
                         this.content = finalContent
                         this.isPublish = false
                     }
-                    val result = ServiceManager.COMMAND_LAB_USER_SERVICE?.uploadLibrary(request)
+                    val result = ServiceManager.COMMAND_LAB_USER_SERVICE.uploadLibrary(request)
                     withContext(Dispatchers.Main) {
                         isLoading = false
-                        if (result?.isSuccess() == true) {
+                        if (result.isSuccess()) {
                             Toaster.show("上传成功")
                             onSuccess()
                         } else {
-                            Toaster.show(result?.message ?: "上传失败")
+                            Toaster.show(result.message ?: "上传失败")
                         }
                     }
                 }

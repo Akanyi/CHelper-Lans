@@ -89,6 +89,25 @@ fun PublicLibraryListScreen(
         }
     }
 
+    // 检查是否有未读站内信
+    LaunchedEffect(Unit) {
+        try {
+            val response = yancey.chelper.network.ServiceManager.COMMAND_LAB_USER_SERVICE.getUnreadCount()
+            if (response.status == 0) {
+                val count = response.data?.count ?: 0
+                if (count > 0) {
+                    android.widget.Toast.makeText(
+                        context,
+                        "您有 $count 条未读站内信，可前往用户中心查看",
+                        android.widget.Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        } catch (e: Exception) {
+            // ignore error silently
+        }
+    }
+
     // 监听滚动到底部，自动加载更多
     val shouldLoadMore = remember {
         derivedStateOf {

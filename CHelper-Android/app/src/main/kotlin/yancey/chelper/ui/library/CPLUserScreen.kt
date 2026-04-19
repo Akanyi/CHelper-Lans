@@ -247,9 +247,9 @@ fun UserProfileView(
                     }
                 }
                 .padding(20.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.CenterStart
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 10.dp)) {
                 Icon(id = R.drawable.ic_user, modifier = Modifier.size(24.dp))
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
@@ -277,14 +277,13 @@ fun UserProfileView(
                     navController.navigate(yancey.chelper.ui.MessageScreenKey)
                 }
                 .padding(20.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.CenterStart
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 10.dp)) {
                 Icon(id = R.drawable.ic_mail, modifier = Modifier.size(24.dp))
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = "站内信",
-                    modifier = Modifier.weight(1f),
                     style = TextStyle(
                         color = CHelperTheme.colors.textMain,
                         fontSize = 18.sp,

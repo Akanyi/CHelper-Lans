@@ -136,113 +136,213 @@ fun CPLUploadScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            Button(
-                text = stringResource(R.string.upload_import_local),
-                onClick = { showImportDialog = true },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TextField(
-                state = viewModel.name,
-                hint = stringResource(R.string.upload_field_name),
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            TextField(
-                state = viewModel.version,
-                hint = stringResource(R.string.upload_field_version),
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            TextField(
-                state = viewModel.description,
-                hint = stringResource(R.string.upload_field_description),
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            TextField(
-                state = viewModel.tags,
-                hint = stringResource(R.string.upload_field_tags),
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // MCD v2 开关
-            Row(
+            // ================= 基础信息卡片 =================
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(12.dp))
                     .background(CHelperTheme.colors.backgroundComponent)
-                    .padding(horizontal = 14.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(16.dp)
             ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.upload_v2_title),
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium
-                        )
+                Text(
+                    text = "基础信息",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = CHelperTheme.colors.textMain
                     )
-                    Text(
-                        text = stringResource(R.string.upload_v2_description),
-                        style = TextStyle(
-                            fontSize = 11.sp,
-                            color = CHelperTheme.colors.textSecondary
-                        )
+                )
+                Spacer(Modifier.height(14.dp))
+                TextField(
+                    state = viewModel.name,
+                    hint = stringResource(R.string.upload_field_name),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                TextField(
+                    state = viewModel.description,
+                    hint = stringResource(R.string.upload_field_description),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    TextField(
+                        state = viewModel.version,
+                        hint = stringResource(R.string.upload_field_version),
+                        modifier = Modifier.weight(1f)
+                    )
+                    TextField(
+                        state = viewModel.tags,
+                        hint = stringResource(R.string.upload_field_tags),
+                        modifier = Modifier.weight(1f)
                     )
                 }
-                Switch(
-                    checked = viewModel.useV2,
-                    onCheckedChange = { viewModel.useV2 = it }
-                )
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Wiki 链接
-            Row(
+            // ================= 脚本内容卡片 =================
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable {
-                        val intent = android.content.Intent(
-                            android.content.Intent.ACTION_VIEW,
-                            "https://abyssous.site/wiki".toUri()
-                        )
-                        context.startActivity(intent)
-                    }
-                    .padding(horizontal = 14.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(CHelperTheme.colors.backgroundComponent)
+                    .padding(16.dp)
             ) {
-                Icon(
-                    id = R.drawable.book,
-                    contentDescription = stringResource(R.string.upload_wiki_link),
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    text = stringResource(R.string.upload_wiki_link),
-                    style = TextStyle(
-                        fontSize = 13.sp,
-                        color = CHelperTheme.colors.mainColor
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "执行脚本",
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = CHelperTheme.colors.textMain
+                        )
                     )
+                    
+                    // 右侧操作区：可选的 V2 辅助补全 + 本地导入
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        if (viewModel.useV2) {
+                            var showLowCodeHelper by remember { mutableStateOf(false) }
+
+                            if (showLowCodeHelper) {
+                                LowCodeV2HelperDialog(
+                                    rawContent = viewModel.commands.text.toString(),
+                                    onDismiss = { showLowCodeHelper = false },
+                                    onApply = { newContent ->
+                                        viewModel.commands.setTextAndPlaceCursorAtEnd(newContent)
+                                        showLowCodeHelper = false
+                                        com.hjq.toast.Toaster.show("已应用标记！")
+                                    }
+                                )
+                            }
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(6.dp))
+                                    .background(Color(0xFFE65100).copy(alpha = 0.1f))
+                                    .clickable { showLowCodeHelper = true }
+                                    .padding(horizontal = 10.dp, vertical = 6.dp)
+                            ) {
+                                Icon(
+                                    id = R.drawable.pencil,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(14.dp)
+                                )
+                                Spacer(Modifier.width(4.dp))
+                                Text(
+                                    text = "低代码补全 V2",
+                                    style = TextStyle(
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        color = Color(0xFFE65100)
+                                    )
+                                )
+                            }
+                        }
+
+                        // 将原本突兀的大按钮变成了轻量级的文字行动点
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(CHelperTheme.colors.mainColor.copy(alpha = 0.1f))
+                                .clickable { showImportDialog = true }
+                                .padding(horizontal = 10.dp, vertical = 6.dp)
+                        ) {
+                            Icon(
+                                id = R.drawable.folder,
+                                contentDescription = null,
+                                modifier = Modifier.size(14.dp)
+                            )
+                            Spacer(Modifier.width(4.dp))
+                            Text(
+                                text = stringResource(R.string.upload_import_local),
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color = CHelperTheme.colors.mainColor
+                                )
+                            )
+                        }
+                    }
+                }
+                Spacer(Modifier.height(12.dp))
+
+                TextField(
+                    state = viewModel.commands,
+                    hint = stringResource(if (viewModel.useV2) R.string.upload_field_commands_v2 else R.string.upload_field_commands_v1),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    contentAlignment = Alignment.TopStart
                 )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // 底部辅助选项区：语法说明 & V2 开关
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .clickable {
+                                val intent = android.content.Intent(
+                                    android.content.Intent.ACTION_VIEW,
+                                    "https://abyssous.site/wiki".toUri()
+                                )
+                                context.startActivity(intent)
+                            }
+                            .padding(end = 8.dp, top = 4.dp, bottom = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            id = R.drawable.book,
+                            contentDescription = stringResource(R.string.upload_wiki_link),
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Text(
+                            text = stringResource(R.string.upload_wiki_link),
+                            style = TextStyle(
+                                fontSize = 13.sp,
+                                color = CHelperTheme.colors.mainColor,
+                                fontWeight = FontWeight.Medium
+                            )
+                        )
+                    }
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = "启用 V2 语法",
+                            style = TextStyle(
+                                fontSize = 13.sp,
+                                color = CHelperTheme.colors.textSecondary
+                            )
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Switch(
+                            checked = viewModel.useV2,
+                            onCheckedChange = { viewModel.useV2 = it }
+                        )
+                    }
+                }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            TextField(
-                state = viewModel.commands,
-                hint = stringResource(if (viewModel.useV2) R.string.upload_field_commands_v2 else R.string.upload_field_commands_v1),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentAlignment = Alignment.TopStart
-            )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             val emptyErrorText = stringResource(R.string.upload_empty_error)
             Button(
@@ -260,6 +360,7 @@ fun CPLUploadScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 
@@ -709,5 +810,247 @@ fun ImportLocalLibraryDialog(
                 }
             }
         }
+    }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 低代码 V2 状态标记辅助工具对话框
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+@Composable
+fun LowCodeV2HelperDialog(
+    rawContent: String,
+    onDismiss: () -> Unit,
+    onApply: (String) -> Unit
+) {
+    // 提取出所有需要标记的行
+    val lines = rawContent.split(Regex("\\r?\\n"))
+    val results = yancey.chelper.ui.library.mcd.validateMCDContent(rawContent).lines.associateBy { it.lineNumber }
+
+    // 状态记录: map of lineNumber -> stateString (例如 "> C", "> I!")
+    val lineStates = remember { mutableStateOf(mutableMapOf<Int, String>()) }
+
+    var lastEffectiveType: LineType? = null
+    val targetLines = mutableListOf<Pair<Int, String>>() // <LineNumber, RawText>
+
+    for ((idx, line) in lines.withIndex()) {
+        val lineNum = idx + 1
+        val result = results[lineNum]
+        if (result == null) continue
+
+        if (result.type == LineType.COMMAND) {
+            if (lastEffectiveType != LineType.STATE_LINE) {
+                targetLines.add(lineNum to line)
+                if (!lineStates.value.containsKey(lineNum)) {
+                    lineStates.value[lineNum] = "> C" // 默认连锁
+                }
+            }
+            lastEffectiveType = LineType.COMMAND
+        } else {
+            if (result.type != LineType.COMMENT && result.type != LineType.META) {
+                lastEffectiveType = result.type
+            }
+        }
+    }
+
+    CustomDialog(
+        onDismissRequest = onDismiss,
+        properties = CustomDialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)
+    ) {
+        DialogContainer(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .height(600.dp),
+            backgroundNoTranslate = true
+        ) {
+            Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+                Text(
+                    text = "V2 标记助手",
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = CHelperTheme.colors.textMain
+                    )
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = "以下指令缺少方块状态，请为它们分配：",
+                    style = TextStyle(fontSize = 13.sp, color = CHelperTheme.colors.textSecondary)
+                )
+                Spacer(Modifier.height(12.dp))
+
+                if (targetLines.isEmpty()) {
+                    Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        Text("当前脚本中所有指令都已有正确的前置方块推断状态，无需再标记。", style = TextStyle(color = CHelperTheme.colors.textHint, textAlign = TextAlign.Center))
+                    }
+                } else {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        for ((lineNum, text) in targetLines) {
+                            val currentState = lineStates.value[lineNum] ?: "> C"
+                            LowCodeLineItem(
+                                lineNumber = lineNum,
+                                code = text,
+                                currentState = currentState,
+                                onStateChange = { newState ->
+                                    val newMap = lineStates.value.toMutableMap()
+                                    newMap[lineNum] = newState
+                                    lineStates.value = newMap
+                                }
+                            )
+                            Spacer(Modifier.height(12.dp))
+                        }
+                    }
+                }
+
+                Spacer(Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        text = "取消",
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .clickable { onDismiss() }
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        style = TextStyle(color = CHelperTheme.colors.textSecondary)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Row(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(if (targetLines.isEmpty()) Color(0xFFBDBDBD) else Color(0xFFE65100))
+                            .then(
+                                if (targetLines.isNotEmpty()) Modifier.clickable {
+                                    val output = mutableListOf<String>()
+                                    var lastType: LineType? = null
+                                    for ((i, l) in lines.withIndex()) {
+                                        val ln = i + 1
+                                        val res = results[ln]
+                                        if (res?.type == LineType.COMMAND) {
+                                            if (lastType != LineType.STATE_LINE) {
+                                                output.add(lineStates.value[ln] ?: "> C")
+                                            }
+                                            lastType = LineType.COMMAND
+                                        } else if (res != null) {
+                                            if (res.type != LineType.COMMENT && res.type != LineType.META) {
+                                                lastType = res.type
+                                            }
+                                        }
+                                        output.add(l)
+                                    }
+                                    onApply(output.joinToString("\n"))
+                                } else Modifier
+                            )
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "一键应用",
+                            style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LowCodeLineItem(
+    lineNumber: Int,
+    code: String,
+    currentState: String,
+    onStateChange: (String) -> Unit
+) {
+    // 解析现有状态（忽略所有 _ 占位符）
+    val cleanState = currentState.replace("_", "").trim()
+    val isC = Regex("^>\\s*c", RegexOption.IGNORE_CASE).containsMatchIn(cleanState)
+    val isI = Regex("^>\\s*i", RegexOption.IGNORE_CASE).containsMatchIn(cleanState)
+    val isR = Regex("^>\\s*r", RegexOption.IGNORE_CASE).containsMatchIn(cleanState)
+    val isH = Regex("^>\\s*h\\s*$", RegexOption.IGNORE_CASE).matches(cleanState)
+    val isCond = cleanState.contains("?")
+    val isRed = cleanState.contains("!")
+    val delayMatch = Regex("t(\\d+)").find(cleanState)
+    val delay = delayMatch?.groupValues?.get(1) ?: ""
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(CHelperTheme.colors.backgroundComponent)
+            .padding(10.dp)
+    ) {
+        Row(verticalAlignment = Alignment.Top) {
+            Text(
+                "L$lineNumber",
+                style = TextStyle(fontSize = 11.sp, color = Color(0xFFE65100), fontFamily = FontFamily.Monospace),
+                modifier = Modifier.width(32.dp)
+            )
+            Text(
+                code,
+                style = TextStyle(fontSize = 12.sp, color = CHelperTheme.colors.textMain, fontFamily = FontFamily.Monospace),
+                maxLines = 1
+            )
+        }
+        Spacer(Modifier.height(10.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            LowCodeChip("连锁(C)", isC) { onStateChange(buildState(">C", isCond, isRed, delay)) }
+            LowCodeChip("脉冲(I)", isI) { onStateChange(buildState(">I", isCond, isRed, delay)) }
+            LowCodeChip("循环(R)", isR) { onStateChange(buildState(">R", isCond, isRed, delay)) }
+            LowCodeChip("手动(H)", isH) { onStateChange(">H") }
+        }
+        Spacer(Modifier.height(10.dp))
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.alpha(if (isH) 0.5f else 1f)) {
+                Switch(
+                    checked = isCond,
+                    onCheckedChange = { if (!isH) onStateChange(buildState(if (isC) "> C" else if (isI) "> I" else "> R", it, isRed, delay)) }
+                )
+                Spacer(Modifier.width(6.dp))
+                Text("条件?", style = TextStyle(fontSize = 11.sp, color = CHelperTheme.colors.textSecondary))
+            }
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.alpha(if (isH) 0.5f else 1f)) {
+                Switch(
+                    checked = isRed,
+                    onCheckedChange = { if (!isH) onStateChange(buildState(if (isC) "> C" else if (isI) "> I" else "> R", isCond, it, delay)) }
+                )
+                Spacer(Modifier.width(6.dp))
+                Text("红石!", style = TextStyle(fontSize = 11.sp, color = CHelperTheme.colors.textSecondary))
+            }
+        }
+    }
+}
+
+private fun buildState(base: String, cond: Boolean, red: Boolean, delay: String): String {
+    var s = base
+    if (cond) s += "?"
+    if (red) s += "!"
+    if (delay.isNotEmpty()) s += "t$delay"
+    return s
+}
+
+@Composable
+private fun LowCodeChip(text: String, selected: Boolean, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(4.dp))
+            .background(if (selected) Color(0xFFE65100) else CHelperTheme.colors.backgroundComponentNoTranslate)
+            .clickable { onClick() }
+            .padding(horizontal = 10.dp, vertical = 6.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            style = TextStyle(
+                fontSize = 11.sp,
+                color = if (selected) Color.White else CHelperTheme.colors.textMain,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+            )
+        )
     }
 }
