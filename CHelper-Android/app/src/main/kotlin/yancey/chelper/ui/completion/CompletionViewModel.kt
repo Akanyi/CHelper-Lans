@@ -41,6 +41,7 @@ import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
+import java.io.EOFException
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -76,21 +77,7 @@ class CompletionViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    file?.let { file ->
-                        if (file.exists()) {
-                            DataInputStream(BufferedInputStream(file.inputStream())).use { dataInputStream ->
-                                return@withContext TextFieldState(
-                                    dataInputStream.readUTF(),
-                                    TextRange(
-                                        dataInputStream.readInt(),
-                                        dataInputStream.readInt()
-                                    )
-                                )
-                            }
-                        } else {
-                            return@withContext null
-                        }
-                    }
+                    file?.readCachedCommand()
                 }?.let { command = it }
             } catch (_: IOException) {
 
@@ -248,16 +235,48 @@ class CompletionViewModel : ViewModel() {
         core?.close()
         // 保存上次的输入内容
         if (file != null) {
-            file?.parentFile?.mkdirs()
             try {
-                DataOutputStream(BufferedOutputStream(FileOutputStream(file))).use { dataOutputStream ->
-                    dataOutputStream.writeUTF(command.text.toString())
-                    dataOutputStream.writeInt(command.selection.start)
-                    dataOutputStream.writeInt(command.selection.end)
-                }
+                file?.writeCachedCommand(command)
             } catch (_: IOException) {
 
             }
+        }
+    }
+    private fun File.readCachedCommand(): TextFieldState? {
+        if (!exists()) {
+            return null
+        }
+        return try {
+            DataInputStream(BufferedInputStream(inputStream())).use { dataInputStream ->
+                val text = dataInputStream.readUTF()
+                val start = dataInputStream.readInt()
+                val end = dataInputStream.readInt()
+                TextFieldState(text, TextRange(start, end))
+            }
+        } catch (_: EOFException) {
+            delete()
+            null
+        } catch (_: IOException) {
+            delete()
+            null
+        }
+    }
+
+    private fun File.writeCachedCommand(command: TextFieldState) {
+        parentFile?.mkdirs()
+        val tempFile = resolveSibling("$name.tmp")
+        DataOutputStream(BufferedOutputStream(FileOutputStream(tempFile))).use { dataOutputStream ->
+            dataOutputStream.writeUTF(command.text.toString())
+            dataOutputStream.writeInt(command.selection.start)
+            dataOutputStream.writeInt(command.selection.end)
+        }
+        if (exists() && !delete()) {
+            tempFile.delete()
+            throw IOException("Failed to replace cached command file: $absolutePath")
+        }
+        if (!tempFile.renameTo(this)) {
+            tempFile.delete()
+            throw IOException("Failed to move cached command file into place: $absolutePath")
         }
     }
 }
