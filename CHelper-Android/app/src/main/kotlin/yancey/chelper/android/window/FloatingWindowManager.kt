@@ -103,7 +103,6 @@ class FloatingWindowManager(
         floatingWindowScreenAlpha: Float,
         isFloatingWindowFontAlphaSync: Boolean,
     ) {
-        FloatingWindowService.start(application)
         val iconSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             floatingWindowIconSize.toFloat(),
@@ -111,12 +110,10 @@ class FloatingWindowManager(
         ).toInt()
         val iconView = ImageView(context)
         iconView.setImageResource(R.drawable.pack_icon)
-        iconView.setLayoutParams(
-            FrameLayout.LayoutParams(
-                iconSize,
-                iconSize,
-                Gravity.START or Gravity.TOP
-            )
+        iconView.layoutParams = FrameLayout.LayoutParams(
+            iconSize,
+            iconSize,
+            Gravity.START or Gravity.TOP
         )
         val mainView = object : FrameLayout(context) {
             override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
@@ -229,6 +226,7 @@ class FloatingWindowManager(
             mainViewWindow!!.windowViewVisibility = View.INVISIBLE
             mainViewWindow!!.show()
             iconViewWindow!!.show()
+            FloatingWindowService.start(application)
         } else {
             stopFloatingWindow()
         }
