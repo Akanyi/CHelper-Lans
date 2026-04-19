@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -860,10 +861,11 @@ fun LowCodeV2HelperDialog(
         DialogContainer(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .height(600.dp),
+                .wrapContentHeight()
+                .heightIn(max = 600.dp),
             backgroundNoTranslate = true
         ) {
-            Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(16.dp)) {
                 Text(
                     text = "V2 标记助手",
                     style = TextStyle(
@@ -880,13 +882,13 @@ fun LowCodeV2HelperDialog(
                 Spacer(Modifier.height(12.dp))
 
                 if (targetLines.isEmpty()) {
-                    Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Box(modifier = Modifier.weight(1f, fill = false).fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Text("当前脚本中所有指令都已有正确的前置方块推断状态，无需再标记。", style = TextStyle(color = CHelperTheme.colors.textHint, textAlign = TextAlign.Center))
                     }
                 } else {
                     Column(
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(1f, fill = false)
                             .verticalScroll(rememberScrollState())
                     ) {
                         for ((lineNum, text) in targetLines) {
@@ -1005,22 +1007,52 @@ private fun LowCodeLineItem(
             LowCodeChip("手动(H)", isH) { onStateChange(">H") }
         }
         Spacer(Modifier.height(10.dp))
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.alpha(if (isH) 0.5f else 1f)) {
                 Switch(
                     checked = isCond,
-                    onCheckedChange = { if (!isH) onStateChange(buildState(if (isC) "> C" else if (isI) "> I" else "> R", it, isRed, delay)) }
+                    onCheckedChange = { if (!isH) onStateChange(buildState(if (isC) ">C" else if (isI) ">I" else ">R", it, isRed, delay)) }
                 )
                 Spacer(Modifier.width(6.dp))
                 Text("条件?", style = TextStyle(fontSize = 11.sp, color = CHelperTheme.colors.textSecondary))
             }
+            Spacer(Modifier.width(16.dp))
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.alpha(if (isH) 0.5f else 1f)) {
                 Switch(
                     checked = isRed,
-                    onCheckedChange = { if (!isH) onStateChange(buildState(if (isC) "> C" else if (isI) "> I" else "> R", isCond, it, delay)) }
+                    onCheckedChange = { if (!isH) onStateChange(buildState(if (isC) ">C" else if (isI) ">I" else ">R", isCond, it, delay)) }
                 )
                 Spacer(Modifier.width(6.dp))
                 Text("红石!", style = TextStyle(fontSize = 11.sp, color = CHelperTheme.colors.textSecondary))
+            }
+            Spacer(Modifier.weight(1f))
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.alpha(if (isH) 0.5f else 1f)) {
+                Text("Tick:", style = TextStyle(fontSize = 11.sp, color = CHelperTheme.colors.textSecondary))
+                Spacer(Modifier.width(4.dp))
+                androidx.compose.foundation.text.BasicTextField(
+                    value = delay,
+                    onValueChange = {
+                        if (!isH) {
+                            val newDelay = it.filter { ch -> ch.isDigit() }
+                            if (newDelay.length <= 5) onStateChange(buildState(if (isC) ">C" else if (isI) ">I" else ">R", isCond, isRed, newDelay))
+                        }
+                    },
+                    modifier = Modifier
+                        .width(40.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(CHelperTheme.colors.background)
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
+                    textStyle = TextStyle(fontSize = 12.sp, color = CHelperTheme.colors.textMain, textAlign = TextAlign.Center),
+                    singleLine = true,
+                    decorationBox = { innerTextField ->
+                        Box(contentAlignment = Alignment.Center) {
+                            if (delay.isEmpty()) {
+                                Text("0", style = TextStyle(fontSize = 12.sp, color = CHelperTheme.colors.textHint, textAlign = TextAlign.Center))
+                            }
+                            innerTextField()
+                        }
+                    }
+                )
             }
         }
     }
