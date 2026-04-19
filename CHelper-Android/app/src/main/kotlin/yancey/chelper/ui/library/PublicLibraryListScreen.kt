@@ -79,13 +79,14 @@ fun PublicLibraryListScreen(
     val settingsDataStore = remember(context) { yancey.chelper.data.SettingsDataStore(context) }
     val tagClickBehavior = settingsDataStore.tagClickBehavior()
         .collectAsState(initial = "search")
-    val isPublicLibraryHomeRecommend by settingsDataStore.isPublicLibraryHomeRecommend()
-        .collectAsState(initial = true)
     val listState = rememberLazyListState()
 
     // 初始加载及偏好切换触发重新加载
-    LaunchedEffect(isPublicLibraryHomeRecommend) {
-        viewModel.refresh(isRecommend = isPublicLibraryHomeRecommend)
+    LaunchedEffect(viewModel.isRecommendMode) {
+        if (viewModel.currentLoadedMode != viewModel.isRecommendMode || viewModel.libraries.isEmpty()) {
+            viewModel.currentLoadedMode = viewModel.isRecommendMode
+            viewModel.refresh(isRecommend = viewModel.isRecommendMode)
+        }
     }
 
     // 监听滚动到底部，自动加载更多
@@ -98,7 +99,7 @@ fun PublicLibraryListScreen(
     }
 
     LaunchedEffect(shouldLoadMore) {
-        snapshotFlow { shouldLoadMore.value }.collect { if (it) viewModel.loadMore(isRecommend = isPublicLibraryHomeRecommend) }
+        snapshotFlow { shouldLoadMore.value }.collect { if (it) viewModel.loadMore(isRecommend = viewModel.isRecommendMode) }
     }
 
     RootViewWithHeaderAndCopyright(
@@ -125,7 +126,7 @@ fun PublicLibraryListScreen(
                     id = R.drawable.refresh,
                     modifier =
                         Modifier
-                            .clickable { viewModel.refresh(isRecommend = isPublicLibraryHomeRecommend) }
+                            .clickable { viewModel.refresh(isRecommend = viewModel.isRecommendMode) }
                             .padding(5.dp)
                             .size(24.dp),
                     contentDescription = "刷新"
@@ -162,6 +163,72 @@ fun PublicLibraryListScreen(
             }
             Spacer(Modifier.height(10.dp))
 
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 15.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val isRecommend = viewModel.isRecommendMode
+                Row(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(CHelperTheme.colors.backgroundComponent)
+                        .padding(4.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(if (!isRecommend) CHelperTheme.colors.mainColor else androidx.compose.ui.graphics.Color.Transparent)
+                            .clickable { viewModel.isRecommendMode = false }
+                            .padding(horizontal = 16.dp, vertical = 6.dp)
+                    ) {
+                        Text(
+                            text = "最新发布",
+                            style = TextStyle(
+                                color = if (!isRecommend) androidx.compose.ui.graphics.Color.White else CHelperTheme.colors.textSecondary,
+                                fontSize = 13.sp,
+                                fontWeight = if (!isRecommend) FontWeight.Bold else FontWeight.Normal
+                            )
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(if (isRecommend) CHelperTheme.colors.mainColor else androidx.compose.ui.graphics.Color.Transparent)
+                            .clickable { 
+                                if (viewModel.isRecommendMode) {
+                                    viewModel.refresh(isRecommend = true)
+                                } else {
+                                    viewModel.isRecommendMode = true 
+                                }
+                            }
+                            .padding(horizontal = 16.dp, vertical = 6.dp)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "猜你喜欢",
+                                style = TextStyle(
+                                    color = if (isRecommend) androidx.compose.ui.graphics.Color.White else CHelperTheme.colors.textSecondary,
+                                    fontSize = 13.sp,
+                                    fontWeight = if (isRecommend) FontWeight.Bold else FontWeight.Normal
+                                )
+                            )
+                            if (isRecommend) {
+                                Spacer(Modifier.width(4.dp))
+                                Image(
+                                    painter = painterResource(R.drawable.refresh),
+                                    contentDescription = "刷新猜你喜欢",
+                                    modifier = Modifier.size(12.dp), 
+                                    colorFilter = ColorFilter.tint(androidx.compose.ui.graphics.Color.White)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            Spacer(Modifier.height(10.dp))
+
             Box(modifier = Modifier.fillMaxSize()) {
                 if (viewModel.errorMessage != null && viewModel.libraries.isEmpty()) {
                     // 错误状态
@@ -184,7 +251,7 @@ fun PublicLibraryListScreen(
                             Spacer(Modifier.height(10.dp))
                             Text(
                                 text = "点击重试",
-                                modifier = Modifier.clickable { viewModel.refresh(isRecommend = isPublicLibraryHomeRecommend) },
+                                modifier = Modifier.clickable { viewModel.refresh(isRecommend = viewModel.isRecommendMode) },
                                 style = TextStyle(color = CHelperTheme.colors.mainColor)
                             )
                         }

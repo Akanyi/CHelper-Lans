@@ -48,6 +48,7 @@ import yancey.chelper.ui.library.LocalLibraryListScreen
 import yancey.chelper.ui.library.LocalLibraryShowScreen
 import yancey.chelper.ui.library.PublicLibraryListScreen
 import yancey.chelper.ui.library.PublicLibraryShowScreen
+import yancey.chelper.ui.library.MessageScreen
 import yancey.chelper.ui.library.profile.UserProfileScreen
 import yancey.chelper.ui.library.score.LeaderboardScreen
 import yancey.chelper.ui.library.search.LibrarySearchScreen
@@ -134,6 +135,9 @@ object LeaderboardScreenKey
 data class UserProfileScreenKey(
     val id: Int
 )
+
+@Serializable
+object MessageScreenKey
 
 @Composable
 fun NavHost(
@@ -248,6 +252,9 @@ fun NavHost(
         composable<UserProfileScreenKey> { backStackEntry ->
             val customKey = backStackEntry.toRoute<UserProfileScreenKey>()
             UserProfileScreen(customKey.id, navController)
+        }
+        composable<MessageScreenKey> {
+            MessageScreen()
         }
     }
     if (isShowSavingBackgroundDialog.value) {
