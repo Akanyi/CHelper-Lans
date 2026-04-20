@@ -29,7 +29,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
@@ -102,8 +102,9 @@ fun Old2NewScreen(viewModel: Old2NewViewModel = viewModel(), old2new: (String) -
                 }
             }
         }
-        LaunchedEffect(viewModel.oldCommand.text) {
+        DisposableEffect(viewModel.oldCommand.text, old2new) {
             viewModel.newCommand = old2new(viewModel.oldCommand.text.toString())
+            onDispose { }
         }
     }
 }

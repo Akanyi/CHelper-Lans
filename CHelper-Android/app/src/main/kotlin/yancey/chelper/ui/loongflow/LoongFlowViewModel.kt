@@ -8,6 +8,7 @@
 
 package yancey.chelper.ui.loongflow
 
+import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -16,7 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import yancey.chelper.network.library.data.LibraryFunction
 import yancey.chelper.ui.library.mcd.BlockType
 import yancey.chelper.ui.library.mcd.ChainItem
@@ -31,7 +32,11 @@ enum class LoongFlowMode {
     EXPORT   // MC → 剪贴板 → MCD
 }
 
-class LoongFlowViewModel : ViewModel() {
+class LoongFlowViewModel(application: Application) : AndroidViewModel(application) {
+    private val appContext = application.applicationContext
+    private val clipboardManager by lazy {
+        appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    }
     // ═══════════════════════════════════
     //  共享状态
     // ═══════════════════════════════════
@@ -151,24 +156,26 @@ class LoongFlowViewModel : ViewModel() {
         importStep = 1
         currentCopyIndex = 0
         isImportComplete = false
+        copyCurrentCommand()
     }
 
     /** 复制当前命令到剪贴板 */
-    fun copyCurrentCommand(context: Context) {
+    fun copyCurrentCommand() {
         val cmds = selectedCommands
         if (currentCopyIndex < cmds.size) {
-            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-            clipboard.setPrimaryClip(android.content.ClipData.newPlainText("command", cmds[currentCopyIndex].command))
+            clipboardManager.setPrimaryClip(
+                ClipData.newPlainText("command", cmds[currentCopyIndex].command)
+            )
             toastMessage = "已复制 (${currentCopyIndex + 1}/${cmds.size})"
         }
     }
 
     /** 前进到下一条命令，返回 true 表示还有下一条 */
-    fun nextCommand(context: Context): Boolean {
+    fun nextCommand(): Boolean {
         val cmds = selectedCommands
         if (currentCopyIndex < cmds.size - 1) {
             currentCopyIndex++
-            copyCurrentCommand(context)
+            copyCurrentCommand()
             return true
         } else {
             isImportComplete = true
@@ -177,11 +184,11 @@ class LoongFlowViewModel : ViewModel() {
     }
 
     /** 回退到上一条 */
-    fun prevCommand(context: Context) {
+    fun prevCommand() {
         if (currentCopyIndex > 0) {
             currentCopyIndex--
             isImportComplete = false
-            copyCurrentCommand(context)
+            copyCurrentCommand()
         }
     }
 
@@ -210,9 +217,8 @@ class LoongFlowViewModel : ViewModel() {
     }
 
     /** 从剪贴板读取内容填入当前方块的命令输入框 */
-    fun pasteFromClipboard(context: Context) {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = clipboard.primaryClip
+    fun pasteFromClipboard() {
+        val clip = clipboardManager.primaryClip
         if (clip != null && clip.itemCount > 0) {
             val text = clip.getItemAt(0).text?.toString()?.trim() ?: ""
             if (text.isNotEmpty()) {
@@ -292,9 +298,8 @@ class LoongFlowViewModel : ViewModel() {
     }
 
     /** 复制导出的 MCD 文本到剪贴板 */
-    fun copyExportText(context: Context) {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("MCD", exportMcdText))
+    fun copyExportText() {
+        clipboardManager.setPrimaryClip(ClipData.newPlainText("MCD", exportMcdText))
         toastMessage = "已复制 MCD 全文"
     }
 

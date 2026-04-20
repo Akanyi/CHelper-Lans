@@ -76,7 +76,7 @@ class LoongFlowWindowManager(
         // 如果已经在显示，先关掉旧的
         if (isShowing) dismiss()
 
-        val vm = LoongFlowViewModel()
+        val vm = LoongFlowViewModel(application)
         vm.initImport(library)
         viewModel = vm
 
@@ -90,7 +90,7 @@ class LoongFlowWindowManager(
     fun showExport(context: Context) {
         if (isShowing) dismiss()
 
-        val vm = LoongFlowViewModel()
+        val vm = LoongFlowViewModel(application)
         vm.initExport()
         viewModel = vm
 

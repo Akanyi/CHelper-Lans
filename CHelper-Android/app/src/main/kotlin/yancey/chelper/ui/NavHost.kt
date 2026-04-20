@@ -21,13 +21,14 @@ package yancey.chelper.ui
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -146,10 +147,14 @@ fun NavHost(
 ) {
     val softwareKeyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
-    LaunchedEffect(navController) {
-        navController.addOnDestinationChangedListener { _, _, _ ->
+    DisposableEffect(navController, focusManager, softwareKeyboardController) {
+        val listener = NavController.OnDestinationChangedListener { _, _, _ ->
             focusManager.clearFocus()
             softwareKeyboardController?.hide()
+        }
+        navController.addOnDestinationChangedListener(listener)
+        onDispose {
+            navController.removeOnDestinationChangedListener(listener)
         }
     }
     NavHost(

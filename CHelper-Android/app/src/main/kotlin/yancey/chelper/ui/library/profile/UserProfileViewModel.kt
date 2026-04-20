@@ -61,12 +61,20 @@ class UserProfileViewModel : ViewModel() {
 
     var updateSuccessMessage by mutableStateOf<String?>(null)
         private set
+    private var initializedProfileId: Int? = null
 
     init {
         currentUserId = LoginUtil.currentUser?.id
     }
 
+    fun ensureProfileLoaded(id: Int) {
+        if (initializedProfileId == id) return
+        initializedProfileId = id
+        loadProfile(id)
+    }
+
     fun loadProfile(id: Int) {
+        initializedProfileId = id
         viewUserId = id
         if (isLoading) return
         isLoading = true

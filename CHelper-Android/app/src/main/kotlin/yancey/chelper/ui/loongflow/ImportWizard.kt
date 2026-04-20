@@ -29,12 +29,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -50,8 +48,6 @@ fun ImportWizard(
     onMinimize: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(modifier = Modifier.fillMaxSize()) {
         // 步骤指示条
         StepIndicator(
@@ -101,7 +97,7 @@ fun ImportWizard(
                     ActionButton(
                         text = "◂ 上一条",
                         color = CHelperTheme.colors.textSecondary,
-                        onClick = { viewModel.prevCommand(context) },
+                        onClick = { viewModel.prevCommand() },
                         enabled = viewModel.currentCopyIndex > 0
                     )
 
@@ -115,7 +111,7 @@ fun ImportWizard(
                         ActionButton(
                             text = "下一条 ▸",
                             color = CHelperTheme.colors.mainColor,
-                            onClick = { viewModel.nextCommand(context) }
+                            onClick = { viewModel.nextCommand() }
                         )
                     }
                 }
@@ -255,15 +251,10 @@ private fun ImportStepSelect(viewModel: LoongFlowViewModel) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ImportStepCopy(viewModel: LoongFlowViewModel) {
-    val context = LocalContext.current
     val cmds = viewModel.selectedCommands
     val index = viewModel.currentCopyIndex
 
-    // 首次进入自动复制第一条
-    LaunchedEffect(Unit) {
-        viewModel.copyCurrentCommand(context)
-    }
-
+    // 首次复制已在 startImportCopy() 中触发
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

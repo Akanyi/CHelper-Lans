@@ -40,7 +40,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -56,8 +55,6 @@ fun ExportWizard(
     onMinimize: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(modifier = Modifier.fillMaxSize()) {
         // 步骤指示条
         StepIndicator(
@@ -242,8 +239,6 @@ private fun ConfigTextField(
  */
 @Composable
 private fun ExportStepRecord(viewModel: LoongFlowViewModel) {
-    val context = LocalContext.current
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -487,8 +482,6 @@ private fun ExportStepRecord(viewModel: LoongFlowViewModel) {
  */
 @Composable
 private fun ExportStepPreview(viewModel: LoongFlowViewModel) {
-    val context = LocalContext.current
-
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
             text = "MCD v2 预览",
@@ -539,7 +532,7 @@ private fun ExportStepPreview(viewModel: LoongFlowViewModel) {
             ExportOpButton(
                 icon = "",
                 label = "复制全文",
-                onClick = { viewModel.copyExportText(context) }
+                onClick = { viewModel.copyExportText() }
             )
         }
     }

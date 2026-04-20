@@ -38,6 +38,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -90,7 +91,7 @@ fun LibrarySearchScreen(
     val listState = rememberLazyListState()
 
     // 初始带关键字搜索
-    LaunchedEffect(initialKeyword) {
+    DisposableEffect(initialKeyword) {
         viewModel.setInitialKeyword(initialKeyword)
         if (!initialKeyword.isNullOrBlank()) {
             viewModel.search(localLibraryFunctions)
@@ -98,6 +99,7 @@ fun LibrarySearchScreen(
             // 如果没带关键字，自动弹起键盘给输入框焦点
             focusRequester.requestFocus()
         }
+        onDispose { }
     }
 
     // 滑动加载更多公开库

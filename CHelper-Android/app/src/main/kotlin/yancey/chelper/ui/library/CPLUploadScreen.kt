@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -68,11 +67,7 @@ fun CPLUploadScreen(
     editLibraryId: Int = -1,
     editLibraryJson: String? = null
 ) {
-    LaunchedEffect(editLibraryId, editLibraryJson) {
-        if (editLibraryId > 0 && viewModel.editId == -1) {
-            viewModel.loadFromCloudJson(editLibraryJson, editLibraryId)
-        }
-    }
+    viewModel.ensureCloudDraftLoaded(editLibraryJson, editLibraryId)
     val context = LocalContext.current
     val localCommandLabDataStore = remember(context) { LocalCommandLabDataStore(context) }
     val libraries by localCommandLabDataStore.localLibraryFunctions()

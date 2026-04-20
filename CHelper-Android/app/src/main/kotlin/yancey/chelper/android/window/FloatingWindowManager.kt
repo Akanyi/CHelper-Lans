@@ -33,7 +33,7 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -146,15 +146,22 @@ class FloatingWindowManager(
                         remember { FloatWindowNavigationEventOwner(navigationEventDispatcher) }
                     val navController = rememberNavController()
                     val softwareKeyboardController = LocalSoftwareKeyboardController.current
-                    LaunchedEffect(navController) {
+                    DisposableEffect(navController, lifecycleOwner, softwareKeyboardController) {
                         this@FloatingWindowManager.navController = navController
                         navController.setLifecycleOwner(lifecycleOwner)
                         navController.setOnBackPressedDispatcher(floatBackPressedOwner!!.onBackPressedDispatcher)
-                        navController.addOnDestinationChangedListener { _, _, _ ->
+                        val listener = NavController.OnDestinationChangedListener { _, _, _ ->
                             // 修复：输入框获取到焦点后切换页面，焦点仍停留在上一个页面的的输入框，导致无法获取返回键事件
                             mainView.clearFocus()
                             mainView.requestFocus()
                             softwareKeyboardController?.hide()
+                        }
+                        navController.addOnDestinationChangedListener(listener)
+                        onDispose {
+                            navController.removeOnDestinationChangedListener(listener)
+                            if (this@FloatingWindowManager.navController == navController) {
+                                this@FloatingWindowManager.navController = null
+                            }
                         }
                     }
                     CompositionLocalProvider(

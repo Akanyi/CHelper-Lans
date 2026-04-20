@@ -25,6 +25,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -106,8 +107,14 @@ fun SettingsScreen(
         .collectAsState(initial = "search")
     val ambiguousLineDefaultFlow by settingsDataStore.ambiguousLineDefault()
         .collectAsState(initial = "comment")
-    LaunchedEffect(tagClickBehaviorFlow) { tagClickBehavior = tagClickBehaviorFlow }
-    LaunchedEffect(ambiguousLineDefaultFlow) { ambiguousLineDefault = ambiguousLineDefaultFlow }
+    SideEffect {
+        if (tagClickBehavior != tagClickBehaviorFlow) {
+            tagClickBehavior = tagClickBehaviorFlow
+        }
+        if (ambiguousLineDefault != ambiguousLineDefaultFlow) {
+            ambiguousLineDefault = ambiguousLineDefaultFlow
+        }
+    }
     var cpackBranchesWithTranslate by remember {
         mutableStateOf(
             arrayOf(
@@ -121,40 +128,38 @@ fun SettingsScreen(
         )
     }
     LaunchedEffect(context) {
-        coroutineScope.launch {
-            val filenames = withContext(Dispatchers.IO) { context.assets.list("cpack")!! }
-            val cpackBranches =
-                arrayOf(
-                    "release-vanilla",
-                    "release-experiment",
-                    "beta-vanilla",
-                    "beta-experiment",
-                    "netease-vanilla",
-                    "netease-experiment"
-                )
-            val cpackBranchTranslations =
-                arrayOf(
-                    "正式版-原版-",
-                    "正式版-实验性玩法-",
-                    "测试版-原版-",
-                    "测试版-实验性玩法-",
-                    "中国版-原版-",
-                    "中国版-实验性玩法-"
-                )
-            val newCPackBranchesWithTranslate = mutableListOf<Pair<String, String>>()
-            for (filename in filenames) {
-                for (i in 0..<cpackBranches.size) {
-                    if (filename!!.startsWith(cpackBranches[i])) {
-                        val version = filename.substring(
-                            cpackBranches[i].length,
-                            filename.length - ".cpack".length
-                        )
-                        newCPackBranchesWithTranslate.add("${cpackBranchTranslations[i]}${version}" to cpackBranches[i])
-                    }
+        val filenames = withContext(Dispatchers.IO) { context.assets.list("cpack")!! }
+        val cpackBranches =
+            arrayOf(
+                "release-vanilla",
+                "release-experiment",
+                "beta-vanilla",
+                "beta-experiment",
+                "netease-vanilla",
+                "netease-experiment"
+            )
+        val cpackBranchTranslations =
+            arrayOf(
+                "正式版-原版-",
+                "正式版-实验性玩法-",
+                "测试版-原版-",
+                "测试版-实验性玩法-",
+                "中国版-原版-",
+                "中国版-实验性玩法-"
+            )
+        val newCPackBranchesWithTranslate = mutableListOf<Pair<String, String>>()
+        for (filename in filenames) {
+            for (i in 0..<cpackBranches.size) {
+                if (filename!!.startsWith(cpackBranches[i])) {
+                    val version = filename.substring(
+                        cpackBranches[i].length,
+                        filename.length - ".cpack".length
+                    )
+                    newCPackBranchesWithTranslate.add("${cpackBranchTranslations[i]}${version}" to cpackBranches[i])
                 }
             }
-            cpackBranchesWithTranslate = newCPackBranchesWithTranslate.toTypedArray()
         }
+        cpackBranchesWithTranslate = newCPackBranchesWithTranslate.toTypedArray()
     }
     RootViewWithHeaderAndCopyright(stringResource(R.string.layout_settings_title)) {
         Column(

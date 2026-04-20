@@ -40,7 +40,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -343,19 +343,18 @@ fun CompletionScreen(
     val syntaxHighlightMaxLength by settingsDataStore.syntaxHighlightMaxLength()
         .collectAsState(initial = 20000)
 
-    LaunchedEffect(viewModel, syntaxHighlightMaxLength) {
+    DisposableEffect(viewModel, syntaxHighlightMaxLength) {
         viewModel.syntaxHighlightMaxLength = syntaxHighlightMaxLength
+        onDispose { }
     }
 
-    LaunchedEffect(viewModel) {
-        viewModel.init(context)
-    }
-    LaunchedEffect(isSavingWhenPausing) {
+    DisposableEffect(isSavingWhenPausing) {
         if (isSavingWhenPausing) {
             viewModel.resumeText()
         }
+        onDispose { }
     }
-    LaunchedEffect(viewModel, cpackBranch) {
+    DisposableEffect(viewModel, cpackBranch) {
         viewModel.refreshCHelperCore(
             context,
             cpackBranch,
@@ -363,6 +362,7 @@ fun CompletionScreen(
             isSyntaxHighlight,
             isShowErrorReason
         )
+        onDispose { }
     }
     val clipboard = LocalClipboard.current
     val errorReason = remember(viewModel.errorReasons) {
@@ -655,12 +655,13 @@ fun CompletionScreen(
                 )
             }
         }
-        LaunchedEffect(viewModel.command.text, viewModel.command.selection) {
+        DisposableEffect(viewModel.command.text, viewModel.command.selection) {
             viewModel.onSelectionChanged(
                 isCheckingBySelection,
                 isSyntaxHighlight,
                 isShowErrorReason
             )
+            onDispose { }
         }
     }
 }
@@ -668,8 +669,9 @@ fun CompletionScreen(
 @Preview
 @Composable
 fun CompletionScreenLightThemePreview() {
+    val application = LocalContext.current.applicationContext as android.app.Application
     val viewModel = remember {
-        CompletionViewModel().apply {
+        CompletionViewModel(application).apply {
             isShowMenu = true
             suggestionsSize = 20
         }
@@ -684,8 +686,9 @@ fun CompletionScreenLightThemePreview() {
 @Preview
 @Composable
 fun CompletionScreenDarkThemePreview() {
+    val application = LocalContext.current.applicationContext as android.app.Application
     val viewModel = remember {
-        CompletionViewModel().apply {
+        CompletionViewModel(application).apply {
             isShowMenu = true
             suggestionsSize = 20
         }

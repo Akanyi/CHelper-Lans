@@ -44,6 +44,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -95,7 +96,6 @@ fun PublicLibraryShowScreen(
     navController: androidx.navigation.NavHostController? = null,
     viewModel: PublicLibraryShowViewModel = viewModel()
 ) {
-    val clipboard = LocalClipboard.current
     val context = LocalContext.current
 
     // 读取设置
@@ -112,28 +112,28 @@ fun PublicLibraryShowScreen(
     var showCaptchaDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(id, isPrivate) {
-        viewModel.loadFunction(id, isPrivate)
-    }
+    viewModel.ensureLoaded(id, isPrivate)
 
     // 操作结果反馈
-    LaunchedEffect(viewModel.actionMessage) {
+    DisposableEffect(viewModel.actionMessage) {
         viewModel.actionMessage?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             viewModel.actionMessage = null
         }
+        onDispose { }
     }
 
     // 删除成功后安全返回上一页——在 Composition 上下文中执行 popBackStack 避免时序崩溃
-    LaunchedEffect(viewModel.deleteSuccess) {
+    DisposableEffect(viewModel.deleteSuccess) {
         if (viewModel.deleteSuccess) {
             viewModel.deleteSuccess = false
             navController?.popBackStack()
         }
+        onDispose { }
     }
 
     // Release 成功后跳转到新公有版详情页
-    LaunchedEffect(viewModel.releasedPublicId) {
+    DisposableEffect(viewModel.releasedPublicId) {
         viewModel.releasedPublicId?.let { publicId ->
             viewModel.releasedPublicId = null
             navController?.navigate(PublicLibraryShowScreenKey(id = publicId)) {
@@ -143,6 +143,7 @@ fun PublicLibraryShowScreen(
                 }
             }
         }
+        onDispose { }
     }
 
     RootViewWithHeaderAndCopyright(
@@ -606,9 +607,10 @@ fun PublicLibraryShowScreen(
             }
         }
         if (commands.isEmpty()) {
-            LaunchedEffect(Unit) {
+            DisposableEffect(Unit) {
                 Toast.makeText(context, "没有可复制的命令", Toast.LENGTH_SHORT).show()
                 showLineCopyDialog = false
+                onDispose { }
             }
         } else {
             LineCopyDialog(

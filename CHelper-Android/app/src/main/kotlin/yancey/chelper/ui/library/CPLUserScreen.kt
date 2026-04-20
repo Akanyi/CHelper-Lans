@@ -43,7 +43,6 @@ import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -100,10 +99,6 @@ fun CPLUserScreen(
         captchaAction = action
         captchaCallback = onSuccess
         showCaptchaDialog = true
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.refreshUserState()
     }
 
     val photoPickerLauncher = rememberLauncherForActivityResult(

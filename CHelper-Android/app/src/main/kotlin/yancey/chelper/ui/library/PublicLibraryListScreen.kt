@@ -84,9 +84,7 @@ fun PublicLibraryListScreen(
     val listState = rememberLazyListState()
 
     // 初始加载及偏好切换触发重新加载
-    LaunchedEffect(isPublicLibraryHomeRecommend) {
-        viewModel.refresh(isRecommend = isPublicLibraryHomeRecommend)
-    }
+    viewModel.ensureInitialized(isRecommend = isPublicLibraryHomeRecommend)
 
     // 监听滚动到底部，自动加载更多
     val shouldLoadMore = remember {

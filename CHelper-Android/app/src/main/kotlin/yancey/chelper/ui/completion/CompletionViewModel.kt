@@ -18,6 +18,7 @@
 
 package yancey.chelper.ui.completion
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.text.input.TextFieldState
@@ -26,7 +27,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextRange
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hjq.toast.Toaster
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +49,8 @@ import java.io.IOException
 import kotlin.math.max
 import kotlin.math.min
 
-class CompletionViewModel : ViewModel() {
+class CompletionViewModel(application: Application) : AndroidViewModel(application) {
+    private val appContext = application.applicationContext
     var isShowMenu by mutableStateOf(false)
     var command by mutableStateOf(TextFieldState())
     var structure by mutableStateOf<String?>(null)
@@ -60,14 +62,9 @@ class CompletionViewModel : ViewModel() {
     var core: CHelperCore? = null
     var lastInput: SelectedString = SelectedString("", 0, 0)
     var syntaxHighlightMaxLength = 20000
-    private var copyHistoryDataStore: CopyHistoryDataStore? = null
-    private var file: File? = null
+    private val copyHistoryDataStore = CopyHistoryDataStore(appContext)
+    private val file: File = appContext.filesDir.resolve("cache").resolve("lastInput.dat")
     private var isResumed = false
-
-    fun init(context: Context) {
-        copyHistoryDataStore = CopyHistoryDataStore(context)
-        file = context.filesDir.resolve("cache").resolve("lastInput.dat")
-    }
 
     fun resumeText() {
         if (isResumed) {
@@ -77,7 +74,7 @@ class CompletionViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    file?.readCachedCommand()
+                    file.readCachedCommand()
                 }?.let { command = it }
             } catch (_: IOException) {
 
@@ -226,7 +223,7 @@ class CompletionViewModel : ViewModel() {
 
     fun onCopy(content: String) {
         viewModelScope.launch {
-            copyHistoryDataStore?.add(content)
+            copyHistoryDataStore.add(content)
         }
     }
 
@@ -234,12 +231,10 @@ class CompletionViewModel : ViewModel() {
         super.onCleared()
         core?.close()
         // 保存上次的输入内容
-        if (file != null) {
-            try {
-                file?.writeCachedCommand(command)
-            } catch (_: IOException) {
+        try {
+            file.writeCachedCommand(command)
+        } catch (_: IOException) {
 
-            }
         }
     }
     private fun File.readCachedCommand(): TextFieldState? {

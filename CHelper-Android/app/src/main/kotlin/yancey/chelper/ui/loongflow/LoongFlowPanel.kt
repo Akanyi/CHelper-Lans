@@ -24,7 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,11 +62,12 @@ fun LoongFlowPanel(
     val context = LocalContext.current
 
     // Toast 消息反馈
-    LaunchedEffect(viewModel.toastMessage) {
+    DisposableEffect(viewModel.toastMessage) {
         viewModel.toastMessage?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             viewModel.toastMessage = null
         }
+        onDispose { }
     }
 
     // 用 Box 包一层来放 resize 手柄，它需要叠在内容之上
