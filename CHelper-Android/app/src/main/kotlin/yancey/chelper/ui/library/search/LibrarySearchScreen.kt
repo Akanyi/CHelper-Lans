@@ -37,8 +37,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -63,6 +63,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import kotlinx.coroutines.delay
 import yancey.chelper.R
 import yancey.chelper.data.LocalCommandLabDataStore
 import yancey.chelper.network.library.data.LibraryFunction
@@ -91,15 +92,15 @@ fun LibrarySearchScreen(
     val listState = rememberLazyListState()
 
     // 初始带关键字搜索
-    DisposableEffect(initialKeyword) {
+    LaunchedEffect(initialKeyword) {
         viewModel.setInitialKeyword(initialKeyword)
         if (!initialKeyword.isNullOrBlank()) {
             viewModel.search(localLibraryFunctions)
         } else {
-            // 如果没带关键字，自动弹起键盘给输入框焦点
+            // 延迟一帧再请求焦点，避免输入框尚未附着时请求失败导致无光标
+            delay(16)
             focusRequester.requestFocus()
         }
-        onDispose { }
     }
 
     // 滑动加载更多公开库
@@ -136,7 +137,8 @@ fun LibrarySearchScreen(
                     hint = "搜索命令库或标签...",
                     horizontalPadding = 20.dp,
                     verticalPadding = 0.dp,
-                    clipCornerSize = 20.dp
+                    clipCornerSize = 20.dp,
+                    lineLimits = TextFieldLineLimits.SingleLine
                 )
                 Spacer(Modifier.width(10.dp))
                 // 使用文字代替不存在的搜索按钮
