@@ -21,6 +21,7 @@ package yancey.chelper.android.window
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.KeyEvent
@@ -32,7 +33,7 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -103,7 +104,6 @@ class FloatingWindowManager(
         floatingWindowScreenAlpha: Float,
         isFloatingWindowFontAlphaSync: Boolean,
     ) {
-        FloatingWindowService.start(application)
         val iconSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             floatingWindowIconSize.toFloat(),
@@ -111,12 +111,10 @@ class FloatingWindowManager(
         ).toInt()
         val iconView = ImageView(context)
         iconView.setImageResource(R.drawable.pack_icon)
-        iconView.setLayoutParams(
-            FrameLayout.LayoutParams(
-                iconSize,
-                iconSize,
-                Gravity.START or Gravity.TOP
-            )
+        iconView.layoutParams = FrameLayout.LayoutParams(
+            iconSize,
+            iconSize,
+            Gravity.START or Gravity.TOP
         )
         val mainView = object : FrameLayout(context) {
             override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
@@ -135,6 +133,9 @@ class FloatingWindowManager(
             isFocusableInTouchMode = true
         }
         val composeView = ComposeView(context).apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
+            }
             setContent {
                 val backgroundBitmap =
                     BackgroundStore.INSTANCE.backgroundBitmapFlow.collectAsState(initial = null)
@@ -145,14 +146,22 @@ class FloatingWindowManager(
                         remember { FloatWindowNavigationEventOwner(navigationEventDispatcher) }
                     val navController = rememberNavController()
                     val softwareKeyboardController = LocalSoftwareKeyboardController.current
-                    LaunchedEffect(navController) {
+                    DisposableEffect(navController, lifecycleOwner, softwareKeyboardController) {
                         this@FloatingWindowManager.navController = navController
                         navController.setLifecycleOwner(lifecycleOwner)
                         navController.setOnBackPressedDispatcher(floatBackPressedOwner!!.onBackPressedDispatcher)
-                        navController.addOnDestinationChangedListener { _, _, _ ->
+                        val listener = NavController.OnDestinationChangedListener { _, _, _ ->
+                            // 修复：输入框获取到焦点后切换页面，焦点仍停留在上一个页面的的输入框，导致无法获取返回键事件
                             mainView.clearFocus()
                             mainView.requestFocus()
                             softwareKeyboardController?.hide()
+                        }
+                        navController.addOnDestinationChangedListener(listener)
+                        onDispose {
+                            navController.removeOnDestinationChangedListener(listener)
+                            if (this@FloatingWindowManager.navController == navController) {
+                                this@FloatingWindowManager.navController = null
+                            }
                         }
                     }
                     CompositionLocalProvider(
@@ -228,6 +237,7 @@ class FloatingWindowManager(
             mainViewWindow!!.windowViewVisibility = View.INVISIBLE
             mainViewWindow!!.show()
             iconViewWindow!!.show()
+            FloatingWindowService.start(application)
         } else {
             stopFloatingWindow()
         }

@@ -42,7 +42,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -89,7 +89,7 @@ fun UserProfileScreen(
     val totalItemsNumber = layoutInfo.totalItemsCount
     val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
 
-    LaunchedEffect(lastVisibleItemIndex, totalItemsNumber) {
+    DisposableEffect(lastVisibleItemIndex, totalItemsNumber) {
         if (totalItemsNumber > 0 && lastVisibleItemIndex >= totalItemsNumber - 3) {
             if (selectedTab == 0 || viewModel.currentUserId != paramId) {
                 if (viewModel.hasMorePublic && !viewModel.isLoadingPublic) {
@@ -101,13 +101,12 @@ fun UserProfileScreen(
                 }
             }
         }
+        onDispose { }
     }
 
-    LaunchedEffect(paramId) {
-        viewModel.loadProfile(paramId)
-    }
+    viewModel.ensureProfileLoaded(paramId)
 
-    LaunchedEffect(viewModel.updateSuccessMessage, viewModel.updateErrorMessage) {
+    DisposableEffect(viewModel.updateSuccessMessage, viewModel.updateErrorMessage) {
         viewModel.updateSuccessMessage?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             viewModel.clearUpdateMessages()
@@ -116,6 +115,7 @@ fun UserProfileScreen(
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             viewModel.clearUpdateMessages()
         }
+        onDispose { }
     }
 
     RootViewWithHeaderAndCopyright(

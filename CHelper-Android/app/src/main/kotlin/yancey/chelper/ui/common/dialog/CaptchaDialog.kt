@@ -33,6 +33,7 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -102,10 +103,13 @@ private fun CaptchaDialogContent(
         remember { CaptchaJsInterface(handler, ::handleSuccess, ::handleFailure, onDismissRequest) }
 
     // 当 captchaUrl 和 webView 都就绪时加载页面
-    LaunchedEffect(captchaUrl, webView) {
-        val url = captchaUrl ?: return@LaunchedEffect
-        val wv = webView ?: return@LaunchedEffect
-        wv.loadUrl(url)
+    DisposableEffect(captchaUrl, webView) {
+        val url = captchaUrl
+        val wv = webView
+        if (url != null && wv != null) {
+            wv.loadUrl(url)
+        }
+        onDispose { }
     }
 
     // Token 请求 + 轮询（LaunchedEffect 会在 composable 离开时自动取消，不会抛异常到 catch 里）

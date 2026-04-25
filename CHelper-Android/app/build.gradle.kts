@@ -41,7 +41,16 @@ android {
         }
         debug {
             isMinifyEnabled = false
-            isShrinkResources = false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            resValue("string", "app_name", "CHelper调试版")
+        }
+        create("beta") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".beta"
+            versionNameSuffix = "-beta"
+            resValue("string", "app_name", "CHelper测试版")
+            matchingFallbacks += listOf("release")
         }
     }
 
@@ -56,6 +65,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        resValues = true
         viewBinding = true
     }
 
@@ -85,8 +95,13 @@ android {
                 enableV4Signing = true
             }
         }
-        buildTypes.all {
-            signingConfig = signingConfigs["sign"]
+        buildTypes {
+            getByName("release") {
+                signingConfig = signingConfigs["sign"]
+            }
+            getByName("beta") {
+                signingConfig = signingConfigs["sign"]
+            }
         }
     }
 }

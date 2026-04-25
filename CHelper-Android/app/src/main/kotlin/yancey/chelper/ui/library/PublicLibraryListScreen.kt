@@ -79,9 +79,13 @@ fun PublicLibraryListScreen(
     val settingsDataStore = remember(context) { yancey.chelper.data.SettingsDataStore(context) }
     val tagClickBehavior = settingsDataStore.tagClickBehavior()
         .collectAsState(initial = "search")
+    val isPublicLibraryHomeRecommend by settingsDataStore.isPublicLibraryHomeRecommend()
+        .collectAsState(initial = true)
     val listState = rememberLazyListState()
 
     // 初始加载及偏好切换触发重新加载
+    viewModel.ensureInitialized(isRecommend = isPublicLibraryHomeRecommend)
+
     LaunchedEffect(viewModel.isRecommendMode) {
         if (viewModel.currentLoadedMode != viewModel.isRecommendMode || viewModel.libraries.isEmpty()) {
             viewModel.currentLoadedMode = viewModel.isRecommendMode
@@ -127,7 +131,7 @@ fun PublicLibraryListScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (!isFloatingWindow) {
                     Icon(
-                        id = R.drawable.folder,
+                        id = R.drawable.ic_user,
                         modifier =
                             Modifier
                                 .clickable {

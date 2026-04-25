@@ -43,7 +43,6 @@ import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -94,10 +93,6 @@ fun CPLUserScreen(
         showCaptchaDialog = true
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.refreshUserState()
-    }
-
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
@@ -133,7 +128,7 @@ fun CPLUserScreen(
                     }
                 }
             } else if (viewModel.isGuest) {
-                GuestUserProfileView(viewModel)
+                GuestUserProfileView(viewModel, navController)
             } else {
                 LoginRegisterView(viewModel, onCaptchaRequest = { action, callback ->
                     showCaptcha(action, callback)
@@ -321,7 +316,10 @@ fun UserProfileView(
 }
 
 @Composable
-fun GuestUserProfileView(viewModel: CPLUserViewModel) {
+fun GuestUserProfileView(
+    viewModel: CPLUserViewModel,
+    navController: NavHostController
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -352,6 +350,35 @@ fun GuestUserProfileView(viewModel: CPLUserViewModel) {
             )
         )
         Spacer(Modifier.height(32.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(4.dp, RoundedCornerShape(16.dp))
+                .background(
+                    CHelperTheme.colors.backgroundComponentNoTranslate,
+                    RoundedCornerShape(16.dp)
+                )
+                .clickable { navController.navigate(yancey.chelper.ui.MessageScreenKey) }
+                .padding(16.dp),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Icon(id = R.drawable.ic_mail, modifier = Modifier.size(24.dp))
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = "站内信",
+                    style = TextStyle(
+                        color = CHelperTheme.colors.textMain,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+        }
+        Spacer(Modifier.height(20.dp))
         Button(
             text = "登录 / 注册",
             onClick = { viewModel.logout() },

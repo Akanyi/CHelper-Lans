@@ -42,10 +42,17 @@ class PublicLibraryListViewModel : ViewModel() {
     var totalPages by mutableIntStateOf(1)
     var hasMore by mutableStateOf(true)
     private var forceRefresh = false
+    private var initializedRecommendMode: Boolean? = null
     var isRecommendMode by mutableStateOf(false)
     var currentLoadedMode: Boolean? = null
 
     private var searchJob: Job? = null
+
+    fun ensureInitialized(isRecommend: Boolean) {
+        if (initializedRecommendMode == isRecommend) return
+        initializedRecommendMode = isRecommend
+        isRecommendMode = isRecommend
+    }
 
     fun loadFunctions(search: String? = null, resetPage: Boolean = true, isRecommend: Boolean = false) {
         if (isLoading) return

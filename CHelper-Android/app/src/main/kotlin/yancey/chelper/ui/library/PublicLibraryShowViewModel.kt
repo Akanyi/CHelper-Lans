@@ -47,8 +47,17 @@ class PublicLibraryShowViewModel : ViewModel() {
 
     /** 当前是否展示原始源码视图（false = 可视化 UI） */
     var showRawSource by mutableStateOf(false)
+    private var initializedTarget: Pair<Int, Boolean>? = null
+
+    fun ensureLoaded(id: Int, isPrivate: Boolean) {
+        val target = id to isPrivate
+        if (initializedTarget == target) return
+        initializedTarget = target
+        loadFunction(id, isPrivate)
+    }
 
     fun loadFunction(id: Int, isPrivate: Boolean) {
+        initializedTarget = id to isPrivate
         this.isPrivate = isPrivate
         viewModelScope.launch {
             isLoading = true

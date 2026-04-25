@@ -47,6 +47,15 @@ class CPLUploadViewModel : ViewModel() {
     var useV2 by mutableStateOf(false)
     var editId by mutableIntStateOf(-1)
     var editUuid by mutableStateOf("")
+    private var initializedCloudDraftKey: String? = null
+
+    fun ensureCloudDraftLoaded(json: String?, id: Int) {
+        if (json.isNullOrEmpty() || id <= 0) return
+        val key = "$id:${json.hashCode()}"
+        if (initializedCloudDraftKey == key) return
+        initializedCloudDraftKey = key
+        loadFromCloudJson(json, id)
+    }
 
     fun loadFromCloudJson(json: String?, id: Int) {
         if (json.isNullOrEmpty() || id <= 0) return

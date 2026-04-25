@@ -18,6 +18,7 @@
 
 package yancey.chelper.ui.completion
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.text.input.TextFieldState
@@ -26,7 +27,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextRange
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hjq.toast.Toaster
 import kotlinx.coroutines.Dispatchers
@@ -41,13 +42,15 @@ import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
+import java.io.EOFException
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import kotlin.math.max
 import kotlin.math.min
 
-class CompletionViewModel : ViewModel() {
+class CompletionViewModel(application: Application) : AndroidViewModel(application) {
+    private val appContext = application.applicationContext
     var isShowMenu by mutableStateOf(false)
     var command by mutableStateOf(TextFieldState())
     var structure by mutableStateOf<String?>(null)
@@ -59,14 +62,9 @@ class CompletionViewModel : ViewModel() {
     var core: CHelperCore? = null
     var lastInput: SelectedString = SelectedString("", 0, 0)
     var syntaxHighlightMaxLength = 20000
-    private var copyHistoryDataStore: CopyHistoryDataStore? = null
-    private var file: File? = null
+    private val copyHistoryDataStore = CopyHistoryDataStore(appContext)
+    private val file: File = appContext.filesDir.resolve("cache").resolve("lastInput.dat")
     private var isResumed = false
-
-    fun init(context: Context) {
-        copyHistoryDataStore = CopyHistoryDataStore(context)
-        file = context.filesDir.resolve("cache").resolve("lastInput.dat")
-    }
 
     fun resumeText() {
         if (isResumed) {
@@ -76,21 +74,7 @@ class CompletionViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    file?.let { file ->
-                        if (file.exists()) {
-                            DataInputStream(BufferedInputStream(file.inputStream())).use { dataInputStream ->
-                                return@withContext TextFieldState(
-                                    dataInputStream.readUTF(),
-                                    TextRange(
-                                        dataInputStream.readInt(),
-                                        dataInputStream.readInt()
-                                    )
-                                )
-                            }
-                        } else {
-                            return@withContext null
-                        }
-                    }
+                    file.readCachedCommand()
                 }?.let { command = it }
             } catch (_: IOException) {
 
@@ -239,7 +223,7 @@ class CompletionViewModel : ViewModel() {
 
     fun onCopy(content: String) {
         viewModelScope.launch {
-            copyHistoryDataStore?.add(content)
+            copyHistoryDataStore.add(content)
         }
     }
 
@@ -247,17 +231,47 @@ class CompletionViewModel : ViewModel() {
         super.onCleared()
         core?.close()
         // 保存上次的输入内容
-        if (file != null) {
-            file?.parentFile?.mkdirs()
-            try {
-                DataOutputStream(BufferedOutputStream(FileOutputStream(file))).use { dataOutputStream ->
-                    dataOutputStream.writeUTF(command.text.toString())
-                    dataOutputStream.writeInt(command.selection.start)
-                    dataOutputStream.writeInt(command.selection.end)
-                }
-            } catch (_: IOException) {
+        try {
+            file.writeCachedCommand(command)
+        } catch (_: IOException) {
 
+        }
+    }
+    private fun File.readCachedCommand(): TextFieldState? {
+        if (!exists()) {
+            return null
+        }
+        return try {
+            DataInputStream(BufferedInputStream(inputStream())).use { dataInputStream ->
+                val text = dataInputStream.readUTF()
+                val start = dataInputStream.readInt()
+                val end = dataInputStream.readInt()
+                TextFieldState(text, TextRange(start, end))
             }
+        } catch (_: EOFException) {
+            delete()
+            null
+        } catch (_: IOException) {
+            delete()
+            null
+        }
+    }
+
+    private fun File.writeCachedCommand(command: TextFieldState) {
+        parentFile?.mkdirs()
+        val tempFile = resolveSibling("$name.tmp")
+        DataOutputStream(BufferedOutputStream(FileOutputStream(tempFile))).use { dataOutputStream ->
+            dataOutputStream.writeUTF(command.text.toString())
+            dataOutputStream.writeInt(command.selection.start)
+            dataOutputStream.writeInt(command.selection.end)
+        }
+        if (exists() && !delete()) {
+            tempFile.delete()
+            throw IOException("Failed to replace cached command file: $absolutePath")
+        }
+        if (!tempFile.renameTo(this)) {
+            tempFile.delete()
+            throw IOException("Failed to move cached command file into place: $absolutePath")
         }
     }
 }

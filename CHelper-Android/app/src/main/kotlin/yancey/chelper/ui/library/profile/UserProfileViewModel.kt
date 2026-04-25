@@ -79,6 +79,7 @@ class UserProfileViewModel : ViewModel() {
 
     var updateSuccessMessage by mutableStateOf<String?>(null)
         private set
+    private var initializedProfileId: Int? = null
 
     var quotaUsed by mutableIntStateOf(0)
         private set
@@ -90,7 +91,14 @@ class UserProfileViewModel : ViewModel() {
         currentUserId = LoginUtil.currentUser?.id
     }
 
+    fun ensureProfileLoaded(id: Int) {
+        if (initializedProfileId == id) return
+        initializedProfileId = id
+        loadProfile(id)
+    }
+
     fun loadProfile(id: Int) {
+        initializedProfileId = id
         viewUserId = id
         if (isLoading) return
         isLoading = true
