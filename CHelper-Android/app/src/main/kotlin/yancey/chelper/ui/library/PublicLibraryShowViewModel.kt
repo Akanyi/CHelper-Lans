@@ -79,8 +79,9 @@ class PublicLibraryShowViewModel : ViewModel() {
     }
 
     /**
-     * 切换点赞状态。调 like API 后刷新本地计数。
-     * like 接口是 toggle 行为：已赞则取消、未赞则点赞。
+     * 切换点赞状态
+     * 调 like API 后刷新本地计数
+     * like 接口是 toggle 行为：已赞则取消、未赞则点赞
      */
     fun toggleLike(id: Int) {
         viewModelScope.launch {

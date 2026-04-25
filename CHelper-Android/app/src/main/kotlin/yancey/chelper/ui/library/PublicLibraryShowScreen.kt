@@ -204,7 +204,7 @@ fun PublicLibraryShowScreen(
                             .padding(vertical = 10.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        // ━━━ 元信息卡片 ━━━
+                        // 元信息卡片
                         @OptIn(ExperimentalLayoutApi::class)
                         Column(
                             modifier = Modifier
@@ -399,7 +399,7 @@ fun PublicLibraryShowScreen(
 
                         Spacer(Modifier.height(10.dp))
 
-                        // ━━━ 视图切换指示条 ━━━
+                        // 视图切换指示条
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -432,7 +432,7 @@ fun PublicLibraryShowScreen(
 
                         Spacer(Modifier.height(4.dp))
 
-                        // ━━━ 内容区：可视化 / 原始源码 ━━━
+                        // 内容区：可视化 / 原始源码
                         if (viewModel.showRawSource) {
                             // 原始源码视图
                             Box(
@@ -472,8 +472,8 @@ fun PublicLibraryShowScreen(
         }
     }
 
-    // 所有 dialog 必须在 RootView 之后声明，因为上游 CustomDialog 是纯 Box 覆盖层而非真 popup，
-    // Compose 中后声明的节点 z-order 更高，放前面会被 RootView 压住导致点击穿透不到 dialog。
+    // 所有dialog必须在RootView后声明，因为CustomDialog是纯Box覆盖层而非真popup
+    // Compose中后声明的节点z-order更高，放前面会被RootView压住导致点击穿透不到dialog
 
     // 主菜单对话框
     if (showMainMenu) {
@@ -620,8 +620,8 @@ fun PublicLibraryShowScreen(
 }
 
 /**
- * 逐行复制对话框：逐条展示命令并自动复制到剪贴板。
- * 用户点击"下一条"前进并复制下一条，点击"完成"关闭。
+ * 逐行复制对话框：逐条展示命令并自动复制到剪贴板
+ * 用户点击下一条前进并复制下一条，点击完成关闭
  */
 @Composable
 private fun LineCopyDialog(

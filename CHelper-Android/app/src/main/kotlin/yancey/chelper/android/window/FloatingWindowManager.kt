@@ -72,7 +72,7 @@ class FloatWindowNavigationEventOwner(override val navigationEventDispatcher: Na
 class FloatingWindowManager(
     private val application: Application,
 ) {
-    /** 游龙独立悬浮窗管理器——通过 Application 级单例获取 */
+    /** 游龙独立悬浮窗管理器 */
     val loongFlowManager: LoongFlowWindowManager get() = LoongFlowWindowManager.INSTANCE
 
     private var mainViewWindow: EasyWindow<*>? = null
@@ -150,7 +150,6 @@ class FloatingWindowManager(
                         navController.setLifecycleOwner(lifecycleOwner)
                         navController.setOnBackPressedDispatcher(floatBackPressedOwner!!.onBackPressedDispatcher)
                         navController.addOnDestinationChangedListener { _, _, _ ->
-                            // 修复：输入框获取到焦点后切换页面，焦点仍停留在上一个页面的的输入框，导致无法获取返回键事件
                             mainView.clearFocus()
                             mainView.requestFocus()
                             softwareKeyboardController?.hide()
@@ -211,7 +210,7 @@ class FloatingWindowManager(
             }
         }
         floatBackPressedOwner = FloatWindowBackPressedOwner(composeLifecycleOwner!!.lifecycle)
-        mainView.requestFocus()// 修复：不获取到焦点无法获取返回键事件
+        mainView.requestFocus()
         iconView.setOnClickListener {
             mainViewWindow?.apply {
                 if (windowViewVisibility == View.VISIBLE) {
@@ -220,7 +219,7 @@ class FloatingWindowManager(
                     windowViewVisibility = View.INVISIBLE
                 } else {
                     composeLifecycleOwner?.onResume()
-                    mainView.requestFocus()// 修复：不获取到焦点无法获取返回键事件
+                    mainView.requestFocus()
                     windowViewVisibility = View.VISIBLE
                 }
             }

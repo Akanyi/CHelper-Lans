@@ -119,11 +119,18 @@ class CPLUserViewModel : ViewModel() {
     private fun migrateGuestData() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                // TODO: Implement migration logic using GuestAuthUtil signature generation
-                // For now we just skip or implement if needed
                 val fingerprint = GuestAuthUtil.getFingerprint() ?: return@launch
-                // val authCode = GuestAuthUtil.generateAuthCode(fingerprint) // Need public access to this or new method
-                // ServiceManager.COMMAND_LAB_USER_SERVICE.guestMigrate(...)
+                val authCode = GuestAuthUtil.generateAuthCode(fingerprint) ?: return@launch
+                
+                val request = yancey.chelper.network.library.service.CommandLabUserService.GuestAuthRequest().apply {
+                    this.fingerprint = fingerprint
+                    this.authCode = authCode
+                }
+                
+                val response = ServiceManager.COMMAND_LAB_USER_SERVICE.guestMigrate(request)
+                if (response.isSuccess()) {
+                    GuestAuthUtil.clearGuestSession()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -255,7 +262,7 @@ class CPLUserViewModel : ViewModel() {
 
     fun logout() {
         LoginUtil.logout()
-        GuestAuthUtil.clearGuestSession() // Optional: clear guest session too? maybe revert to guest
+        GuestAuthUtil.clearGuestSession()
         refreshUserState()
     }
 

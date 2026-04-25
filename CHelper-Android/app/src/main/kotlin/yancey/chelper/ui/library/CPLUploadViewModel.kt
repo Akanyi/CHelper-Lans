@@ -1,3 +1,21 @@
+/**
+ * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
+ * Copyright (C) 2026  Akanyi
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package yancey.chelper.ui.library
 
 import androidx.compose.foundation.text.input.TextFieldState
@@ -37,7 +55,7 @@ class CPLUploadViewModel : ViewModel() {
             val lib = Json.decodeFromString<LibraryFunction>(json)
             this.editUuid = lib.uuid ?: ""
             loadFromLocal(lib)
-            // 简单处理 v2 开关状态回显：若 content 包含 @mcd_version=2
+            // v2 开关状态回显，若 content 包含 @mcd_version=2
             useV2 =
                 lib.content?.contains("@mcd_version=2") == true || lib.content?.contains("@mcd_version= 2") == true
         } catch (e: Exception) {
@@ -67,8 +85,6 @@ class CPLUploadViewModel : ViewModel() {
                     body = rawContent
                 }
                 
-                // 深度清理可能在 Fallback 中被误留、或本身就存在于正文中的旧版本元数据标签
-                // (注意：不能把 @a 这种 MC 原生目标选择器滤掉)
                 val cleanLines = body.lines().filter { line ->
                     val t = line.trim()
                     !(t.startsWith("@name=") || t.startsWith("@version=") || 

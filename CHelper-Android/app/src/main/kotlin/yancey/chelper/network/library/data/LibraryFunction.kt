@@ -34,14 +34,8 @@ import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonPrimitive
 
 /**
- * 表示作者信息的数据模型。
- *
- * API 中存在两种格式：
- * - 旧式格式：纯字符串 "作者名"
- * - 新式格式：JSON 对象 `{ "id": 123, "name": "作者名", "tier": 1 }`
- *
- * 此结构体统一承接两种格式，实现对旧版 MCD 数据的向后兼容。
- *
+ * 表示作者信息的数据模型
+ * 
  * @property id 作者的用户 ID
  * @property name 作者的名称
  * @property tier 作者的等级或段位
@@ -55,7 +49,7 @@ data class AuthorInfo(
 )
 
 /**
- * 命令库函数的数据模型，表示单个命令库文件的详细信息。
+ * 命令库函数的数据模型，表示单个命令库文件的详细信息
  *
  * @property id 函数在数据库中的自增 ID
  * @property uuid 函数的全局唯一标识符
@@ -92,7 +86,7 @@ class LibraryFunction(
     @SerialName("chain_data") var chainData: kotlinx.serialization.json.JsonElement? = null
 ) {
     /**
-     * 获取作者的展示名称，主要用于向后兼容。
+     * 获取作者的展示名称，主要用于向后兼容
      *
      * @return 作者的名称，如果不存在则返回 null
      */
@@ -101,10 +95,10 @@ class LibraryFunction(
 }
 
 /**
- * 兼容新旧两种 author JSON 格式的序列化器。
- * - JsonObject { id, name, tier } → AuthorInfo(id, name, tier)
- * - 纯字符串 "xxx" → AuthorInfo(name = "xxx")
- * - null → null
+ * 兼容新旧两种 author JSON 格式的序列化器
+ * JsonObject { id, name, tier } → AuthorInfo(id, name, tier)
+ * 纯字符串 "xxx" → AuthorInfo(name = "xxx")
+ * null → null
  */
 object AuthorSerializer : KSerializer<AuthorInfo?> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("AuthorInfo") {

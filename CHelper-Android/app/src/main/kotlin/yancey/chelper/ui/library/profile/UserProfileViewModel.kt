@@ -1,3 +1,21 @@
+/**
+ * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
+ * Copyright (C) 2026  Akanyi
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package yancey.chelper.ui.library.profile
 
 import androidx.compose.runtime.getValue
@@ -62,6 +80,12 @@ class UserProfileViewModel : ViewModel() {
     var updateSuccessMessage by mutableStateOf<String?>(null)
         private set
 
+    var quotaUsed by mutableIntStateOf(0)
+        private set
+
+    var quotaLimit by mutableIntStateOf(0)
+        private set
+
     init {
         currentUserId = LoginUtil.currentUser?.id
     }
@@ -95,6 +119,7 @@ class UserProfileViewModel : ViewModel() {
                 privatePageNum = 1
                 hasMorePrivate = true
                 loadPrivateLibraries()
+                loadQuota()
             }
         }
     }
@@ -169,6 +194,20 @@ class UserProfileViewModel : ViewModel() {
                 updateErrorMessage = e.message ?: "网络错误"
             } finally {
                 isLoadingPrivate = false
+            }
+        }
+    }
+
+    private fun loadQuota() {
+        viewModelScope.launch {
+            try {
+                val res = ServiceManager.COMMAND_LAB_USER_SERVICE.getQuota()
+                if (res.status == 0 && res.data != null) {
+                    quotaUsed = res.data.used ?: 0
+                    quotaLimit = res.data.limit ?: 0
+                }
+            } catch (e: Exception) {
+                // Ignore
             }
         }
     }

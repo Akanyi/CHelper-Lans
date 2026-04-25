@@ -2,9 +2,8 @@
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
  * Copyright (C) 2026  Akanyi
  *
- * MCD (Minecraft Command Data) 可视化渲染器。
- * 参考 Web 端 renderMCDToUI() 的解析逻辑，用 Compose 还原命令方块链 UI。
- * 支持 v1 (纯指令列表) 和 v2 (带状态行/链分隔符的结构化格式) 两种格式。
+ * MCD (Minecraft Command Data) 可视化渲染器
+ * 支持 v1 (纯指令列表) 和 v2 (带状态行/链分隔符的结构化格式) 两种格式
  */
 
 package yancey.chelper.ui.library.mcd
@@ -46,9 +45,7 @@ import yancey.chelper.ui.common.CHelperTheme
 import yancey.chelper.ui.common.widget.Icon
 import yancey.chelper.ui.common.widget.Text
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 数据模型：解析后的 MCD AST
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 数据模型
 
 /** 元数据行，例如 @author = xxx */
 data class MCDMeta(val key: String, val value: String)
@@ -62,7 +59,7 @@ enum class BlockType(val label: String, val lightColor: Color, val darkColor: Co
     CHAT("手动键入", Color(0xFF607D8B), Color(0xFF455A64))
 }
 
-/** v2 格式的命令方块，携带方块类型和状态信息 */
+/** v2 格式的命令方块 */
 data class MCDBlock(
     val type: BlockType = BlockType.CHAIN,
     val conditional: Boolean = false,
@@ -93,9 +90,7 @@ data class ParsedMCD(
     val isV2: Boolean = false
 )
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // 解析器
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD {
     if (content.isNullOrBlank()) return ParsedMCD()
@@ -106,7 +101,7 @@ fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD 
     val chains = mutableListOf<MCDChain>()
     var currentChain: MCDChain? = null
 
-    // 先扫一遍确认是否是 v2
+    // 确认是否是 v2
     val isV2 = lines.any { it.trim().startsWith("@mcd_version=2") }
 
     var pendingBlockType = BlockType.CHAIN
@@ -123,7 +118,7 @@ fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD 
         // 杂项标记 ###Function### / ###End###
         if (tline.startsWith("###") && tline.endsWith("###")) continue
 
-        // 若当前等待的是 CHAT 状态，则无论下面是什么前缀，都当成指令文本吃掉
+        // 若当前等待的是 CHAT 状态，则无论下面是什么前缀，都当成指令文本
         if (isV2 && hasPendingState && pendingBlockType == BlockType.CHAT) {
             // 确保有容纳容器
             if (currentChain == null) {
@@ -178,10 +173,8 @@ fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD 
         }
         if (tline.startsWith("//")) continue
 
-        // v2 状态行 > 开头，正则精确匹配，支持 _ 占位符
-        // 格式: > [ICR_][?_][!_][tN|t_]
+        // v2 状态行 > 开头
         if (isV2 && tline.startsWith(">")) {
-            // 捕获组: (1)type (2)cond (3)rs (4)tick
             val stateRegex = Regex(
                 """^>\s*([ICRH_])?([?_])?([!_])?(?:t(\d+|_))?\s*$""",
                 RegexOption.IGNORE_CASE
@@ -214,7 +207,6 @@ fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD 
                         if (tick.isNotEmpty() && tick != "_") tick.toIntOrNull() ?: 0 else 0
                 }
             } else {
-                // 正则不匹配时的兜底：全缺省
                 pendingBlockType = BlockType.CHAIN
                 pendingConditional = false
                 pendingAlwaysActive = true
@@ -243,7 +235,6 @@ fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD 
                     command = tline
                 )
             } else {
-                // 省略 > 时默认按连锁处理
                 MCDBlock(command = tline)
             }
             currentChain.items.add(ChainItem.Block(block))
@@ -272,9 +263,7 @@ fun parseMCD(content: String?, ambiguousDefault: String = "comment"): ParsedMCD 
     )
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Compose 渲染
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 private fun copyToClipboard(context: Context, text: String) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -292,7 +281,7 @@ fun MCDContentView(
     val parsed = remember(content, ambiguousDefault) { parseMCD(content, ambiguousDefault) }
 
     Column(modifier = modifier) {
-        // 元数据区（可通过设置隐藏）
+        // 元数据区
         if (showMetadata && parsed.metaInfo.isNotEmpty()) {
             MetaSection(parsed.metaInfo)
             Spacer(Modifier.height(8.dp))
