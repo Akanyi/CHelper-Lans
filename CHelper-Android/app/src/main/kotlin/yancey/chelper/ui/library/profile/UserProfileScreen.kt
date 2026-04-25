@@ -217,24 +217,26 @@ fun UserProfileScreen(
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(6.dp))
-                                if (viewModel.quotaLimit > 0) {
-                                    val progress = (viewModel.quotaUsed.toFloat() / viewModel.quotaLimit.toFloat()).coerceIn(0f, 1f)
-                                    val progressColor = if (progress > 0.9f) Color(0xFFE53935) else CHelperTheme.colors.mainColor
+                                val progress = if (viewModel.quotaLimit > 0) {
+                                    (viewModel.quotaUsed.toFloat() / viewModel.quotaLimit.toFloat()).coerceIn(0f, 1f)
+                                } else {
+                                    0.1f // 无限制时默认显示 10%
+                                }
+                                val progressColor = if (progress > 0.9f && viewModel.quotaLimit > 0) Color(0xFFE53935) else CHelperTheme.colors.mainColor
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(6.dp)
+                                        .clip(RoundedCornerShape(3.dp))
+                                        .background(CHelperTheme.colors.textSecondary.copy(alpha = 0.2f))
+                                ) {
                                     Box(
                                         modifier = Modifier
-                                            .fillMaxWidth()
+                                            .fillMaxWidth(progress)
                                             .height(6.dp)
                                             .clip(RoundedCornerShape(3.dp))
-                                            .background(CHelperTheme.colors.textSecondary.copy(alpha = 0.2f))
-                                    ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxWidth(progress)
-                                                .height(6.dp)
-                                                .clip(RoundedCornerShape(3.dp))
-                                                .background(progressColor)
-                                        )
-                                    }
+                                            .background(progressColor)
+                                    )
                                 }
                             }
                         }
