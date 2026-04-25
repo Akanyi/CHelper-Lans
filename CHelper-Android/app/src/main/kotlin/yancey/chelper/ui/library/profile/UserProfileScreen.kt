@@ -188,16 +188,55 @@ fun UserProfileScreen(
                             )
                         }
                     }
-                    if (selectedTab == 1 && viewModel.quotaLimit > 0) {
+                    if (selectedTab == 1) {
                         item {
-                            Text(
-                                text = "云库容量：${viewModel.quotaUsed} / ${viewModel.quotaLimit}",
-                                style = TextStyle(
-                                    fontSize = 12.sp,
-                                    color = CHelperTheme.colors.textSecondary
-                                ),
-                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 20.dp, vertical = 8.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "私有云库容量",
+                                        style = TextStyle(
+                                            fontSize = 13.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = CHelperTheme.colors.textMain
+                                        )
+                                    )
+                                    Text(
+                                        text = if (viewModel.quotaLimit == -1) "${viewModel.quotaUsed} / 无限制" else "${viewModel.quotaUsed} / ${viewModel.quotaLimit}",
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            color = CHelperTheme.colors.textSecondary
+                                        )
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(6.dp))
+                                if (viewModel.quotaLimit > 0) {
+                                    val progress = (viewModel.quotaUsed.toFloat() / viewModel.quotaLimit.toFloat()).coerceIn(0f, 1f)
+                                    val progressColor = if (progress > 0.9f) Color(0xFFE53935) else CHelperTheme.colors.mainColor
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(6.dp)
+                                            .clip(RoundedCornerShape(3.dp))
+                                            .background(CHelperTheme.colors.textSecondary.copy(alpha = 0.2f))
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth(progress)
+                                                .height(6.dp)
+                                                .clip(RoundedCornerShape(3.dp))
+                                                .background(progressColor)
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 } else {
