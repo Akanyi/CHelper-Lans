@@ -210,9 +210,10 @@ class UserProfileViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val res = ServiceManager.COMMAND_LAB_USER_SERVICE.getQuota()
-                if (res.status == 0 && res.data != null) {
-                    quotaUsed = res.data.used ?: 0
-                    quotaLimit = res.data.limit ?: 0
+                val data = res.data
+                if (res.status == 0 && data != null) {
+                    quotaUsed = data.used ?: 0
+                    quotaLimit = data.limit ?: 0
                 }
             } catch (e: Exception) {
                 // Ignore

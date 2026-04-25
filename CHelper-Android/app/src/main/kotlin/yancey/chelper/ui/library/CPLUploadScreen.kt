@@ -360,28 +360,8 @@ fun CPLUploadScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
         }
+        } // End of RootView
     } // End of else block
-
-    // 根级弹窗层（最后渲染，保证在最顶层）
-    if (showCaptchaDialog) {
-        CaptchaDialog(
-            action = "publish",
-            onDismissRequest = { showCaptchaDialog = false },
-            onSuccess = { code -> captchaCallback(code) }
-        )
-    }
-
-    if (showLowCodeHelper) {
-        LowCodeV2HelperDialog(
-            rawContent = viewModel.commands.text.toString(),
-            onDismiss = { showLowCodeHelper = false },
-            onApply = { newContent ->
-                viewModel.commands.setTextAndPlaceCursorAtEnd(newContent)
-                showLowCodeHelper = false
-                com.hjq.toast.Toaster.show("已应用标记！")
-            }
-        )
-    }
 
     // 根级弹窗层（最后渲染，保证在最顶层）
     if (showCaptchaDialog) {
