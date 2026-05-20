@@ -435,4 +435,26 @@ interface CommandLabUserService {
     suspend fun deleteMessage(
         @Path("id") id: Int
     ): BaseResult<kotlinx.serialization.json.JsonElement?>
+
+    // Report
+
+    /**
+     * 提交举报。
+     *
+     * @property targetType 被举报对象类型：library / user / comment
+     * @property targetId 被举报对象的标识。命令库使用 uuid，用户用数字 id 转字符串
+     * @property reason 举报理由（必填，由前端收集）
+     */
+    @Serializable
+    class ReportRequest(
+        @SerialName("target_type") var targetType: String? = null,
+        @SerialName("target_id") var targetId: String? = null,
+        var reason: String? = null
+    )
+
+    /**
+     * 提交举报。后端去重：同一用户对同一目标 pending 状态下不重复入库。
+     */
+    @POST("report")
+    suspend fun submitReport(@Body request: ReportRequest): BaseResult<kotlinx.serialization.json.JsonElement?>
 }

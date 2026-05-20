@@ -21,9 +21,9 @@ package yancey.chelper.network.library.data
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
@@ -83,7 +83,22 @@ class LibraryFunction(
     @SerialName("has_public_version") var hasPublicVersion: Boolean? = null,
     @SerialName("is_publish") var isPublish: Boolean? = null,
     @SerialName("is_owner") var isOwner: Boolean? = null,
-    @SerialName("chain_data") var chainData: kotlinx.serialization.json.JsonElement? = null
+    @SerialName("chain_data") var chainData: kotlinx.serialization.json.JsonElement? = null,
+    @SerialName("auto_sync") var autoSync: Boolean? = false,
+    /**
+     * 后端下发的"私有库相对公开版本是否未同步"标记。
+     * - 仅在私有库列表/详情接口里出现，公开库不带。
+     * - 后端为权威：私有库被 update 置 true；release/sync 通过后置 false。
+     */
+    @SerialName("has_unsynced_changes") var hasUnsyncedChanges: Boolean? = null,
+    /**
+     * 纯本地字段：本地草稿相对云端私有版本是否存在未同步的改动。
+     * - 仅在"本地库"场景有意义（即已上传过云端、拿到 uuid 的本地副本）。
+     * - 本地编辑保存时置 true；上传/同步到云端成功后置 false。
+     * - 后端 JSON 不会返回这个字段，反序列化默认 false，不会影响远端数据。
+     * - 用一个不会和后端冲突的 snake_case 名字，避免未来撞键。
+     */
+    @SerialName("local_unsynced") var localUnsynced: Boolean = false
 ) {
     /**
      * 获取作者的展示名称，主要用于向后兼容
@@ -96,17 +111,16 @@ class LibraryFunction(
 
 /**
  * 兼容新旧两种 author JSON 格式的序列化器
- * JsonObject { id, name, tier } → AuthorInfo(id, name, tier)
+ * JsonObject { id, name, tier, user_title } → AuthorInfo(id, name, tier, userTitle)
  * 纯字符串 "xxx" → AuthorInfo(name = "xxx")
  * null → null
+ *
+ * 序列化阶段始终按对象写出，避免 #36 那种把 AuthorInfo 退化成 name 字符串
+ * 导致 round-trip 丢字段、上传/编辑流程数据残缺的情况。
  */
 object AuthorSerializer : KSerializer<AuthorInfo?> {
-    override val descriptor: SerialDescriptor = buildClassSerialDescriptor("AuthorInfo") {
-        element<Int?>("id")
-        element<String?>("name")
-        element<Int?>("tier")
-        element<String?>("user_title")
-    }
+    private val delegate = AuthorInfo.serializer().nullable
+    override val descriptor: SerialDescriptor = delegate.descriptor
 
     override fun deserialize(decoder: Decoder): AuthorInfo? {
         require(decoder is JsonDecoder) { "This serializer can only be used with JSON" }
@@ -128,9 +142,7 @@ object AuthorSerializer : KSerializer<AuthorInfo?> {
     }
 
     override fun serialize(encoder: Encoder, value: AuthorInfo?) {
-        if (value != null) {
-            encoder.encodeString(value.name ?: "")
-        }
+        delegate.serialize(encoder, value)
     }
 }
 
