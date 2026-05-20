@@ -18,6 +18,7 @@
 
 package yancey.chelper.ui.library
 
+import android.util.Log
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.getValue
@@ -31,9 +32,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import yancey.chelper.android.util.MonitorUtil
 import yancey.chelper.network.ServiceManager
 import yancey.chelper.network.library.data.LibraryFunction
 import yancey.chelper.network.library.service.CommandLabUserService
+import yancey.chelper.network.library.util.CloudLibraryCache
 
 class CPLUploadViewModel : ViewModel() {
 
@@ -68,7 +71,10 @@ class CPLUploadViewModel : ViewModel() {
             useV2 =
                 lib.content?.contains("@mcd_version=2") == true || lib.content?.contains("@mcd_version= 2") == true
         } catch (e: Exception) {
-            e.printStackTrace()
+            // 云端草稿格式异常时之前完全静默——用户点编辑没反应还以为没生效。
+            // 这里至少 logcat 留底 + 远端上报，便于反查
+            Log.e("CPLUploadViewModel", "解析云端草稿失败", e)
+            MonitorUtil.generateCustomLog(e, "CloudDraftParseError")
         }
     }
 
@@ -83,14 +89,22 @@ class CPLUploadViewModel : ViewModel() {
                 // 剔除已存在的元数据头，只保留命令体
                 val rawContent = library.content ?: ""
                 var body = ""
-                val functionStartIdx = rawContent.indexOf("###Function###")
-                if (functionStartIdx != -1) {
-                    body = rawContent.substring(functionStartIdx + "###Function###".length).trimStart('\n', '\r')
-                    val functionEndIdx = body.indexOf("###End###")
-                    if (functionEndIdx != -1) {
-                        body = body.substring(0, functionEndIdx).trimEnd('\n', '\r')
+                try {
+                    val functionStartIdx = rawContent.indexOf("###Function###")
+                    if (functionStartIdx != -1) {
+                        body = rawContent.substring(functionStartIdx + "###Function###".length).trimStart('\n', '\r')
+                        val functionEndIdx = body.indexOf("###End###")
+                        if (functionEndIdx != -1) {
+                            body = body.substring(0, functionEndIdx).trimEnd('\n', '\r')
+                        }
+                    } else {
+                        body = rawContent
                     }
-                } else {
+                } catch (e: Exception) {
+                    // 元数据头剥离失败时回退用整段原始内容，仍然继续。
+                    // 不阻断流程，但要把异常上报，否则就是"看似正常但 body 没剥干净"
+                    Log.w("CPLUploadViewModel", "元数据头剥离失败，回退原始内容", e)
+                    MonitorUtil.generateCustomLog(e, "MCDStripHeaderError")
                     body = rawContent
                 }
                 
@@ -102,7 +116,9 @@ class CPLUploadViewModel : ViewModel() {
                 }
                 commands.setTextAndPlaceCursorAtEnd(cleanLines.joinToString("\n").trim())
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("CPLUploadViewModel", "加载本地内容失败", e)
+                MonitorUtil.generateCustomLog(e, "LoadLocalLibraryError")
+                Toaster.show("加载内容失败: ${e.message}")
             }
         }
     }
@@ -162,6 +178,9 @@ class CPLUploadViewModel : ViewModel() {
                     withContext(Dispatchers.Main) {
                         isLoading = false
                         if (result.isSuccess()) {
+                            // 云端库内容变了：把"我的云端库"缓存清掉，
+                            // 用户返回 LocalLibraryListScreen 时会重新拉一次，看到刚改完的数据
+                            CloudLibraryCache.invalidateLibraries()
                             Toaster.show("更新成功")
                             onSuccess()
                         } else {
@@ -178,6 +197,8 @@ class CPLUploadViewModel : ViewModel() {
                     withContext(Dispatchers.Main) {
                         isLoading = false
                         if (result.isSuccess()) {
+                            // 同上：新建一条云端库也属于列表变更
+                            CloudLibraryCache.invalidateLibraries()
                             Toaster.show("上传成功")
                             onSuccess()
                         } else {
@@ -187,8 +208,9 @@ class CPLUploadViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
+                    Log.e("CPLUploadViewModel", "上传命令库失败", e)
+                    MonitorUtil.generateCustomLog(e, "UploadLibraryError")
                     Toaster.show("网络错误: ${e.message}")
-                    e.printStackTrace()
                 }
             } finally {
                 withContext(Dispatchers.Main) {

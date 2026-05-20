@@ -66,6 +66,7 @@ import yancey.chelper.ui.common.dialog.CaptchaDialog
 import yancey.chelper.ui.common.dialog.CustomDialog
 import yancey.chelper.ui.common.dialog.CustomDialogProperties
 import yancey.chelper.ui.common.dialog.DialogContainer
+import yancey.chelper.ui.common.dialog.IsConfirmDialog
 import yancey.chelper.ui.common.layout.RootViewWithHeaderAndCopyright
 import yancey.chelper.ui.common.widget.Button
 import yancey.chelper.ui.common.widget.Icon
@@ -96,6 +97,7 @@ fun CPLUploadScreen(
     var showCaptchaDialog by remember { mutableStateOf(false) }
     var showPreviewScreen by remember { mutableStateOf(false) }
     var showLowCodeHelper by remember { mutableStateOf(false) }
+    var showV2DowngradeConfirm by remember { mutableStateOf(false) }
     var captchaCallback by remember { mutableStateOf<(String) -> Unit>({}) }
     var validationResult by remember { mutableStateOf<MCDValidationResult?>(null) }
 
@@ -134,7 +136,12 @@ fun CPLUploadScreen(
         )
     } else {
         // 编辑界面
-        RootViewWithHeaderAndCopyright(title = stringResource(R.string.upload_title)) {
+        // 标题分两种语义：editId>0 → 编辑云端命令库（更新已有云端记录）；
+        // editId<=0 → 上传一条新的指令库到云端。两者背后都是云端写入，但用词
+        // 必须能让用户区分"我是在改云端旧的"和"我是在新增云端的"，
+        // 也跟左侧的 LocalLibraryEditScreen（本地命令库）做出明确区隔。
+        val titleRes = if (editLibraryId > 0) R.string.upload_title_edit_cloud else R.string.upload_title
+        RootViewWithHeaderAndCopyright(title = stringResource(titleRes)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -332,7 +339,14 @@ fun CPLUploadScreen(
                         Spacer(Modifier.width(8.dp))
                         Switch(
                             checked = viewModel.useV2,
-                            onCheckedChange = { viewModel.useV2 = it }
+                            onCheckedChange = { newValue ->
+                                if (!newValue && viewModel.useV2) {
+                                    // 从 v2 切到 v1：弹确认框
+                                    showV2DowngradeConfirm = true
+                                } else {
+                                    viewModel.useV2 = newValue
+                                }
+                            }
                         )
                     }
                 }
@@ -391,6 +405,19 @@ fun CPLUploadScreen(
             onSelect = { id ->
                 viewModel.loadFromLocal(libraries[id])
                 showImportDialog = false
+            }
+        )
+    }
+
+    if (showV2DowngradeConfirm) {
+        IsConfirmDialog(
+            onDismissRequest = { showV2DowngradeConfirm = false },
+            title = "切换到 V1 语法",
+            content = "V1 语法的渲染效果远低于 V2，不支持命令链可视化和状态标记。确定要降级吗？",
+            confirmText = "确定降级",
+            onConfirm = {
+                viewModel.useV2 = false
+                showV2DowngradeConfirm = false
             }
         )
     }
