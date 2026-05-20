@@ -42,22 +42,81 @@ class PublicLibraryListViewModel : ViewModel() {
     var totalPages by mutableIntStateOf(1)
     var hasMore by mutableStateOf(true)
     private var forceRefresh = false
-    private var initializedRecommendMode: Boolean? = null
     var isRecommendMode by mutableStateOf(false)
     var currentLoadedMode: Boolean? = null
 
+    // 缓存两种模式下的数据状态
+    private val recommendCache = mutableListOf<LibraryFunction>()
+    private val latestCache = mutableListOf<LibraryFunction>()
+    private var recommendCurrentPage = 1
+    private var latestCurrentPage = 1
+    private var recommendTotalPages = 1
+    private var latestTotalPages = 1
+    private var recommendHasMore = true
+    private var latestHasMore = true
+
     private var searchJob: Job? = null
 
-    fun ensureInitialized(isRecommend: Boolean) {
-        if (initializedRecommendMode == isRecommend) return
-        initializedRecommendMode = isRecommend
+    fun switchMode(isRecommend: Boolean) {
+        android.util.Log.d("CPL_Tab", "switchMode called: isRecommend=$isRecommend, currentLoadedMode=$currentLoadedMode, isRecommendMode=$isRecommendMode")
+        // 保存当前模式的状态
+        saveCurrentState()
+
         isRecommendMode = isRecommend
+        currentLoadedMode = isRecommend
+        val cache = if (isRecommend) recommendCache else latestCache
+        val page = if (isRecommend) recommendCurrentPage else latestCurrentPage
+        val total = if (isRecommend) recommendTotalPages else latestTotalPages
+        val more = if (isRecommend) recommendHasMore else latestHasMore
+
+        android.util.Log.d("CPL_Tab", "cache size: ${cache.size}, recommendCache: ${recommendCache.size}, latestCache: ${latestCache.size}")
+        if (cache.isNotEmpty()) {
+            // 使用缓存数据
+            android.util.Log.d("CPL_Tab", "Using cached data, libraries count: ${cache.size}")
+            libraries.clear()
+            libraries.addAll(cache)
+            currentPage = page
+            totalPages = total
+            hasMore = more
+        } else {
+            // 缓存为空，先取消正在进行的加载，再刷新
+            // 否则 isLoading=true 会拦住 refresh -> loadFunctions
+            android.util.Log.d("CPL_Tab", "Cache empty, cancelling current job and calling refresh")
+            searchJob?.cancel()
+            isLoading = false
+            refresh(isRecommend = isRecommend)
+        }
+    }
+
+    private fun saveCurrentState() {
+        if (currentLoadedMode == null) return
+        val isCurrentRecommend = currentLoadedMode == true
+        val cache = if (isCurrentRecommend) recommendCache else latestCache
+        cache.clear()
+        cache.addAll(libraries)
+        
+        if (isCurrentRecommend) {
+            recommendCurrentPage = currentPage
+            recommendTotalPages = totalPages
+            recommendHasMore = hasMore
+        } else {
+            latestCurrentPage = currentPage
+            latestTotalPages = totalPages
+            latestHasMore = hasMore
+        }
     }
 
     fun loadFunctions(search: String? = null, resetPage: Boolean = true, isRecommend: Boolean = false) {
-        if (isLoading) return
+        android.util.Log.d("CPL_Tab", "loadFunctions: search=$search, resetPage=$resetPage, isRecommend=$isRecommend, isLoading=$isLoading, libraries.size=${libraries.size}, forceRefresh=$forceRefresh")
+        if (isLoading) {
+            android.util.Log.d("CPL_Tab", "loadFunctions blocked: isLoading=true")
+            return
+        }
         // 如果已经有数据且不是用户手动刷新，跳过重复拉取
-        if (resetPage && libraries.isNotEmpty() && !forceRefresh) return
+        if (resetPage && libraries.isNotEmpty() && !forceRefresh) {
+            android.util.Log.d("CPL_Tab", "loadFunctions blocked: already has data and not force refresh")
+            return
+        }
         forceRefresh = false
 
         searchJob?.cancel()
@@ -118,6 +177,7 @@ class PublicLibraryListViewModel : ViewModel() {
     }
 
     fun refresh(isRecommend: Boolean = false) {
+        android.util.Log.d("CPL_Tab", "refresh called: isRecommend=$isRecommend")
         forceRefresh = true
         loadFunctions(null, resetPage = true, isRecommend = isRecommend)
     }
