@@ -20,6 +20,9 @@ package yancey.chelper.ui.library.profile
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -64,6 +67,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import kotlinx.coroutines.launch
 import yancey.chelper.R
 import yancey.chelper.network.library.data.LibraryFunction
 import yancey.chelper.network.library.data.formatUnixTime
@@ -81,6 +85,8 @@ fun UserProfileScreen(
 ) {
     val context = LocalContext.current
     var showEditDialog by remember { mutableStateOf(false) }
+    // 仅在浏览他人主页时启用举报入口；自己看自己的页面不显示
+    var showReportDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { androidx.compose.runtime.mutableIntStateOf(0) }
     var actionDialogTarget by remember { mutableStateOf<Pair<Int, Boolean>?>(null) }
     val listState = rememberLazyListState()
@@ -128,6 +134,17 @@ fun UserProfileScreen(
                     modifier = Modifier
                         .size(24.dp)
                         .clickable { showEditDialog = true }
+                        .padding(2.dp),
+                    colorFilter = ColorFilter.tint(CHelperTheme.colors.textMain)
+                )
+            } else {
+                // 浏览别人 → 举报入口
+                Image(
+                    painter = painterResource(id = R.drawable.alert_triangle),
+                    contentDescription = "举报用户",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable { showReportDialog = true }
                         .padding(2.dp),
                     colorFilter = ColorFilter.tint(CHelperTheme.colors.textMain)
                 )
@@ -395,6 +412,26 @@ fun UserProfileScreen(
     }
 
     if (showEditDialog && viewModel.userProfile != null) {
+        val context = LocalContext.current
+        // 自己的主页才会渲染编辑入口（外层已判断），这里复用一个 photoPicker
+        // 让"编辑资料"对话框内嵌"从相册选择"按钮可用
+        val avatarPickerLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickVisualMedia(),
+            onResult = { uri ->
+                uri?.let {
+                    try {
+                        val cr = context.contentResolver
+                        cr.openInputStream(it)?.use { input ->
+                            val bytes = input.readBytes()
+                            val mimeType = cr.getType(it) ?: "image/jpeg"
+                            viewModel.uploadAvatar(bytes, mimeType)
+                        }
+                    } catch (e: Exception) {
+                        com.hjq.toast.Toaster.show("读取图片失败: ${e.message}")
+                    }
+                }
+            }
+        )
         EditProfileDialog(
             user = viewModel.userProfile!!,
             isUpdating = viewModel.isUpdating,
@@ -403,7 +440,16 @@ fun UserProfileScreen(
                 viewModel.updateProfile(nickname, avatar, homepage, signature) {
                     showEditDialog = false
                 }
-            }
+            },
+            onPickAvatarImage = {
+                if (!viewModel.isUploadingAvatar) {
+                    avatarPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }
+            },
+            isUploadingAvatar = viewModel.isUploadingAvatar,
+            currentAvatarUrl = viewModel.userProfile?.avatarUrl
         )
     }
 
@@ -418,6 +464,36 @@ fun UserProfileScreen(
             onConfirm = {
                 viewModel.deleteOrUnpublishLibrary(targetId, isPublic)
                 actionDialogTarget = null
+            }
+        )
+    }
+
+    if (showReportDialog && viewModel.userProfile != null) {
+        val target = viewModel.userProfile!!
+        val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
+        yancey.chelper.ui.common.dialog.ReportDialog(
+            onDismissRequest = { showReportDialog = false },
+            title = "举报用户",
+            targetDescription = target.nickname ?: "用户 #${target.id}",
+            onConfirm = { reason ->
+                val uid = target.id ?: return@ReportDialog
+                coroutineScope.launch {
+                    try {
+                        val request = yancey.chelper.network.library.service.CommandLabUserService
+                            .ReportRequest().apply {
+                                targetType = "user"
+                                targetId = uid.toString()
+                                this.reason = reason
+                            }
+                        val resp = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                            yancey.chelper.network.ServiceManager.COMMAND_LAB_USER_SERVICE
+                                .submitReport(request)
+                        }
+                        com.hjq.toast.Toaster.show(resp.message ?: if (resp.isSuccess()) "举报已提交" else "举报失败")
+                    } catch (e: Exception) {
+                        com.hjq.toast.Toaster.show("网络错误: ${e.message}")
+                    }
+                }
             }
         )
     }
