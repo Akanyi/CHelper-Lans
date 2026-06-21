@@ -85,7 +85,10 @@ data class MCDBlock(
 /** 链中的一个元素：可能是注释、v1 原始指令、或 v2 命令方块 */
 sealed class ChainItem {
     data class Comment(val text: String) : ChainItem()
-    data class RawCommand(val command: String) : ChainItem()
+    data class RawCommand(
+        val command: String,
+        var syntaxHighlightTokens: IntArray? = null
+    ) : ChainItem()
     data class Block(val block: MCDBlock) : ChainItem()
 }
 
@@ -281,14 +284,21 @@ fun parseMCD(
             chains = chains,
             isV2 = isV2
         )
-        if (isV2 && isEnableMcdHighlight && context != null && !cpackBranch.isNullOrEmpty()) {
+        if (isEnableMcdHighlight && context != null && !cpackBranch.isNullOrEmpty()) {
             try {
                 yancey.chelper.core.CHelperCore.fromAssets(context.assets, "cpack/$cpackBranch").use { core ->
                     chains.forEach { chain ->
                         chain.items.forEach { item ->
-                            if (item is ChainItem.Block) {
-                                core.onTextChanged(item.block.command, 0)
-                                item.block.syntaxHighlightTokens = core.syntaxToken
+                            when (item) {
+                                is ChainItem.Block -> {
+                                    core.onTextChanged(item.block.command, 0)
+                                    item.block.syntaxHighlightTokens = core.syntaxToken
+                                }
+                                is ChainItem.RawCommand -> {
+                                    core.onTextChanged(item.command, 0)
+                                    item.syntaxHighlightTokens = core.syntaxToken
+                                }
+                                else -> {}
                             }
                         }
                     }
@@ -394,7 +404,7 @@ fun MCDContentView(
             chain.items.forEach { item ->
                 when (item) {
                     is ChainItem.Comment -> CommentItem(item.text)
-                    is ChainItem.RawCommand -> RawCommandItem(item.command)
+                    is ChainItem.RawCommand -> RawCommandItem(item.command, item.syntaxHighlightTokens)
                     is ChainItem.Block -> BlockItem(item.block)
                 }
                 Spacer(Modifier.height(4.dp))
@@ -493,8 +503,12 @@ private fun ChainHeader(name: String) {
 }
 
 @Composable
-private fun RawCommandItem(command: String) {
+private fun RawCommandItem(command: String, tokens: IntArray?) {
     val context = LocalContext.current
+    val isDark = CHelperTheme.theme == CHelperTheme.Theme.Dark
+    val highlightedText = remember(command, tokens, isDark) {
+        highlightCommand(command, tokens, isDark)
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -504,7 +518,7 @@ private fun RawCommandItem(command: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = command,
+            text = highlightedText,
             modifier = Modifier
                 .weight(1f),
             style = TextStyle(
