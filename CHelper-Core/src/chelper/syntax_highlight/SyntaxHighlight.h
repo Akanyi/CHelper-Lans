@@ -18,8 +18,8 @@
 
 #pragma once
 
-#ifndef CHELPER_SYNTAXHIGHTLIGHT_H
-#define CHELPER_SYNTAXHIGHTLIGHT_H
+#ifndef CHELPER_SYNTAXHIGHLIGHT_H
+#define CHELPER_SYNTAXHIGHLIGHT_H
 
 #include <chelper/parser/ASTNode.h>
 #include <chelper/syntax_highlight/SyntaxResult.h>
@@ -30,4 +30,4 @@ namespace CHelper::SyntaxHighlight {
 
 }// namespace CHelper::SyntaxHighlight
 
-#endif//CHELPER_SYNTAXHIGHTLIGHT_H
+#endif//CHELPER_SYNTAXHIGHLIGHT_H
