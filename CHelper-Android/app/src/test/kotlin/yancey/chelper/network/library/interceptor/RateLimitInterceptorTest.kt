@@ -1,15 +1,28 @@
 package yancey.chelper.network.library.interceptor
 
+import okhttp3.Authenticator
+import okhttp3.Cache
 import okhttp3.Call
+import okhttp3.CertificatePinner
 import okhttp3.Connection
+import okhttp3.ConnectionPool
+import okhttp3.CookieJar
+import okhttp3.Dns
+import okhttp3.EventListener
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Request
+import java.net.ProxySelector
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.net.Proxy
 import java.util.concurrent.TimeUnit
+import javax.net.SocketFactory
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 /**
  * RateLimitInterceptor 用令牌桶节流到 abyssous.site 的请求。
@@ -46,6 +59,36 @@ class RateLimitInterceptorTest {
         override fun withReadTimeout(timeout: Int, unit: TimeUnit): Interceptor.Chain = this
         override fun writeTimeoutMillis(): Int = 0
         override fun withWriteTimeout(timeout: Int, unit: TimeUnit): Interceptor.Chain = this
+        override val followSslRedirects: Boolean get() = false
+        override val followRedirects: Boolean get() = false
+        override val dns: Dns get() = Dns.SYSTEM
+        override val socketFactory: SocketFactory get() = SocketFactory.getDefault()
+        override val retryOnConnectionFailure: Boolean get() = false
+        override val authenticator: Authenticator get() = Authenticator.NONE
+        override val cookieJar: CookieJar get() = CookieJar.NO_COOKIES
+        override val cache: Cache? get() = null
+        override val proxy: Proxy? get() = null
+        override val proxySelector: ProxySelector get() = ProxySelector.getDefault()
+        override val proxyAuthenticator: Authenticator get() = Authenticator.NONE
+        override val sslSocketFactoryOrNull: SSLSocketFactory? get() = null
+        override val x509TrustManagerOrNull: X509TrustManager? get() = null
+        override val hostnameVerifier: HostnameVerifier get() = throw UnsupportedOperationException()
+        override val certificatePinner: CertificatePinner get() = CertificatePinner.DEFAULT
+        override val connectionPool: ConnectionPool get() = throw UnsupportedOperationException()
+        override val eventListener: EventListener get() = EventListener.NONE
+        override fun withDns(dns: Dns): Interceptor.Chain = this
+        override fun withSocketFactory(socketFactory: SocketFactory): Interceptor.Chain = this
+        override fun withRetryOnConnectionFailure(retryOnConnectionFailure: Boolean): Interceptor.Chain = this
+        override fun withAuthenticator(authenticator: Authenticator): Interceptor.Chain = this
+        override fun withCookieJar(cookieJar: CookieJar): Interceptor.Chain = this
+        override fun withCache(cache: Cache?): Interceptor.Chain = this
+        override fun withProxy(proxy: Proxy?): Interceptor.Chain = this
+        override fun withProxySelector(proxySelector: ProxySelector): Interceptor.Chain = this
+        override fun withProxyAuthenticator(proxyAuthenticator: Authenticator): Interceptor.Chain = this
+        override fun withSslSocketFactory(sslSocketFactory: SSLSocketFactory?, x509TrustManager: X509TrustManager?): Interceptor.Chain = this
+        override fun withHostnameVerifier(hostnameVerifier: HostnameVerifier): Interceptor.Chain = this
+        override fun withCertificatePinner(certificatePinner: CertificatePinner): Interceptor.Chain = this
+        override fun withConnectionPool(connectionPool: ConnectionPool): Interceptor.Chain = this
     }
 
     private fun req(host: String): Request =

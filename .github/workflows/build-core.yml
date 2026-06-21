@@ -1,15 +1,15 @@
-name: cmake-windows
+name: build-core
 
 on:
   push:
     branches: [ "master", "dev" ]
     paths:
-      - '.github/workflows/cmake-windows.yml'
+      - '.github/workflows/build-core.yml'
       - 'CHelper-Core/**'
   pull_request:
     branches: [ "master", "dev" ]
     paths:
-      - '.github/workflows/cmake-windows.yml'
+      - '.github/workflows/build-core.yml'
       - 'CHelper-Core/**'
 
 jobs:
@@ -21,8 +21,14 @@ jobs:
 
       matrix:
         build_type: [ Release, Debug ]
-        c_compiler: [ cl ]
+        c_compiler: [ gcc, clang, cl ]
         include:
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
@@ -30,8 +36,6 @@ jobs:
     steps:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
-        with:
-          version: '6.11.0'
 
       - uses: actions/checkout@v7
         with:
@@ -56,14 +60,26 @@ jobs:
 
       - name: Run Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
-        run: .\${{ matrix.build_type }}\CHelperTest.exe
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            "${{ matrix.build_type }}/CHelperTest.exe"
+          else
+            ./CHelperTest
+          fi
 
       - name: Build Resource Generator
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target CHelperResourceGenerator
 
       - name: Run Resource Generator
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
-        run: .\${{ matrix.build_type }}\CHelperResourceGenerator.exe
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            "${{ matrix.build_type }}/CHelperResourceGenerator.exe"
+          else
+            ./CHelperResourceGenerator
+          fi
 
       - name: Build CHelperQt
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target CHelperQt
