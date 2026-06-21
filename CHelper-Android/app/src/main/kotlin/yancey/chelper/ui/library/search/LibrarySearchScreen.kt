@@ -22,8 +22,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,6 +64,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -74,8 +78,6 @@ import yancey.chelper.ui.LocalLibraryShowScreenKey
 import yancey.chelper.ui.PublicLibraryShowScreenKey
 import yancey.chelper.ui.common.CHelperTheme
 import yancey.chelper.ui.common.layout.RootViewWithHeaderAndCopyright
-import yancey.chelper.ui.common.widget.Divider
-import yancey.chelper.ui.common.widget.Icon
 import yancey.chelper.ui.common.widget.Text
 import yancey.chelper.ui.common.widget.TextField
 
@@ -200,7 +202,11 @@ fun LibrarySearchScreen(
                                         fontSize = 13.sp,
                                         fontWeight = FontWeight.Bold
                                     ),
-                                    modifier = Modifier.padding(bottom = 5.dp, start = 15.dp, end = 15.dp)
+                                    modifier = Modifier.padding(
+                                        bottom = 5.dp,
+                                        start = 15.dp,
+                                        end = 15.dp
+                                    )
                                 )
                             }
                             itemsIndexed(viewModel.localAndPrivateLibraries) { _, lib ->
@@ -216,7 +222,10 @@ fun LibrarySearchScreen(
                                                 )
                                             } else {
                                                 navController.navigate(
-                                                    PublicLibraryShowScreenKey(id = id, isPrivate = true)
+                                                    PublicLibraryShowScreenKey(
+                                                        id = id,
+                                                        isPrivate = true
+                                                    )
                                                 )
                                             }
                                         }
@@ -236,7 +245,11 @@ fun LibrarySearchScreen(
                                         fontSize = 13.sp,
                                         fontWeight = FontWeight.Bold
                                     ),
-                                    modifier = Modifier.padding(bottom = 5.dp, start = 15.dp, end = 15.dp)
+                                    modifier = Modifier.padding(
+                                        bottom = 5.dp,
+                                        start = 15.dp,
+                                        end = 15.dp
+                                    )
                                 )
                             }
 
@@ -247,7 +260,10 @@ fun LibrarySearchScreen(
                                     onClick = {
                                         library.id?.let { id ->
                                             navController.navigate(
-                                                PublicLibraryShowScreenKey(id = id, isPrivate = false)
+                                                PublicLibraryShowScreenKey(
+                                                    id = id,
+                                                    isPrivate = false
+                                                )
                                             )
                                         }
                                     }
@@ -277,7 +293,7 @@ fun LibrarySearchScreen(
     }
 }
 
-@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SearchLibraryItem(
     library: LibraryFunction,
@@ -301,7 +317,11 @@ private fun SearchLibraryItem(
             .clickable(onClick = onClick)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.weight(1f).padding(14.dp, 12.dp)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(14.dp, 12.dp)
+            ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = library.name ?: "未命名",
@@ -350,7 +370,7 @@ private fun SearchLibraryItem(
                             contentDescription = "Avatar",
                             modifier = Modifier
                                 .size(24.dp)
-                                .clip(androidx.compose.foundation.shape.CircleShape)
+                                .clip(CircleShape)
                                 .background(CHelperTheme.colors.backgroundComponent),
                             contentScale = ContentScale.Crop,
                             placeholder = painterResource(id = R.drawable.ic_user),
@@ -366,14 +386,14 @@ private fun SearchLibraryItem(
                         )
                         if ((author.tier ?: 0) >= 2) {
                             Spacer(Modifier.width(4.dp))
-                            androidx.compose.foundation.Image(
+                            Image(
                                 painter = painterResource(R.drawable.ic_verified_advanced),
                                 contentDescription = "Advanced",
                                 modifier = Modifier.size(12.dp)
                             )
                         } else if ((author.tier ?: 0) >= 1) {
                             Spacer(Modifier.width(4.dp))
-                            androidx.compose.foundation.Image(
+                            Image(
                                 painter = painterResource(R.drawable.ic_verified_normal),
                                 contentDescription = "Normal",
                                 modifier = Modifier.size(12.dp)
@@ -393,7 +413,7 @@ private fun SearchLibraryItem(
 
                     library.likeCount?.let { likes ->
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            androidx.compose.foundation.Image(
+                            Image(
                                 painter = painterResource(R.drawable.ic_heart),
                                 contentDescription = null,
                                 modifier = Modifier.size(12.dp),
@@ -410,12 +430,16 @@ private fun SearchLibraryItem(
                         }
                     }
                 }
-                
+
                 if (!library.tags.isNullOrEmpty()) {
                     Spacer(Modifier.height(8.dp))
-                    androidx.compose.foundation.layout.FlowRow(
-                        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(6.dp),
-                        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(6.dp)
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(
+                            6.dp
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(
+                            6.dp
+                        )
                     ) {
                         library.tags!!.take(3).forEach { tag ->
                             Box(
@@ -440,9 +464,12 @@ private fun SearchLibraryItem(
                     Spacer(Modifier.height(6.dp))
                     Text(
                         text = note.replace("\n", " "),
-                        style = TextStyle(color = CHelperTheme.colors.textSecondary, fontSize = 12.sp),
+                        style = TextStyle(
+                            color = CHelperTheme.colors.textSecondary,
+                            fontSize = 12.sp
+                        ),
                         maxLines = 1,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }

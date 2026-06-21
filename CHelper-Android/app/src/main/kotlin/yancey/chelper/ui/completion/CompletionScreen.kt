@@ -18,6 +18,7 @@
 
 package yancey.chelper.ui.completion
 
+import android.app.Application
 import android.content.ClipData
 import android.util.TypedValue
 import android.view.Gravity
@@ -71,6 +72,7 @@ import yancey.chelper.core.Theme
 import yancey.chelper.data.SettingsDataStore
 import yancey.chelper.ui.HistoryScreenKey
 import yancey.chelper.ui.LocalLibraryListScreenKey
+import yancey.chelper.ui.PublicLibraryListScreenKey
 import yancey.chelper.ui.common.CHelperTheme
 import yancey.chelper.ui.common.layout.RootView
 import yancey.chelper.ui.common.widget.Icon
@@ -535,7 +537,7 @@ fun CompletionScreen(
                         id = R.drawable.book,
                         description = "网络库",
                         onClick = {
-                            navController.navigate(yancey.chelper.ui.PublicLibraryListScreenKey)
+                            navController.navigate(PublicLibraryListScreenKey)
                         }
                     )
                     ToolbarItem(
@@ -669,7 +671,7 @@ fun CompletionScreen(
 @Preview
 @Composable
 fun CompletionScreenLightThemePreview() {
-    val application = LocalContext.current.applicationContext as android.app.Application
+    val application = LocalContext.current.applicationContext as Application
     val viewModel = remember {
         CompletionViewModel(application).apply {
             isShowMenu = true
@@ -686,7 +688,7 @@ fun CompletionScreenLightThemePreview() {
 @Preview
 @Composable
 fun CompletionScreenDarkThemePreview() {
-    val application = LocalContext.current.applicationContext as android.app.Application
+    val application = LocalContext.current.applicationContext as Application
     val viewModel = remember {
         CompletionViewModel(application).apply {
             isShowMenu = true

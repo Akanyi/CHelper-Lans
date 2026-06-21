@@ -213,7 +213,7 @@ fun parseMCD(
                         "H" -> BlockType.CHAT
                         else -> BlockType.CHAIN
                     }
-                    
+
                     if (pendingBlockType == BlockType.CHAT) {
                         pendingConditional = false
                         pendingAlwaysActive = true
