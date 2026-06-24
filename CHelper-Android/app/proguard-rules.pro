@@ -65,10 +65,14 @@
     public static final int *;
 }
 
-# ----- end -----
+# ----- kotlinx.serialization -----
 
-# Fix kotlinx.serialization ClassValue issues on older Android versions (API < 34)
-# Prevent R8 from merging ClassValueReferences into Platform_commonKt, which would cause class verification to fail universally.
+# kotlinx.serialization uses java.lang.ClassValue (API 34+) via ClassValueReferences
+# for caching serializer lookups. On minSdk < 34, R8 may merge ClassValueReferences
+# into Platform_commonKt, causing verification to fail universally. This keep rule
+# prevents such merging/inlining so the class loads inside the library's own
+# NoClassDefFoundError catch and falls back to ConcurrentHashMap.
 -keep class kotlinx.serialization.internal.ClassValueReferences { *; }
--dontwarn java.lang.ClassValue
+-dontwarn kotlinx.serialization.internal.ClassValueReferences
 
+# ----- end -----
