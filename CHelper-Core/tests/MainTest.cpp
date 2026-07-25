@@ -44,7 +44,8 @@ namespace CHelper::Test {
         try {
             for (const auto &command: commands) {
                 SPDLOG_INFO("lex command: {}", FORMAT_ARG(utf8::utf16to8(command)));
-                for (const auto &item: Lexer::lex(command).allTokens) {
+                const auto lexResult = Lexer::lex(command);
+                for (const auto &item: lexResult->allTokens) {
                     SPDLOG_INFO("[{}] {} {}", getTokenTypeStr(item.type), item.pos, FORMAT_ARG(utf8::utf16to8(item.content)));
                 }
             }
@@ -190,6 +191,8 @@ TEST(MainTest, LexCommand) {
                     uR"(camerashake add @a 10000000000000000000000000000000000000000000000000000 3402823466385288598117041834845169254401)",
                     uR"(setblock ~~~ candle_cake[lit=)",
                     uR"(give @s repeating_command_block)",
+                    uR"(list)",
+                    uR"(/list)"
             });
 }
 
@@ -227,5 +230,7 @@ TEST(MainTest, ParseCommand) {
                     uR"(camerashake add @a 10000000000000000000000000000000000000000000000000000 3402823466385288598117041834845169254401)",
                     uR"(setblock ~~~ candle_cake[lit=)",
                     uR"(give @s repeating_command_block)",
+                    uR"(list)",
+                    uR"(/list)"
             });
 }
