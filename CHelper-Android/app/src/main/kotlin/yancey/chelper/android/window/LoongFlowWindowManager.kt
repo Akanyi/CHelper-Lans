@@ -91,15 +91,21 @@ class LoongFlowWindowManager(
      * 以导入模式启动游龙面板。
      * 从 PublicLibraryShowScreen 菜单触发，携带当前查看的命令库数据
      */
-    fun showImport(context: Context, library: LibraryFunction) {
-        // 如果已经在显示，先关掉旧的
-        if (isShowing) dismiss()
+    fun showImport(context: Context, library: LibraryFunction): Boolean {
+        return runCatching {
+            // 如果已经在显示，先关掉旧的
+            if (isShowing) dismiss()
 
-        val vm = LoongFlowViewModel(application)
-        vm.initImport(library)
-        viewModel = vm
+            val vm = LoongFlowViewModel(application)
+            vm.initImport(library)
+            viewModel = vm
 
-        showPanel(context, LoongFlowMode.IMPORT, library)
+            showPanel(context, LoongFlowMode.IMPORT, library)
+            true
+        }.getOrElse {
+            dismiss()
+            false
+        }
     }
 
     /**
