@@ -4,6 +4,7 @@ import shutil
 import subprocess
 import sys
 
+from build_android import build_android_apk, get_gradlew
 from build_android_core import build_android_core, ensure_download_android_ndk
 from build_web_core import build_web_core, ensure_download_emsdk
 
@@ -40,11 +41,9 @@ if __name__ == "__main__":
         print("please download ninja")
         sys.exit(-1)
     if sys.platform == "win32":
-        gradlew = "gradlew.bat"
         pnpm = "pnpm.cmd"
         corepack = "corepack.cmd"
     else:
-        gradlew = "gradlew"
         pnpm = "pnpm"
         corepack = "corepack"
     if (
@@ -56,6 +55,17 @@ if __name__ == "__main__":
         != 0
     ):
         print("please download pnpm")
+        sys.exit(-1)
+    if (
+        subprocess.run(
+            [get_gradlew(), "--version"],
+            capture_output=True,
+            check=False,
+            cwd=os.path.abspath(os.path.join(".", "CHelper-Android")),
+        ).returncode
+        != 0
+    ):
+        print("please download JDK (required by gradle wrapper)")
         sys.exit(-1)
     toolchain_dir = os.path.join(os.getcwd(), "toolchain")
     os.makedirs(toolchain_dir, exist_ok=True)
@@ -161,33 +171,7 @@ if __name__ == "__main__":
 
     # build apk
     print("building apk...")
-    release_note = os.path.abspath(
-        os.path.join(
-            ".",
-            "CHelper-Android",
-            "app",
-            "src",
-            "main",
-            "assets",
-            "about",
-            "release_note.txt",
-        )
-    )
-    changelog = os.path.abspath(os.path.join(".", "CHANGELOG.md"))
-    original_cwd = os.getcwd()
-    with open(release_note, "rb") as file:
-        original_release_note = file.read()
-    try:
-        shutil.copyfile(changelog, release_note)
-        os.chdir("CHelper-Android")
-        subprocess.run(
-            [gradlew, "assembleRelease"],
-            check=True,
-        )
-    finally:
-        os.chdir(original_cwd)
-        with open(release_note, "wb") as file:
-            file.write(original_release_note)
+    build_android_apk()
 
     # build web and build doc
     subprocess.run([corepack, "up"], check=True)
