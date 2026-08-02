@@ -5,20 +5,21 @@ import sys
 
 
 def ensure_download_emsdk(toolchain_dir: str):
-    ndk_path = os.path.join(toolchain_dir, "emsdk")
-    current_dir = os.getcwd()
-    os.chdir(toolchain_dir)
-    if not os.path.exists(ndk_path):
+    emsdk_path = os.path.join(toolchain_dir, "emsdk")
+    if not os.path.exists(emsdk_path):
         subprocess.run(
-            ["git", "clone", "https://github.com/emscripten-core/emsdk"], check=True
+            ["git", "clone", "https://github.com/emscripten-core/emsdk"],
+            cwd=toolchain_dir,
+            check=True,
         )
-        os.chdir("./emsdk")
     else:
-        os.chdir("./emsdk")
-        subprocess.run(["git", "pull"], check=True)
-    subprocess.run(["python", "./emsdk.py", "install", "latest"], check=True)
-    subprocess.run(["python", "./emsdk.py", "activate", "latest"], check=True)
-    os.chdir(current_dir)
+        subprocess.run(["git", "pull"], cwd=emsdk_path, check=True)
+    subprocess.run(
+        ["python", "./emsdk.py", "install", "latest"], cwd=emsdk_path, check=True
+    )
+    subprocess.run(
+        ["python", "./emsdk.py", "activate", "latest"], cwd=emsdk_path, check=True
+    )
 
 
 def build_web_core(toolchain_dir: str):
