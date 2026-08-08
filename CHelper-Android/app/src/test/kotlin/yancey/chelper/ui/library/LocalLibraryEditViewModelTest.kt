@@ -1,13 +1,20 @@
 package yancey.chelper.ui.library
 
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import yancey.chelper.data.LocalLibraryData
 import yancey.chelper.data.LocalLibraryEditDraft
+import yancey.chelper.data.LocalLibrarySerializer
 import yancey.chelper.network.library.data.LibraryFunction
+import yancey.chelper.ui.library.mcd.ChainItem
+import yancey.chelper.ui.library.mcd.parseMCDStructure
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 class LocalLibraryEditViewModelTest {
     @Test
@@ -77,5 +84,90 @@ class LocalLibraryEditViewModelTest {
         }
 
         assertNull(viewModel.validationError())
+    }
+
+    @Test
+    fun `聊天文本可以使用元数据样式内容`() {
+        val viewModel = LocalLibraryEditViewModel().apply {
+            ensureEditingTarget(null, null, null)
+            name.setTextAndPlaceCursorAtEnd("聊天")
+            commands.setTextAndPlaceCursorAtEnd("> H\n@name=Steve")
+        }
+
+        assertNull(viewModel.validationError())
+    }
+
+    @Test
+    fun `V2 状态行必须绑定正文`() {
+        val dangling = LocalLibraryEditViewModel().apply {
+            ensureEditingTarget(null, null, null)
+            name.setTextAndPlaceCursorAtEnd("库")
+            commands.setTextAndPlaceCursorAtEnd("> I")
+        }
+        val overwritten = LocalLibraryEditViewModel().apply {
+            ensureEditingTarget(null, null, null)
+            name.setTextAndPlaceCursorAtEnd("库")
+            commands.setTextAndPlaceCursorAtEnd("> I\n> C\nsay hello")
+        }
+
+        assertTrue(dangling.validationError()!!.contains("没有对应"))
+        assertTrue(overwritten.validationError()!!.contains("第 1 行"))
+    }
+
+    @Test
+    fun `开启 V2 保存重载后开关和可视化结构保持 V2`() {
+        val editor = LocalLibraryEditViewModel().apply {
+            ensureEditingTarget(null, null, null)
+            name.setTextAndPlaceCursorAtEnd("V2 回归")
+            commands.setTextAndPlaceCursorAtEnd("> I\nsay hello")
+            useV2 = true
+        }
+
+        val saved = editor.buildLocalLibrary(existingLibrary = null, requestedLocalEntryId = "stable")
+        val persisted = ByteArrayOutputStream().also { output ->
+            runBlocking { LocalLibrarySerializer.writeTo(LocalLibraryData(listOf(saved)), output) }
+        }.toByteArray()
+        val reloaded = runBlocking {
+            LocalLibrarySerializer.readFrom(ByteArrayInputStream(persisted)).functions.single()
+        }
+        val reopened = LocalLibraryEditViewModel().apply {
+            ensureEditingTarget("stable", null, reloaded)
+        }
+        val rendered = parseMCDStructure(reloaded.toFullLocalMcd())
+
+        assertTrue(reloaded.localIsV2 == true)
+        assertTrue(reopened.useV2)
+        assertTrue(rendered.isV2)
+        assertTrue(rendered.chains.single().items.single() is ChainItem.Block)
+    }
+
+    @Test
+    fun `保存已有库只替换编辑字段并保留云端元数据`() {
+        val existing = LibraryFunction(
+            id = 7,
+            uuid = "cloud-uuid",
+            localEntryId = "stable",
+            name = "旧名称",
+            content = "say old",
+            localIsV2 = false,
+            likeCount = 12
+        )
+        val editor = LocalLibraryEditViewModel().apply {
+            ensureEditingTarget("stable", null, existing)
+            name.setTextAndPlaceCursorAtEnd("新名称")
+            commands.setTextAndPlaceCursorAtEnd("> C\nsay new")
+            useV2 = true
+        }
+
+        val saved = editor.buildLocalLibrary(existing, "stable")
+
+        assertEquals(7, saved.id)
+        assertEquals("cloud-uuid", saved.uuid)
+        assertEquals(12, saved.likeCount)
+        assertEquals("stable", saved.localEntryId)
+        assertEquals("新名称", saved.name)
+        assertEquals("> C\nsay new", saved.content)
+        assertTrue(saved.localIsV2 == true)
+        assertTrue(saved.localUnsynced)
     }
 }

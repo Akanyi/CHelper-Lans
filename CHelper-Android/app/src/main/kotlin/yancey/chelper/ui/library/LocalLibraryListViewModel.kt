@@ -232,12 +232,12 @@ class LocalLibraryListViewModel : ViewModel() {
                         // 之后用户在本地再编辑才会把 flag 变回 true，符合预期的同步语义
                         val assignedUuid = result.data?.uuid
                         if (localDataStore != null) {
-                            val updated = library.copy(
-                                uuid = assignedUuid ?: library.uuid,
-                                localUnsynced = false
-                            )
                             launch(Dispatchers.IO) {
-                                localDataStore.updateLocalLibraryFunction(localEntryId, updated)
+                                localDataStore.markLocalLibrarySynced(
+                                    localEntryId = localEntryId,
+                                    uuid = assignedUuid,
+                                    syncedLibrary = library
+                                )
                             }
                         }
                         // 云端列表变了，让缓存失效，loadCloudLibraries 才会真正去拉

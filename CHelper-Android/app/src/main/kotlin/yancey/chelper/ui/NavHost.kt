@@ -313,6 +313,7 @@ fun FloatingWindowNavHost(
     navController: NavHostController,
     shutdown: () -> Unit,
     hideView: () -> Unit,
+    isWindowVisible: Boolean,
 ) {
     NavHost(
         navController = navController,
@@ -330,7 +331,8 @@ fun FloatingWindowNavHost(
                 viewModel = viewModel(),
                 navController = navController,
                 shutdown = shutdown,
-                hideView = hideView
+                hideView = hideView,
+                isScreenVisible = isWindowVisible
             )
         }
         composable<HistoryScreenKey> {

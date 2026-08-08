@@ -130,7 +130,7 @@ fun NavHostController.openCommandLabDeepLink(target: CommandLabDeepLink) {
                     importToLocal = target.importToLocal
                 )
             ) {
-                // 外部深链始终收敛到 Home -> 目标页，重复触发不会继续堆叠详情页。
+                // 外部深链始终 Home -> 目标页。
                 popUpTo(graph.startDestinationId) { inclusive = false }
                 launchSingleTop = true
             }

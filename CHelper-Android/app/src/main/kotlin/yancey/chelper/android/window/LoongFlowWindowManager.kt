@@ -16,6 +16,8 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -72,6 +74,22 @@ class LoongFlowWindowManager(
     private var bubbleWindow: EasyWindow<*>? = null
     private var composeLifecycleOwner: ComposeLifecycleOwner? = null
     private var viewModel: LoongFlowViewModel? = null
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private var isDismissPending = false
+    private var isToggleSizePending = false
+    private var isExpandPending = false
+    private val dismissTask = Runnable {
+        isDismissPending = false
+        dismissImmediately()
+    }
+    private val toggleSizeTask = Runnable {
+        isToggleSizePending = false
+        toggleSizeImmediately()
+    }
+    private val expandTask = Runnable {
+        isExpandPending = false
+        if (!isDismissPending) expandImmediately()
+    }
     private var theme by mutableStateOf(CHelperTheme.Theme.Light)
     private var isEnableImportMiniIcon by mutableStateOf(true)
     private var importMiniRoot: LinearLayout? = null
@@ -93,8 +111,7 @@ class LoongFlowWindowManager(
      */
     fun showImport(context: Context, library: LibraryFunction): Boolean {
         return runCatching {
-            // 如果已经在显示，先关掉旧的
-            if (isShowing) dismiss()
+            dismissImmediately()
 
             val vm = LoongFlowViewModel(application)
             vm.initImport(library)
@@ -103,7 +120,7 @@ class LoongFlowWindowManager(
             showPanel(context, LoongFlowMode.IMPORT, library)
             true
         }.getOrElse {
-            dismiss()
+            dismissImmediately()
             false
         }
     }
@@ -113,7 +130,7 @@ class LoongFlowWindowManager(
      * 从 HomeScreen / 悬浮窗菜单触发，不依赖任何现有库数据
      */
     fun showExport(context: Context) {
-        if (isShowing) dismiss()
+        dismissImmediately()
 
         val vm = LoongFlowViewModel(application)
         vm.initExport()
@@ -139,30 +156,28 @@ class LoongFlowWindowManager(
      * 气泡 → 面板：从气泡展开回面板
      */
     fun expandFromBubble() {
-        val panel = panelWindow ?: run {
+        if (isDismissPending || isExpandPending) return
+        if (panelWindow == null) {
             dismiss()
             return
         }
-        panel.windowViewVisibility = View.VISIBLE
-        resumePanelLifecycle()
-        hideBubble()
+        if (bubbleWindow == null) return
+
+        isExpandPending = true
+        mainHandler.post(expandTask)
     }
 
     /**
      * 彻底关闭游龙所有窗口并释放资源
      */
     fun dismiss() {
-        setPanelInputActive(false, hideKeyboard = true)
-        hideBubble()
+        if (isDismissPending) return
+        if (!isShowing && viewModel == null && composeLifecycleOwner == null) return
 
-        panelWindow?.let { panel ->
-            setPanelInputActive(false, hideKeyboard = true)
-            destroyPanelLifecycle(panel)
-            panel.recycle()
-            panelWindow = null
-        }
-
-        viewModel = null
+        cancelPendingSizeAndExpandTasks()
+        isDismissPending = true
+        // EasyWindow 使用 removeViewImmediate，不能在当前 View / Compose 点击回调里同步回收自身。
+        mainHandler.post(dismissTask)
     }
 
     private var isCompactMode = false
@@ -173,21 +188,34 @@ class LoongFlowWindowManager(
      * 此处保存 ViewModel 状态，销毁旧窗口，按新参数重建新窗口
      */
     fun toggleSize() {
+        if (isDismissPending || isToggleSizePending || panelWindow == null) return
+
+        isToggleSizePending = true
+        // 重建会销毁当前 Compose 树，等点击事件分发完成后再执行。
+        mainHandler.post(toggleSizeTask)
+    }
+
+    private fun toggleSizeImmediately() {
         val vm = viewModel ?: return
+        val panel = panelWindow ?: return
+        val owner = composeLifecycleOwner
         val currentMode = vm.mode
         isCompactMode = !isCompactMode
 
         // 记录此时的位置，方便原地重建
-        val oldParams = panelWindow?.windowParams
-        val oldX = oldParams?.x ?: 0
-        val oldY = oldParams?.y ?: 0
+        val oldX = panel.windowParams.x
+        val oldY = panel.windowParams.y
 
         // 回收旧的 Panel，但不清空 viewModel
-        panelWindow?.let { panel ->
-            destroyPanelLifecycle(panel)
-            panel.recycle()
-            panelWindow = null
-        }
+        panelWindow = null
+        composeLifecycleOwner = null
+        isPanelInputActive = false
+        panel.contentView?.clearFocus()
+        hidePanelKeyboard(panel.contentView)
+        destroyPanelLifecycle(panel, owner)
+        panel.recycle()
+
+        if (viewModel !== vm || isDismissPending) return
 
         // 以新尺寸重新创建
         showPanel(application, currentMode, null)
@@ -196,6 +224,56 @@ class LoongFlowWindowManager(
         panelWindow?.windowParams?.x = oldX
         panelWindow?.windowParams?.y = oldY
         panelWindow?.update()
+    }
+
+    private fun expandImmediately() {
+        val panel = panelWindow ?: run {
+            dismissImmediately()
+            return
+        }
+        if (bubbleWindow == null) return
+
+        panel.windowViewVisibility = View.VISIBLE
+        resumePanelLifecycle()
+        hideBubbleImmediately()
+    }
+
+    private fun dismissImmediately() {
+        mainHandler.removeCallbacks(dismissTask)
+        cancelPendingSizeAndExpandTasks()
+        isDismissPending = false
+
+        val bubble = bubbleWindow
+        val panel = panelWindow
+        val owner = composeLifecycleOwner
+
+        // 先断开全局引用，销毁期间产生的补发回调就只能安全返回。
+        bubbleWindow = null
+        panelWindow = null
+        composeLifecycleOwner = null
+        viewModel = null
+        isPanelInputActive = false
+        clearImportMiniBubbleReferences()
+
+        bubble?.contentView?.apply {
+            setOnClickListener(null)
+            setOnLongClickListener(null)
+        }
+        bubble?.recycle()
+
+        panel?.let {
+            it.contentView?.clearFocus()
+            hidePanelKeyboard(it.contentView)
+            destroyPanelLifecycle(it, owner)
+            it.recycle()
+        }
+    }
+
+    private fun cancelPendingSizeAndExpandTasks() {
+        mainHandler.removeCallbacks(toggleSizeTask)
+        mainHandler.removeCallbacks(expandTask)
+        isToggleSizePending = false
+        isExpandPending = false
     }
 
     /**
@@ -252,7 +330,12 @@ class LoongFlowWindowManager(
                         setPanelInputActive(false, hideKeyboard = true)
                         return true
                     }
-                    dismiss()
+                    val backDispatcher = composeLifecycleOwner?.onBackPressedDispatcher
+                    if (backDispatcher?.hasEnabledCallbacks() == true) {
+                        backDispatcher.onBackPressed()
+                    } else {
+                        dismiss()
+                    }
                     return true
                 }
                 return super.dispatchKeyEvent(event)
@@ -419,11 +502,18 @@ class LoongFlowWindowManager(
         updateImportMiniBubbleContent()
     }
 
-    private fun hideBubble() {
-        bubbleWindow?.let {
-            it.recycle()
-            bubbleWindow = null
+    private fun hideBubbleImmediately() {
+        val bubble = bubbleWindow ?: return
+        bubbleWindow = null
+        clearImportMiniBubbleReferences()
+        bubble.contentView?.apply {
+            setOnClickListener(null)
+            setOnLongClickListener(null)
         }
+        bubble.recycle()
+    }
+
+    private fun clearImportMiniBubbleReferences() {
         importMiniRoot = null
         importMiniIconText = null
         importMiniTitleText = null
@@ -443,22 +533,25 @@ class LoongFlowWindowManager(
 
     private fun resumePanelLifecycle() {
         val owner = composeLifecycleOwner ?: return
-        if (!owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+        if (owner.lifecycle.currentState != Lifecycle.State.DESTROYED &&
+            !owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
+        ) {
             owner.onResume()
         }
     }
 
-    private fun destroyPanelLifecycle(panel: EasyWindow<*>) {
-        val owner = composeLifecycleOwner ?: return
-        pausePanelLifecycle()
+    private fun destroyPanelLifecycle(panel: EasyWindow<*>, owner: ComposeLifecycleOwner?) {
+        owner ?: return
+        if (owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+            owner.onPause()
+        }
         if (owner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
             owner.onStop()
         }
-        if (owner.lifecycle.currentState != Lifecycle.State.DESTROYED) {
+        if (owner.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
             owner.onDestroy()
         }
         owner.detachFromDecorView(panel.rootLayout)
-        composeLifecycleOwner = null
     }
 
     private fun shouldShowImportMiniBubble(): Boolean {

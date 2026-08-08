@@ -1,8 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
  * Copyright (C) 2026  Akanyi
- *
- * 云端库收藏列表：独立页面，点击进入对应公有库详情。
  */
 
 package yancey.chelper.ui.library

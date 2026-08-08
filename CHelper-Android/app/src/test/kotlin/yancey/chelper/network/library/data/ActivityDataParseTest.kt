@@ -57,4 +57,18 @@ class ActivityDataParseTest {
         assertTrue(response.isFavorited == true)
         assertEquals("library-uuid", response.uuid)
     }
+
+    @Test
+    fun `分享响应读取 snake case 链接字段`() {
+        val response = json.decodeFromString<CommandLabUserService.LibraryShareResponse>(
+            """{"code":"Ab12Cd34Ef","share_url":"https://abyssous.site/s/Ab12Cd34Ef","share_path":"/s/Ab12Cd34Ef","library_id":7,"library_name":"传送大厅","sharer_nickname":"Akanyi","import_to_local":false,"expires_at":1787000000,"download_url":"https://autopatch.lansn.icu/download"}"""
+        )
+
+        assertEquals("Ab12Cd34Ef", response.code)
+        assertEquals("https://abyssous.site/s/Ab12Cd34Ef", response.shareUrl)
+        assertEquals("/s/Ab12Cd34Ef", response.sharePath)
+        assertEquals(7, response.libraryId)
+        assertEquals(false, response.importToLocal)
+        assertEquals(1787000000L, response.expiresAt)
+    }
 }

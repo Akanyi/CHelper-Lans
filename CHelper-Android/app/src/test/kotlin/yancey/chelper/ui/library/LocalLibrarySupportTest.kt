@@ -9,6 +9,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import yancey.chelper.network.library.data.AuthorInfo
 import yancey.chelper.network.library.data.LibraryFunction
+import yancey.chelper.ui.library.mcd.ChainItem
+import yancey.chelper.ui.library.mcd.parseMCDStructure
 
 class LocalLibrarySupportTest {
     private fun library(
@@ -75,6 +77,24 @@ class LocalLibrarySupportTest {
         assertNull(duplicate.localEntryId)
         assertFalse(duplicate.autoSync == true)
         assertFalse(duplicate.localUnsynced)
+    }
+
+    @Test
+    fun `复制副本会固化从完整源码推断出的 V2 状态`() {
+        val duplicate = library(
+            "local",
+            "V2 原库",
+            content = """
+                @name=V2 原库
+                @mcd_version=2
+
+                ###Function###
+                say hello
+                ###End###
+            """.trimIndent()
+        ).toLocalDuplicate()
+
+        assertTrue(duplicate.localIsV2 == true)
     }
 
     @Test
@@ -148,5 +168,129 @@ class LocalLibrarySupportTest {
 
         assertTrue(source.contains("@mcd_version=2"))
         assertTrue(source.contains("> R!t20\nsay loop"))
+    }
+
+    @Test
+    fun `持久化 V2 标记可修复缺版本头的完整 MCD`() {
+        val source = library(
+            "a",
+            "示例",
+            content = """
+                @name=示例
+                @version=1.0
+
+                ###Function###
+                > I
+                say hello
+                ###End###
+            """.trimIndent()
+        ).copy(localIsV2 = true).toFullLocalMcd()
+        val parsed = parseMCDStructure(source)
+
+        assertEquals(1, Regex("@mcd_version=2").findAll(source).count())
+        assertTrue(parsed.isV2)
+        assertTrue(parsed.chains.single().items.single() is ChainItem.Block)
+    }
+
+    @Test
+    fun `旧完整 MCD 可从状态行推断 V2 并补版本头`() {
+        val source = library(
+            "a",
+            "旧示例",
+            content = """
+                @name=旧示例
+
+                ###Function###
+                > R!t20
+                say loop
+                ###End###
+            """.trimIndent()
+        ).toFullLocalMcd()
+
+        assertTrue(source.contains("@mcd_version=2"))
+        assertTrue(parseMCDStructure(source).isV2)
+    }
+
+    @Test
+    fun `完整 MCD 会写入本地绑定 UUID`() {
+        val source = library(
+            "a",
+            "示例",
+            content = "@name=示例\n###Function###\nsay hello\n###End###"
+        ).copy(uuid = "stable-uuid").toFullLocalMcd()
+
+        assertTrue(source.substringBefore("###Function###").contains("@uuid=stable-uuid"))
+    }
+
+    @Test
+    fun `带空格的 V2 版本头仍按命令方块结构渲染`() {
+        val parsed = parseMCDStructure(
+            """
+                @name=示例
+                @mcd_version = 2
+
+                ###Function###
+                > C!
+                say hello
+                ###End###
+            """.trimIndent()
+        )
+
+        assertTrue(parsed.isV2)
+        assertTrue(parsed.chains.single().items.single() is ChainItem.Block)
+    }
+
+    @Test
+    fun `关闭 V2 会从完整 MCD 移除版本头`() {
+        val source = library(
+            "a",
+            "示例",
+            content = """
+                @name=示例
+                @mcd_version=2
+
+                ###Function###
+                say hello
+                ###End###
+            """.trimIndent()
+        ).copy(localIsV2 = false).toFullLocalMcd()
+
+        assertFalse(source.contains("@mcd_version"))
+        assertFalse(parseMCDStructure(source).isV2)
+    }
+
+    @Test
+    fun `聊天文本中的元数据样式内容不会被删除`() {
+        val library = library("a", "聊天", content = "> H\n@name=Steve")
+            .copy(localIsV2 = true)
+
+        assertEquals("> H\n@name=Steve", library.localBody())
+        assertTrue(library.toFullLocalMcd().contains("> H\n@name=Steve"))
+    }
+
+    @Test
+    fun `关闭 V2 只移除头部版本行`() {
+        val source = library(
+            "a",
+            "聊天",
+            content = "@mcd_version=2\n###Function###\n> H\n@mcd_version=2\n###End###"
+        ).copy(localIsV2 = false).toFullLocalMcd()
+
+        assertFalse(source.substringBefore("###Function###").contains("@mcd_version"))
+        assertTrue(source.substringAfter("###Function###").contains("@mcd_version=2"))
+    }
+
+    @Test
+    fun `旧备份导入会把 V2 推断结果写入本地字段`() {
+        val imported = decodeLocalLibraryImport(
+            """
+                {
+                  "name":"旧 V2 备份",
+                  "content":"@mcd_version=2\n###Function###\nsay hello\n###End###"
+                }
+            """.trimIndent()
+        ).single()
+
+        assertTrue(imported.localIsV2 == true)
     }
 }

@@ -1251,7 +1251,8 @@ private fun RawtextDecodeDialog(
                     value = input,
                     onValueChange = { input = it },
                     hint = "{\n  \"rawtext\": [\n    {\"text\":\"Hello\"}\n  ]\n}",
-                    minHeight = 220.dp
+                    minHeight = 220.dp,
+                    maxHeight = 280.dp,
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     RawtextFilledButton("粘贴", Color(0xFF3367D6), Modifier.weight(1f)) {

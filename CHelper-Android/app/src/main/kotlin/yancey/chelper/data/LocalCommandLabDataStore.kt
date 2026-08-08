@@ -201,6 +201,26 @@ class LocalCommandLabDataStore(private val context: Context) {
         return updated
     }
 
+    suspend fun markLocalLibrarySynced(
+        localEntryId: String,
+        uuid: String? = null,
+        syncedLibrary: LibraryFunction? = null
+    ): Boolean {
+        var updated = false
+        context.localLibraryDataStore.updateData { data ->
+            val newFunctions = data.functions.map { existing ->
+                if (existing.localEntryId == localEntryId) {
+                    updated = true
+                    existing.withLocalSyncResult(uuid, syncedLibrary)
+                } else {
+                    existing
+                }
+            }
+            data.copy(functions = newFunctions)
+        }
+        return updated
+    }
+
     suspend fun removeLocalLibraryFunction(id: Int) {
         context.localLibraryDataStore.updateData {
             val newFunctions = it.functions.toMutableList()
@@ -245,6 +265,23 @@ class LocalCommandLabDataStore(private val context: Context) {
         usedIds += assigned
         return assigned
     }
+}
+
+internal fun LibraryFunction.withLocalSyncResult(
+    uuid: String?,
+    syncedLibrary: LibraryFunction?
+): LibraryFunction {
+    val matchesSyncedSnapshot = syncedLibrary == null ||
+            name == syncedLibrary.name &&
+            version == syncedLibrary.version &&
+            note == syncedLibrary.note &&
+            tags == syncedLibrary.tags &&
+            content == syncedLibrary.content &&
+            localIsV2 == syncedLibrary.localIsV2
+    return copy(
+        uuid = uuid?.takeIf(String::isNotBlank) ?: this.uuid,
+        localUnsynced = !matchesSyncedSnapshot
+    )
 }
 
 class LocalLibraryStableIdMigration : DataMigration<LocalLibraryData> {

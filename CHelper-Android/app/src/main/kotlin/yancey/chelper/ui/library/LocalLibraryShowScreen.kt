@@ -27,9 +27,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -81,16 +83,46 @@ fun LocalLibraryShowScreen(
     var showLineCopy by remember { mutableStateOf(false) }
     var showPermissionDialog by remember { mutableStateOf(false) }
 
+    fun openLoongFlowImport() {
+        val currentLibrary = library ?: return
+        if (XXPermissions.isGrantedPermission(
+                context,
+                PermissionLists.getSystemAlertWindowPermission()
+            )
+        ) {
+            val shown = LoongFlowWindowManager.INSTANCE.showImport(
+                context,
+                currentLibrary.copy(content = resolvedSource)
+            )
+            if (!shown) Toaster.show("游龙窗口打开失败")
+        } else {
+            showPermissionDialog = true
+        }
+    }
+
     RootViewWithHeaderAndCopyright(
         title = library?.name ?: "加载中",
         headerRight = {
-            Icon(
-                id = R.drawable.more,
-                contentDescription = "更多操作",
-                modifier = Modifier
-                    .clickable { showMenu = true }
-                    .padding(5.dp)
-            )
+            Row {
+                if (library != null) {
+                    Icon(
+                        id = R.drawable.loong_flow_import,
+                        contentDescription = "游龙导入",
+                        modifier = Modifier
+                            .clickable { openLoongFlowImport() }
+                            .padding(5.dp)
+                            .size(24.dp)
+                    )
+                }
+                Icon(
+                    id = R.drawable.more,
+                    contentDescription = "更多操作",
+                    modifier = Modifier
+                        .clickable { showMenu = true }
+                        .padding(5.dp)
+                        .size(24.dp)
+                )
+            }
         }
     ) {
         // MCDContentView 现在不再自带 LazyColumn，需要外层提供滚动；
@@ -132,7 +164,6 @@ fun LocalLibraryShowScreen(
                 add("逐行复制" to "line_copy")
                 add("复制全部 MCD 源码" to "copy_all")
                 add((if (showRawSource) "查看可视化" else "查看源码") to "toggle_view")
-                add("游龙导入" to "loongflow")
                 add("关闭" to "close")
             }.toTypedArray(),
             onChoose = { action ->
@@ -145,21 +176,6 @@ fun LocalLibraryShowScreen(
                         Toast.makeText(context, "已复制全部 MCD 源码", Toast.LENGTH_SHORT).show()
                     }
                     "toggle_view" -> showRawSource = !showRawSource
-                    "loongflow" -> {
-                        if (XXPermissions.isGrantedPermission(
-                                context,
-                                PermissionLists.getSystemAlertWindowPermission()
-                            )
-                        ) {
-                            val shown = LoongFlowWindowManager.INSTANCE.showImport(
-                                context,
-                                library.copy(content = resolvedSource)
-                            )
-                            if (!shown) Toaster.show("游龙窗口打开失败")
-                        } else {
-                            showPermissionDialog = true
-                        }
-                    }
                 }
             }
         )

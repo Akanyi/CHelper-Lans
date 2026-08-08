@@ -38,7 +38,7 @@ class FavoriteLibraryListViewModel : ViewModel() {
         if (isLoading || (!force && favorites.isNotEmpty())) return
         viewModelScope.launch {
             if (!LoginUtil.isLoggedIn || LoginUtil.currentUser?.isGuest == true) {
-                errorMessage = "请先登录正式账号查看云端收藏夹"
+                errorMessage = "请先登录账号查看云端收藏夹"
                 favorites.clear()
                 return@launch
             }

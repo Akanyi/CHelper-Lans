@@ -21,6 +21,7 @@ package yancey.chelper.ui.library
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -70,6 +71,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.hjq.permissions.XXPermissions
+import com.hjq.permissions.permission.PermissionLists
 import com.hjq.toast.Toaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -95,6 +98,7 @@ import yancey.chelper.ui.common.dialog.CaptchaDialog
 import yancey.chelper.ui.common.dialog.ChoosingDialog
 import yancey.chelper.ui.common.dialog.CustomDialog
 import yancey.chelper.ui.common.dialog.DialogContainer
+import yancey.chelper.ui.common.dialog.IsConfirmDialog
 import yancey.chelper.ui.common.dialog.ReportDialog
 import yancey.chelper.ui.common.layout.RootViewWithHeaderAndCopyright
 import yancey.chelper.ui.common.widget.Divider
@@ -132,12 +136,47 @@ fun PublicLibraryShowScreen(
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
     var showReportDialog by remember { mutableStateOf(false) }
     var showLocalImportConfirmDialog by remember { mutableStateOf(false) }
+    var showLoongFlowPermissionDialog by remember { mutableStateOf(false) }
     var localImportPromptHandled by remember(id, isPrivate, importToLocal) {
         mutableStateOf(false)
     }
 
+    fun openLoongFlowImport() {
+        if (viewModel.library.id == null) return
+        if (XXPermissions.isGrantedPermission(
+                context,
+                PermissionLists.getSystemAlertWindowPermission()
+            )
+        ) {
+            if (!LoongFlowWindowManager.INSTANCE.showImport(context, viewModel.library)) {
+                Toaster.show("游龙窗口打开失败")
+            }
+        } else {
+            showLoongFlowPermissionDialog = true
+        }
+    }
+
+    fun shareCurrentLibrary() {
+        val libraryId = viewModel.library.id ?: return
+        if (!LoginUtil.isLoggedIn || LoginUtil.currentUser?.isGuest == true) {
+            Toaster.show("请先登录正式账号再分享")
+            return
+        }
+        if (isPrivate || viewModel.library.isPublish == false) {
+            Toaster.show("仅公开库可生成分享链接")
+            return
+        }
+        if (viewModel.isSharing) {
+            Toaster.show("正在生成分享链接…")
+            return
+        }
+        // 外链默认只打开云端库，不自动导入本地
+        viewModel.createShareLink(libraryId, importToLocal = false)
+    }
+
     viewModel.ensureLoaded(id, isPrivate)
 
+    // 新分享默认不带 local 参数，只展示云端详情；显式 local=1 仍兼容旧导入链接。
     LaunchedEffect(
         importToLocal,
         viewModel.isLoading,
@@ -160,6 +199,27 @@ fun PublicLibraryShowScreen(
         viewModel.actionMessage?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             viewModel.actionMessage = null
+        }
+        onDispose { }
+    }
+
+    // 分享链接生成后：复制到剪贴板并拉起系统分享面板
+    DisposableEffect(viewModel.pendingShareUrl) {
+        viewModel.pendingShareUrl?.let { url ->
+            viewModel.pendingShareUrl = null
+            val clipboard =
+                context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.setPrimaryClip(ClipData.newPlainText("CHelper Share", url))
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, url)
+            }
+            runCatching {
+                context.startActivity(
+                    Intent.createChooser(shareIntent, "分享命令库").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+            }
+            Toaster.show("分享链接已复制")
         }
         onDispose { }
     }
@@ -190,14 +250,37 @@ fun PublicLibraryShowScreen(
     RootViewWithHeaderAndCopyright(
         title = viewModel.library.name ?: "加载中",
         headerRight = {
-            Icon(
-                id = R.drawable.more,
-                modifier = Modifier
-                    .clickable { showMainMenu = true }
-                    .padding(5.dp)
-                    .size(24.dp),
-                contentDescription = "菜单"
-            )
+            Row {
+                // 仅公开云端库可分享；私有库/未加载完成不展示入口
+                if (viewModel.library.id != null && !isPrivate && viewModel.library.isPublish != false) {
+                    Icon(
+                        id = R.drawable.share,
+                        modifier = Modifier
+                            .clickable { shareCurrentLibrary() }
+                            .padding(5.dp)
+                            .size(24.dp),
+                        contentDescription = "分享"
+                    )
+                }
+                if (viewModel.library.id != null) {
+                    Icon(
+                        id = R.drawable.loong_flow_import,
+                        modifier = Modifier
+                            .clickable { openLoongFlowImport() }
+                            .padding(5.dp)
+                            .size(24.dp),
+                        contentDescription = "游龙导入"
+                    )
+                }
+                Icon(
+                    id = R.drawable.more,
+                    modifier = Modifier
+                        .clickable { showMainMenu = true }
+                        .padding(5.dp)
+                        .size(24.dp),
+                    contentDescription = "菜单"
+                )
+            }
         }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -573,7 +656,6 @@ fun PublicLibraryShowScreen(
             add("逐行复制" to "line_copy")
             add("复制全部 MCD 源码" to "copy_all")
             add((if (viewModel.showRawSource) "查看可视化" else "查看源码") to "toggle_view")
-            add("游龙导入" to "loongflow_import")
             // 公有库才显示举报：私有库是用户自己的，没必要给自己的库做举报入口
             if (!isPrivate) add("举报" to "report")
             add("关闭" to "close")
@@ -597,11 +679,6 @@ fun PublicLibraryShowScreen(
                     }
 
                     "toggle_view" -> viewModel.showRawSource = !viewModel.showRawSource
-                    "loongflow_import" -> {
-                        if (!LoongFlowWindowManager.INSTANCE.showImport(context, viewModel.library)) {
-                            Toaster.show("游龙窗口打开失败")
-                        }
-                    }
 
                     "report" -> showReportDialog = true
                 }
@@ -700,7 +777,9 @@ fun PublicLibraryShowScreen(
                             localCommandLabDataStore.addLocalLibraryFunction(imported) to false
                         }
                     }
-                    Toaster.show(if (alreadyExists) "本地库已有相同内容，已打开" else "已导入本地库")
+                    Toaster.show(
+                        if (alreadyExists) "本地库已有相同内容，已打开" else "已导入本地库"
+                    )
                     navController?.navigate(
                         LocalLibraryShowScreenKey(localEntryId = localEntryId)
                     ) {
@@ -709,6 +788,29 @@ fun PublicLibraryShowScreen(
                     }
                 }
             }
+        )
+    }
+
+    if (showLoongFlowPermissionDialog) {
+        IsConfirmDialog(
+            onDismissRequest = { showLoongFlowPermissionDialog = false },
+            content = "游龙导入需要悬浮窗权限，请进入设置授权。",
+            confirmText = "打开设置",
+            onConfirm = {
+                showLoongFlowPermissionDialog = false
+                XXPermissions.with(context)
+                    .permission(PermissionLists.getSystemAlertWindowPermission())
+                    .request { _, deniedList ->
+                        Toaster.show(
+                            if (deniedList.isEmpty()) {
+                                "悬浮窗权限获取成功，请再次点击游龙导入"
+                            } else {
+                                "悬浮窗权限获取失败"
+                            }
+                        )
+                    }
+            },
+            onCancel = { showLoongFlowPermissionDialog = false }
         )
     }
 

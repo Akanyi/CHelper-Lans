@@ -406,11 +406,37 @@ interface CommandLabUserService {
         var uuid: String? = null
     )
 
-    /** 收藏或取消收藏公开命令库。后端按 UUID 绑定，多端共享。 */
+/** 收藏或取消收藏公开命令库。后端按 UUID 绑定，多端共享。 */
     @POST("library/{id}/favorite")
     suspend fun toggleFavorite(
         @Path("id") id: Int
     ): BaseResult<FavoriteLibraryResponse?>
+
+    /**
+     * CHelper 分享链接响应。仅安卓客户端可创建，落地页为 `/s/{code}`。
+     */
+    @Serializable
+    class LibraryShareResponse(
+        var code: String? = null,
+        @SerialName("share_url") var shareUrl: String? = null,
+        @SerialName("share_path") var sharePath: String? = null,
+        @SerialName("library_id") var libraryId: Int? = null,
+        @SerialName("library_name") var libraryName: String? = null,
+        @SerialName("sharer_nickname") var sharerNickname: String? = null,
+        @SerialName("import_to_local") var importToLocal: Boolean? = null,
+        @SerialName("expires_at") var expiresAt: Long? = null,
+        @SerialName("download_url") var downloadUrl: String? = null
+    )
+
+    /**
+     * 生成公开库分享链接。默认 `import_to_local=0`，接收端只打开云端详情。
+     * 需正式登录；游客不可用；后端会校验 X-Client。
+     */
+    @POST("library/{id}/share")
+    suspend fun createLibraryShare(
+        @Path("id") id: Int,
+        @Query("import_to_local") importToLocal: Boolean = false
+    ): BaseResult<LibraryShareResponse?>
 
     // Quota
 

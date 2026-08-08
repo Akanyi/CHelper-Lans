@@ -212,6 +212,52 @@ class PublicLibraryShowViewModel : ViewModel() {
         }
     }
 
+    /** 最近一次成功生成的分享链接，由 Screen 复制/拉起系统分享后清空。 */
+    var pendingShareUrl by mutableStateOf<String?>(null)
+    var isSharing by mutableStateOf(false)
+
+    /**
+     * 生成云端公开库分享链接。
+     * 默认 import_to_local=false：对方从外链进入只看到云端详情，不自动导入本地。
+     */
+    fun createShareLink(id: Int, importToLocal: Boolean = false) {
+        if (!LoginUtil.isLoggedIn || LoginUtil.currentUser?.isGuest == true) {
+            actionMessage = "请先登录正式账号再分享"
+            return
+        }
+        if (isPrivate || library.isPublish == false) {
+            actionMessage = "仅公开库可生成分享链接"
+            return
+        }
+        if (isSharing) return
+        viewModelScope.launch {
+            isSharing = true
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    ServiceManager.COMMAND_LAB_USER_SERVICE.createLibraryShare(
+                        id = id,
+                        importToLocal = importToLocal
+                    )
+                }
+                if (result.isSuccess()) {
+                    val url = result.data?.shareUrl?.takeIf { it.isNotBlank() }
+                    if (url != null) {
+                        pendingShareUrl = url
+                        actionMessage = result.message ?: "分享链接已生成"
+                    } else {
+                        actionMessage = "分享链接为空"
+                    }
+                } else {
+                    actionMessage = result.message ?: "生成分享链接失败"
+                }
+            } catch (e: Exception) {
+                actionMessage = "网络错误: ${e.message}"
+            } finally {
+                isSharing = false
+            }
+        }
+    }
+
     companion object {
         private fun formatPoints(value: Double): String {
             val whole = value.toLong()

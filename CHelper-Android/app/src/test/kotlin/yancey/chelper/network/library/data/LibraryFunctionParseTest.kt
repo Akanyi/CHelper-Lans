@@ -87,6 +87,18 @@ class LibraryFunctionParseTest {
     }
 
     @Test
+    fun `local_is_v2 能随本地 JSON 往返持久化`() {
+        val encoded = Json.encodeToString(
+            LibraryFunction.serializer(),
+            LibraryFunction(name = "v2", content = "> I\nsay hello", localIsV2 = true)
+        )
+        val round = json.decodeFromString<LibraryFunction>(encoded)
+
+        assertTrue(encoded.contains("\"local_is_v2\":true"))
+        assertEquals(true, round.localIsV2)
+    }
+
+    @Test
     fun `tags 缺失保持 null 不要默认成空列表`() {
         // 区分"没传 tags"和"传了空数组"对上层"显隐 tag 区域"是有意义的
         val fn = json.decodeFromString<LibraryFunction>("""{"name":"x"}""")

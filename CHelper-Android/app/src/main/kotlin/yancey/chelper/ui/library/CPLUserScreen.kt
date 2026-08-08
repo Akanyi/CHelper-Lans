@@ -302,8 +302,6 @@ fun UserProfileView(
 
         Spacer(Modifier.height(24.dp))
 
-        // 编辑个人资料：把"上传头像 / 改昵称 / 改主页 / 改签名"集中到一处。
-        // 头像点击仍然能直接触发上传（快捷路径），但完整资料维护走这个卡片更直观。
         Box(
             modifier = Modifier
                 .fillMaxWidth()

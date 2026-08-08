@@ -59,6 +59,7 @@ fun RawtextLabeledField(
     onValueChange: (String) -> Unit,
     hint: String = "",
     minHeight: Dp = 46.dp,
+    maxHeight: Dp? = null,
     modifier: Modifier = Modifier,
     trailing: (@Composable () -> Unit)? = null,
 ) {
@@ -74,7 +75,13 @@ fun RawtextLabeledField(
                 onValueChange = onValueChange,
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = minHeight)
+                    .then(
+                        if (maxHeight == null) {
+                            Modifier.heightIn(min = minHeight)
+                        } else {
+                            Modifier.heightIn(min = minHeight, max = maxHeight)
+                        }
+                    )
                     .clip(RoundedCornerShape(10.dp))
                     .background(CHelperTheme.colors.background)
                     .padding(horizontal = 10.dp, vertical = 10.dp),

@@ -132,13 +132,7 @@ class LocalLibraryEditViewModel : ViewModel() {
         description.setTextAndPlaceCursorAtEnd(library.note ?: "")
         tags.setTextAndPlaceCursorAtEnd(library.tags?.joinToString(separator = ",") ?: "")
 
-        val cleanLines = library.localBody().lines().filter { line ->
-            val t = line.trim()
-            !(t.startsWith("@name=") || t.startsWith("@version=") ||
-                    t.startsWith("@tags=") || t.startsWith("@note=") ||
-                    t.startsWith("@mcd_version=") || t.startsWith("@uuid="))
-        }
-        commands.setTextAndPlaceCursorAtEnd(cleanLines.joinToString("\n").trim())
+        commands.setTextAndPlaceCursorAtEnd(library.localBody().trim('\n', '\r'))
         autoSync = library.autoSync ?: false
         // 编辑存量库：从原始 content 推断 V2 标记。容忍 `@mcd_version= 2` 这种带空格的写法
         useV2 = library.usesLocalMcdV2()
@@ -191,6 +185,25 @@ class LocalLibraryEditViewModel : ViewModel() {
             updatedAt = System.currentTimeMillis()
         )
 
+    fun buildLocalLibrary(
+        existingLibrary: LibraryFunction?,
+        requestedLocalEntryId: String?
+    ): LibraryFunction {
+        val current = snapshot()
+        val tagList = current.tags.split(",").map(String::trim).filter(String::isNotEmpty)
+        return (existingLibrary ?: LibraryFunction()).copy(
+            localEntryId = requestedLocalEntryId ?: existingLibrary?.localEntryId,
+            localIsV2 = current.useV2,
+            name = current.name,
+            version = current.version,
+            note = current.description,
+            tags = tagList,
+            content = current.commands,
+            autoSync = current.autoSync,
+            localUnsynced = !existingLibrary?.uuid.isNullOrEmpty()
+        )
+    }
+
     fun markSaved() {
         draftWritesEnabled = false
         initialSnapshot = snapshot()
@@ -224,8 +237,10 @@ class LocalLibraryEditViewModel : ViewModel() {
             return "名称、版本、描述和标签不能包含换行"
         }
         val body = commands.text.toString()
-        val forbidden = listOf("###Function###", "###End###", "@name=", "@version=", "@uuid=", "@mcd_version=")
-        if (forbidden.any { body.contains(it, ignoreCase = true) }) {
+        if (body.contains("###Function###", ignoreCase = true) ||
+            body.contains("###End###", ignoreCase = true) ||
+            containsMcdMetadataOutsideChat(body)
+        ) {
             return "脚本区只填写命令正文，不要粘贴 MCD 头部或 Function 标记"
         }
         val validation = validateMCDContent(body)
@@ -242,8 +257,68 @@ class LocalLibraryEditViewModel : ViewModel() {
                 it.value.trim().startsWith(">") && !stateRegex.matches(it.value.trim())
             }
             if (invalidState != null) return "第 ${invalidState.index + 1} 行不是合法的 V2 状态标记"
+            findUnboundV2StateLine(body, stateRegex)?.let { line ->
+                return "第 $line 行状态标记没有对应的命令或聊天文本"
+            }
         }
         return null
+    }
+
+    private fun findUnboundV2StateLine(body: String, stateRegex: Regex): Int? {
+        var pendingLine: Int? = null
+        var pendingChat = false
+
+        for ((index, line) in body.lines().withIndex()) {
+            val trimmed = line.trim()
+            if (trimmed.isEmpty()) continue
+
+            if (pendingLine != null) {
+                if (pendingChat) {
+                    pendingLine = null
+                    pendingChat = false
+                    continue
+                }
+                if (trimmed.startsWith("#") || trimmed.startsWith("//")) continue
+                if (trimmed.startsWith(">") ||
+                    (trimmed.startsWith("---") && trimmed.endsWith("---"))
+                ) {
+                    return pendingLine
+                }
+                pendingLine = null
+            }
+
+            val match = stateRegex.matchEntire(trimmed) ?: continue
+            pendingLine = index + 1
+            pendingChat = match.groupValues[1].equals("H", ignoreCase = true)
+        }
+        return pendingLine
+    }
+
+    private fun containsMcdMetadataOutsideChat(body: String): Boolean {
+        val metadataLineRegex = Regex(
+            """^@(name|version|tags|note|uuid|mcd_version)\s*=""",
+            RegexOption.IGNORE_CASE
+        )
+        val chatStateRegex = Regex(
+            """^>\s*H([?_])?([!_])?(?:t(\d+|_))?\s*$""",
+            RegexOption.IGNORE_CASE
+        )
+        var pendingChat = false
+
+        for (line in body.lineSequence()) {
+            val trimmed = line.trim()
+            if (trimmed.isEmpty()) continue
+            if (pendingChat) {
+                pendingChat = false
+                continue
+            }
+            if (chatStateRegex.matches(trimmed)) {
+                pendingChat = true
+                continue
+            }
+            if (metadataLineRegex.containsMatchIn(trimmed)) return true
+        }
+        return false
     }
 
     /**
