@@ -356,6 +356,7 @@ fun LocalLibraryEditScreen(
 
                 SettingsItem(
                     name = "自动生成 UUID 并同步",
+                    description = "保存时自动生成 UUID，并将本地库同步到云端",
                     checked = viewModel.autoSync,
                     onCheckedChange = { viewModel.autoSync = it }
                 )
