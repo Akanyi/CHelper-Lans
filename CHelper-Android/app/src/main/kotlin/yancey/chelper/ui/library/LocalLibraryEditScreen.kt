@@ -1,6 +1,6 @@
 /**
  * It is part of CHelper. CHelper is a command helper for Minecraft Bedrock Edition.
- * Copyright (C) 2026  Yancey
+ * Copyright (C) 2026  Akanyi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -478,16 +478,6 @@ fun LocalLibraryEditScreen(
 
 /**
  * 保存本地库，可选附加云端同步。
- *
- * 流程：
- * 1. 拼好新的 LibraryFunction（保留 id / uuid / 旧元数据），写本地。
- * 2. autoSync 开 → 进入云端分支：
- *    - 已有云端 id：调 updateLibrary
- *    - 没云端 id：先客户端生成一个 uuid 兜底（防后端"新建走默认 uuid"），
- *      调 uploadLibrary，把返回的 uuid + 没绑过 id 的本地副本重新写一遍。
- * 3. 同步成功清掉 localUnsynced 标记，失败保留 true 让列表看得见。
- *
- * 失败不阻断本地保存——用户写的脚本不会因为网络问题丢。
  */
 private fun saveLocalLibrary(
     viewModel: LocalLibraryEditViewModel,

@@ -61,30 +61,18 @@ class LocalLibraryEditViewModel : ViewModel() {
     var commands by mutableStateOf(TextFieldState())
 
     /**
-     * 保存时是否顺手把本条本地库同步到云端。
-     * 以前叫"自动同步"——但当时要求"本地库必须先有 uuid"，
-     * 用户根本不知道 uuid 哪里来，相当于这个开关只对已经手动上传过的库生效。
-     *
-     * 现在改成"自动生成 UUID 并同步"：
-     * - 本地库还没绑定云端 id：保存时调 upload，让后端分配 uuid，
-     *   响应里的 uuid + id 回写到本地，下次起就是普通的"已绑定"状态。
-     * - 已经绑过云端：保存时调 update。
-     * 用户不再需要关心 uuid 从哪来。
+     * 保存时是否顺手把本条本地库同步到云端
      */
     var autoSync by mutableStateOf(false)
 
     /**
      * 是否使用 MCD V2 语法。
-     * - 新建本地库（ADD）默认开启：V2 才支持命令链 / 方块状态等完整可视化，新内容没必要再绑老语法。
-     * - 编辑已有库（UPDATE）根据 content 里是否带 `@mcd_version=2` 头自动推断，
-     *   避免误把存量 V1 库标记成 V2 反而渲染异常。
-     * - 本地通过 localIsV2 单独持久化，云端同步时再生成 `@mcd_version=2` 头。
      */
     var useV2 by mutableStateOf(true)
     var isShowDeleteDialog by mutableStateOf(false)
     var isShowLowCodeHelper by mutableStateOf(false)
 
-    // V2 → V1 降级二次确认：切回去会丢命令链/方块状态可视化，得让用户先确认
+    // 二次确认
     var isShowV2DowngradeConfirm by mutableStateOf(false)
     var isSyncing by mutableStateOf(false)
     var isShowExitConfirm by mutableStateOf(false)
@@ -114,7 +102,7 @@ class LocalLibraryEditViewModel : ViewModel() {
                     commands.setTextAndPlaceCursorAtEnd("")
                     autoSync = false
                 }
-                // 新建模式：V2 是默认偏好
+                // 默认偏好V2
                 useV2 = true
                 initializedEditKey = null
                 initializedAddMode = true
@@ -134,7 +122,7 @@ class LocalLibraryEditViewModel : ViewModel() {
 
         commands.setTextAndPlaceCursorAtEnd(library.localBody().trim('\n', '\r'))
         autoSync = library.autoSync ?: false
-        // 编辑存量库：从原始 content 推断 V2 标记。容忍 `@mcd_version= 2` 这种带空格的写法
+        // 从原始 content 推断 V2 标记。容忍带空格写法
         useV2 = library.usesLocalMcdV2()
         initializedEditKey = targetKey
         initialSnapshot = snapshot()
@@ -322,13 +310,7 @@ class LocalLibraryEditViewModel : ViewModel() {
     }
 
     /**
-     * 把用户输入的 content（不带 MCD 头）拼成完整 MCD 文本：
-     * 头部（@name/@version/@tags/@note/@mcd_version/@uuid）+ Function 段。
-     * 给"自动同步"接口拼上传载荷用。
-     *
-     * 提供 fallbackUuid 是为了"自动生成 UUID 并同步"场景——本地库还没 uuid 时，
-     * 先在 ViewModel 外层 `UUID.randomUUID()` 生成一个塞进来，确保头部一定有 uuid，
-     * 避免后端按"新建"再分配一个，导致下次再保存找不到对应记录。
+     * 把用户输入的 content（不带 MCD 头）拼成完整 MCD 文本
      */
     fun buildFullMCD(
         existingLibrary: LibraryFunction?,
