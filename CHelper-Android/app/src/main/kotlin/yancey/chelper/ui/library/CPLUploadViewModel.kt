@@ -107,7 +107,11 @@ class CPLUploadViewModel : ViewModel() {
             mcdBuilder.append("@tags=${tagList.joinToString(",")}\n")
         }
 
-        mcdBuilder.append("@note=${description.text}\n")
+        val mcdNote = description.text.toString()
+            .replace("\r\n", " ")
+            .replace('\r', ' ')
+            .replace('\n', ' ')
+        mcdBuilder.append("@note=$mcdNote\n")
         if (useV2) {
             mcdBuilder.append("@mcd_version=2\n")
         }

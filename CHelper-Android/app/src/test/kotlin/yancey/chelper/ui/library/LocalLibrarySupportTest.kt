@@ -9,6 +9,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import yancey.chelper.network.library.data.AuthorInfo
 import yancey.chelper.network.library.data.LibraryFunction
+import yancey.chelper.ui.library.mcd.BlockType
 import yancey.chelper.ui.library.mcd.ChainItem
 import yancey.chelper.ui.library.mcd.parseMCDStructure
 
@@ -238,6 +239,31 @@ class LocalLibrarySupportTest {
 
         assertTrue(parsed.isV2)
         assertTrue(parsed.chains.single().items.single() is ChainItem.Block)
+    }
+
+    @Test
+    fun `多行 note 不会阻断后续 V2 版本头`() {
+        val parsed = parseMCDStructure(
+            """
+                @name=基础防熊
+                @note=说明第一行
+                说明第二行
+                @mcd_version=2
+                @uuid=stable-uuid
+
+                ###Function###
+                ---前置条件---
+                > H
+                scoreboard objectives add level dummy
+                ###End###
+            """.trimIndent()
+        )
+
+        val block = parsed.chains.single().items.single() as ChainItem.Block
+        assertTrue(parsed.isV2)
+        assertEquals("说明第一行\n说明第二行", parsed.metaInfo.single { it.key == "note" }.value)
+        assertEquals(BlockType.CHAT, block.block.type)
+        assertEquals("scoreboard objectives add level dummy", block.block.command)
     }
 
     @Test

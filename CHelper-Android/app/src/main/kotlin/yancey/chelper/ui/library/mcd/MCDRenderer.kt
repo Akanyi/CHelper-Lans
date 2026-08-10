@@ -163,23 +163,27 @@ fun parseMCDStructure(
     if (content.isNullOrBlank()) return ParsedMCD()
 
     return try {
-        // 避免每次 split 都编译 Regex；lineSequence 也能少一次中间 List 分配
-        val lines = content.lineSequence()
         val metaInfo = mutableListOf<MCDMeta>()
         val rootComments = mutableListOf<String>()
         val chains = mutableListOf<MCDChain>()
         var currentChain: MCDChain? = null
+        val functionMarkerIndex = content.lineSequence()
+            .indexOfFirst { it.trim() == "###Function###" }
 
-        // 确认是否是 v2：先扫一遍元数据区附近；整文件 any 在超长库上也能接受（只读行首）
-        var isV2 = false
-        for (line in content.lineSequence()) {
-            val t = line.trim()
-            if (mcdVersion2LineRegex.matches(t)) {
-                isV2 = true
-                break
+        val isV2 = if (functionMarkerIndex >= 0) {
+            content.lineSequence().take(functionMarkerIndex)
+                .any { mcdVersion2LineRegex.matches(it.trim()) }
+        } else {
+            var detected = false
+            for (line in content.lineSequence()) {
+                val t = line.trim()
+                if (mcdVersion2LineRegex.matches(t)) {
+                    detected = true
+                    break
+                }
+                if (t.isNotEmpty() && !t.startsWith("@") && !t.startsWith("###")) break
             }
-            // 元数据区过后一般不会再出现 @mcd_version；遇到正文就停，省时间
-            if (t.isNotEmpty() && !t.startsWith("@") && !t.startsWith("###")) break
+            detected
         }
 
         var pendingBlockType = BlockType.CHAIN
@@ -188,10 +192,48 @@ fun parseMCDStructure(
         var pendingNeedsRedstone = false
         var pendingTickDelay = 0
         var hasPendingState = false
+        var lastHeaderMetaIndex: Int? = null
 
-        for (line in lines) {
+        for ((lineIndex, line) in content.lineSequence().withIndex()) {
             val tline = line.trim()
+
+            if (functionMarkerIndex >= 0 && lineIndex < functionMarkerIndex) {
+                when {
+                    tline.isEmpty() -> lastHeaderMetaIndex = null
+                    tline.startsWith("@") -> {
+                        val splitIdx = tline.indexOf('=')
+                        if (splitIdx > 0) {
+                            metaInfo.add(
+                                MCDMeta(
+                                    key = tline.substring(1, splitIdx).trim(),
+                                    value = tline.substring(splitIdx + 1).trim()
+                                )
+                            )
+                            lastHeaderMetaIndex = metaInfo.lastIndex
+                        }
+                    }
+                    tline.startsWith("#") -> {
+                        rootComments.add(tline.substring(1).trim())
+                        lastHeaderMetaIndex = null
+                    }
+                    tline.startsWith("//") -> lastHeaderMetaIndex = null
+                    else -> {
+                        val metaIndex = lastHeaderMetaIndex
+                        if (metaIndex != null && metaInfo[metaIndex].key.equals("note", ignoreCase = true)) {
+                            val note = metaInfo[metaIndex]
+                            metaInfo[metaIndex] = note.copy(value = "${note.value}\n$tline")
+                        } else {
+                            rootComments.add(tline)
+                        }
+                    }
+                }
+                continue
+            }
+
             if (tline.isEmpty()) continue
+
+            if (lineIndex == functionMarkerIndex) continue
+            if (tline == "###End###") break
 
             // 杂项标记 ###Function### / ###End###
             if (tline.startsWith("###") && tline.endsWith("###")) continue
