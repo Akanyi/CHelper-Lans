@@ -1,6 +1,7 @@
 package yancey.chelper.network.library.data
 
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -70,5 +71,29 @@ class ActivityDataParseTest {
         assertEquals(7, response.libraryId)
         assertEquals(false, response.importToLocal)
         assertEquals(1787000000L, response.expiresAt)
+    }
+
+    @Test
+    fun `网页 SSO 响应读取后端签发地址`() {
+        val response = json.decodeFromString<CommandLabUserService.WebSsoAuthorizeResponse>(
+            """{"web_url":"https://abyssous.site/auth/chelper/web-sso#code=one-time"}"""
+        )
+
+        assertEquals(
+            "https://abyssous.site/auth/chelper/web-sso#code=one-time",
+            response.webUrl,
+        )
+    }
+
+    @Test
+    fun `网页 SSO 请求只发送站内 next`() {
+        val request = CommandLabUserService.WebSsoAuthorizeRequest(
+            next = "/invite/points?code=invite-code"
+        )
+
+        assertEquals(
+            """{"next":"/invite/points?code=invite-code"}""",
+            json.encodeToString(request),
+        )
     }
 }

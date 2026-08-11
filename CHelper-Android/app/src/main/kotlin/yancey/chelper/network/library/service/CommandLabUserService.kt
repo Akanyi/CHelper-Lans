@@ -223,6 +223,25 @@ interface CommandLabUserService {
     @POST("register/login")
     suspend fun login(@Body request: LoginRequest): BaseResult<LoginResponse?>
 
+    @Serializable
+    class WebSsoAuthorizeRequest(
+        var next: String? = null,
+    )
+
+    @Serializable
+    class WebSsoAuthorizeResponse(
+        @SerialName("web_url") var webUrl: String? = null,
+    )
+
+    /**
+     * 为正式账号签发一次性网页登录地址。
+     * Authorization 与 X-Client 由 AuthInterceptor 统一添加。
+     */
+    @POST("auth/chelper/web-sso/authorize")
+    suspend fun authorizeWebSso(
+        @Body request: WebSsoAuthorizeRequest,
+    ): BaseResult<WebSsoAuthorizeResponse?>
+
 
     // Avatar
 

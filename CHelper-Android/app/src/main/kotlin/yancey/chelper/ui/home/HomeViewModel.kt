@@ -29,6 +29,7 @@ import com.hjq.device.compat.DeviceOs
 import com.hjq.permissions.XXPermissions
 import com.hjq.permissions.permission.PermissionLists
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -40,6 +41,9 @@ import yancey.chelper.data.SettingsDataStore
 import yancey.chelper.network.ServiceManager
 import yancey.chelper.network.chelper.data.Announcement
 import yancey.chelper.network.chelper.data.VersionInfo
+import yancey.chelper.network.library.service.CommandLabUserService
+import yancey.chelper.network.library.util.CommandLabWebSso
+import yancey.chelper.network.library.util.LoginUtil
 import java.io.File
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
@@ -52,6 +56,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     var isShowAnnouncementDialog by mutableStateOf(false)
     var isShowUpdateNotificationsDialog by mutableStateOf(false)
     var isShowCommandLabVersionDialog by mutableStateOf(false)
+    var pendingAnnouncementUrl by mutableStateOf<String?>(null)
+    var announcementLinkMessage by mutableStateOf<String?>(null)
+    var isAuthorizingWebSso by mutableStateOf(false)
     private val settingsDataStore = SettingsDataStore(application.applicationContext)
     private var isNeedToShowXiaomiClipboardPermissionTips: Boolean? = null
     private val skipXiaomiClipboardPermissionTipsFile: File =
@@ -182,6 +189,46 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 }
             } catch (_: Exception) {
 
+            }
+        }
+    }
+
+    fun openAnnouncementLink(url: String) {
+        val inviteNext = CommandLabWebSso.inviteNext(url)
+        if (inviteNext == null) {
+            pendingAnnouncementUrl = url
+            return
+        }
+        if (!LoginUtil.isLoggedIn || LoginUtil.currentUser?.isGuest == true) {
+            announcementLinkMessage = "请先登录正式账号后打开邀请链接"
+            return
+        }
+        if (isAuthorizingWebSso) return
+
+        viewModelScope.launch {
+            isAuthorizingWebSso = true
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    ServiceManager.COMMAND_LAB_USER_SERVICE.authorizeWebSso(
+                        CommandLabUserService.WebSsoAuthorizeRequest(next = inviteNext)
+                    )
+                }
+                if (response.isSuccess()) {
+                    val webUrl = response.data?.webUrl?.takeIf { it.isNotBlank() }
+                    if (webUrl != null) {
+                        pendingAnnouncementUrl = webUrl
+                    } else {
+                        announcementLinkMessage = "网页登录地址为空"
+                    }
+                } else {
+                    announcementLinkMessage = response.message ?: "网页登录授权失败"
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                announcementLinkMessage = "网络错误: ${e.message}"
+            } finally {
+                isAuthorizingWebSso = false
             }
         }
     }
